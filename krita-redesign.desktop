@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=krita-redesign
+X-Python-2-Compatible=false
+Name=Krita UI Redesign
+Comment=An in-depth plugin to overhaul Krita's UI
