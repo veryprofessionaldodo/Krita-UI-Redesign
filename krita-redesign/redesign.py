@@ -1,5 +1,14 @@
 from krita import *
 
+
+def removeBorder(window):
+    window.qwindow().setStyleSheet("""
+            QToolBar {
+                border: none;
+            }
+        """)
+
+
 class Redesign(Extension):
 
     def __init__(self, parent):
@@ -9,10 +18,7 @@ class Redesign(Extension):
         pass
 
     def createActions(self, window):
-        window.qwindow().setStyleSheet("""
-            QToolBar {
-                border: none;
-            }
-        """)
-        
+        removeBorder(window)
+
+
 Krita.instance().addExtension(Redesign(Krita.instance()))
