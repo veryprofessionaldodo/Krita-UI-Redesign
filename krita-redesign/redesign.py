@@ -13,7 +13,7 @@ class Redesign(Extension):
         actions = []
         actions.append(window.createAction("toolbarBorder", "Borderless toolbars", ""))
         actions.append(window.createAction("nuToolbox", "Transparent toolbox", ""))
-        # actions.append(window.createAction("tabHeight", "Thin document tabs (requires window resize)", "window"))
+        actions.append(window.createAction("tabHeight", "Thin document tabs", "window"))
         menu = window.qwindow().menuBar().addMenu("Redesign")
 
         for a in actions:
@@ -23,8 +23,9 @@ class Redesign(Extension):
         
         actions[0].toggled.connect(self.toolbarBorderToggled)
         actions[1].toggled.connect(self.nuToolboxToggled)
-        # actions[2].toggled.connect(self.tabHeightToggled)
+        actions[2].toggled.connect(self.tabHeightToggled)
 
+        # Remove Toolbar borders (and enhance tabs)
         styleSheet = """
                 QToolBar {
                     border: none;
@@ -41,15 +42,15 @@ class Redesign(Extension):
 
         window.qwindow().setStyleSheet(styleSheet)
         
-        # styleSheet = """
-        #         QTabBar::tab { height: 23px; }
-        #     """
-        # barList = window.qwindow().findChildren(QTabBar)
+        # Tab height
+        styleSheet = """
+                QTabBar::tab { height: 23px; }
+            """
 
-        # tabBar = # ***The method I used to locate the correct tab bar wasn't consistent***
+        canvas = window.qwindow().centralWidget()
+        canvas.setStyleSheet(styleSheet)
 
-        # tabBar.setStyleSheet(styleSheet)
-
+        # Transparent Toolbox
         styleSheet = """
 
             KoToolBoxDocker { 
@@ -130,16 +131,20 @@ class Redesign(Extension):
         Application.activeWindow().qwindow().setStyleSheet(styleSheet)
 
 
-    # def tabHeightToggled(self, toggled):
-    #     styleSheet = """""" # Clear by default
+    def tabHeightToggled(self, toggled):
+        styleSheet = """""" # Clear by default
 
-    #     if toggled:
-    #         styleSheet = """
-    #             QTabBar::tab { height: 23px; }
-    #         """
-    #     barList = Application.activeWindow().qwindow().findChildren(QTabBar)
-    #     tabBar = # ***The method I used to locate the correct tab bar wasn't consistent***
-    #     tabBar.setStyleSheet(styleSheet)
+        if toggled:
+            styleSheet = """
+                QTabBar::tab { height: 23px; }
+            """
+            
+        canvas = Application.activeWindow().qwindow().centralWidget()
+        canvas.setStyleSheet(styleSheet)
+
+        # This is ugly, but it's the least ugly way I can get the canvas to 
+        # update it's size (for now)
+        canvas.resize(canvas.sizeHint())
 
 
     def nuToolboxToggled(self, toggled):
