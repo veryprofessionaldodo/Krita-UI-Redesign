@@ -36,14 +36,16 @@ win.setStyleSheet ("""
     
     QToolButton:hover, QPushButton:hover {
         border: none;
-        background-color: #404040;
+        background-color: #303030;
+    }
+    
+    QToolButton[popupMode="1"] {
+        padding-right: 13px;
     }
     
     QToolButton::menu-button {
         border: none;
         border-radius: 4px;
-        subcontrol-origin: content;
-        margin-left: 20px;
     }
     
         /* QDOCKWIDGET */
