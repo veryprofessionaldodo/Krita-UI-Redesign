@@ -37,45 +37,12 @@ class Redesign(Extension):
         actions[2].toggled.connect(self.tabHeightToggled)
         actions[3].toggled.connect(self.increaseClarityToggled)
 
-        # Remove Toolbar borders (and enhance tabs)
-        
-        styleSheet = """
-                QToolBar {
-                    border: none;
-                }            
-
-                QTabBar::tab:!selected {
-                    color: gray;
-                }
-
-                QTabBar::tab:!selected:hover {
-                    color: silver;
-                }
-            """
-
         # TODO: Use settings from configparser
         
-        #window.qwindow().setStyleSheet(styleSheet)  
         self.setNuToolbox(window.qwindow(), True)
         self.setTabHeight(window.qwindow(), True)
         self.setToolbarsBorder(window.qwindow(), True)
         self.setIncreasedClarity(window.qwindow(), True)
-
-        canvas = window.qwindow().centralWidget()
-        canvas.setStyleSheet(styleSheet)
-
-        toolbox = window.qwindow().findChild(QWidget, 'ToolBox')
-        
-        # Hides the handle at the top of the toolbox. It can still be manipulated though.
-        # Maybe it's a title bar that can be disabled instead?
-        # handle = toolbox.findChild(QLabel)
-        # handle.setVisible(False) 
-        
-        # Lock the size of the toolbox. Not necessary, just my preference.
-        toolbox.setFixedWidth(58) 
-        toolbox.setFixedHeight(549)
-        
-        toolbox.setStyleSheet(styleSheet)
 
     def toolbarBorderToggled(self, toggled):
         self.setToolbarsBorder(Application.activeWindow().qwindow(), toggled)
@@ -119,6 +86,17 @@ class Redesign(Extension):
 
 
     def setNuToolbox(self, window, toggled): 
+        toolbox = window.findChild(QWidget, 'ToolBox')
+        
+        # Hides the handle at the top of the toolbox. It can still be manipulated though.
+        # Maybe it's a title bar that can be disabled instead?
+        # handle = toolbox.findChild(QLabel)
+        # handle.setVisible(False) 
+        
+        # Lock the size of the toolbox. Not necessary, just my preference.
+        toolbox.setFixedWidth(58) 
+        toolbox.setFixedHeight(549)
+        
         styleSheet = """""" # Clear by default
 
         if toggled:
