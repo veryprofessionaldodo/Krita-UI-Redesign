@@ -34,7 +34,7 @@ class subWindowFilter(QObject):
             ### on whether Krita is set to handle multiple documents as 'Subwindows'  or 'Tabs'
             
             # pos = self.mdiArea.pos() # Move to top of QMdiArea. Only suitable for 'Subwindows' mode.
-            pos = self.mdiArea.mapFromGlobal(view.mapToGlobal(view.pos())) # Move to top left corner of current view
+            pos = self.mdiArea.mapFromGlobal(view.mapToGlobal(QPoint(0,0))) # Move to top left corner of current view
             self.target.move(pos)
 
             
@@ -107,7 +107,7 @@ tlbx = qWin.findChild(QDockWidget, 'ToolBox')
 mdiArea = qWin.findChild(QMdiArea)
 
 def createWidget(name, parent=None):
-    wdgt = floatingToolbarWidget(mdiArea)
+    wdgt = floatingToolbarWidget(parent)
     wdgt.setObjectName(name)    
     
     return wdgt
@@ -120,7 +120,7 @@ def slotMdiFilterManager(subWin):
         filterObj.moveToolBox()
 
 # Create the new floating widget
-floater = createWidget('floatingToolbox')
+floater = createWidget('floatingToolbox', mdiArea)
 floater.setStyleSheet("""
             QWidget { 
                 background-color: rgba(128, 128, 128, .01);
