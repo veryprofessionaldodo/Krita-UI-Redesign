@@ -19,12 +19,6 @@ class Redesign(Extension):
         # This function could possibly be used to import a CSS file  
 
     def createActions(self, window):
-<<<<<<< HEAD
-        removeBorder(window)
-
-
-Krita.instance().addExtension(Redesign(Krita.instance()))
-=======
         actions = []
         actions.append(window.createAction("toolbarBorder", "Borderless toolbars", ""))
         actions.append(window.createAction("nuToolbox", "Transparent toolbox", ""))
@@ -227,4 +221,3 @@ Krita.instance().addExtension(Redesign(Krita.instance()))
         toolbox.setStyleSheet(styleSheet)
         
 Krita.instance().addExtension(Redesign(Krita.instance()))
->>>>>>> 73d29bfe6870aa4e24266d0b74de8b1313f388d9
