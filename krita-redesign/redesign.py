@@ -112,6 +112,7 @@ class Redesign(Extension):
             full_style_sheet += "\n" + variables.flat_spin_box_style + "\n"
             full_style_sheet += "\n" + variables.flat_toolbox_style + "\n"
             full_style_sheet += "\n" + variables.flat_status_bar_style + "\n"
+
         # Tabs 
         if self.usesFlatTheme:
             if self.usesThinDocumentTabs:
@@ -130,9 +131,10 @@ class Redesign(Extension):
         
         window.setStyleSheet(full_style_sheet)
 
-        print(full_style_sheet)
-
         # Toolbox
+        toolbox = window.findChild(QWidget, 'ToolBox')
+        toolbox_style = ""
+
         if self.usesTransparentToolbox: 
             toolbox = window.findChild(QWidget, 'ToolBox')
             toolbox_style = variables.nu_toolbox_style
@@ -146,6 +148,7 @@ class Redesign(Extension):
             toolbox.setFixedWidth(58) 
             toolbox.setFixedHeight(549)
 
-            toolbox.setStyleSheet(toolbox_style)
+        toolbox.setStyleSheet(toolbox_style)
+        
 
 Krita.instance().addExtension(Redesign(Krita.instance()))
