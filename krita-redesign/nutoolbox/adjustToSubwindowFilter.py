@@ -1,13 +1,13 @@
 from krita import Krita 
+from PyQt5.QtCore import QObject, QEvent, QPoint
 
 class AdjustToSubwindowFilter(QObject):
     """Event Filter object. Ensure that a target widget is moved
     to a desired position (corner of the view) when the subwindow area updates."""
     
-    def __init__(self, parent=None):
+    def __init__(self, mdiArea, parent=None):
         super(AdjustToSubwindowFilter, self).__init__(parent)
-        qWin = Krita.instance().activeWindow().qwindow()
-        self.mdiArea = qWin.centralWidget().findChild(QMdiArea)
+        self.mdiArea = mdiArea
         self.target = None
         
 

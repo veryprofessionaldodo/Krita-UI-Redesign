@@ -1,13 +1,14 @@
-from PyQt5.QtWidgets import QWidget, QToolButton, QSizePolicy. QDockWidget
+from PyQt5.QtWidgets import QWidget, QToolButton, QDockWidget, QVBoxLayout, QSizePolicy
 from PyQt5.QtCore import Qt, QSize
 
-class ToolboxPad(QWidget):
+class ToolBoxPad(QWidget):
 
-    '''An on-canvas toolbox widget. I'm dubbing widgets that "float" 
-    on top of the canvas "(lily) pads" for the time being :) '''
+    """ An on-canvas toolbox widget. I'm dubbing widgets that 'float' 
+    on top of the canvas '(lily) pads' for the time being :) """
 
     def __init__(self, parent=None):
-        super(ToolboxWidget, self).__init__(parent)
+        super(ToolBoxPad, self).__init__(parent)
+        self.setObjectName("toolBoxPad")
         self.setWindowFlags(
             Qt.WindowStaysOnTopHint | 
             Qt.FramelessWindowHint
@@ -24,25 +25,25 @@ class ToolboxPad(QWidget):
         self.btnHide.setIcon(Application.icon("light_visible"))
         self.btnHide.setIconSize(QSize(14,14))
         self.btnHide.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
-        self.btnHide.clicked.connect(self.toggleWidgetVisible)
+        self.btnHide.clicked.connect(self.togglePadVisible)
         self.layout().addWidget(self.btnHide)
 
 
     def closeEvent(self, e):
         """Since the plugins works by borrowing the actual docker 
         widget we need to ensure its returned upon closing the pad"""
-        self.returnDockerWidget()
+        self.returnDocker()
         return super().closeEvent(e)
         
 
-    def borrowDockerWidget(self, name):
-        """Borrow a docker widget from Krita's existing list of dockers"""
-        docker = Application.activeWindow().qwindow().findChild(QDockWidget, name)
+    def borrowDocker(self, docker):
+        """Borrow a docker widget from Krita's existing list of dockers and 
+        returns True. Returns False if invalid widget was passed. """
 
         # Does requested widget exist?
-        if docker and docker.widget():
+        if isinstance(docker, QDockWidget) and docker.widget():
             # Return any previous widget to its original docker
-            self.returnDockerWidget()
+            self.returnDocker()
                 
             self.widgetDocker = docker
             self.widget = docker.widget()
@@ -54,7 +55,7 @@ class ToolboxPad(QWidget):
         return False
     
 
-    def returnDockerWidget(self):
+    def returnDocker(self):
         """Return the borrowed docker to it's original QDockWidget"""
         # Ensure there's a widget to return
         if self.widget:

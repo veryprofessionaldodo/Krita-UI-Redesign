@@ -1,5 +1,5 @@
 from krita import *
-
+from .nutoolbox.nutoolbox import NuToolbox
 
 def removeBorder(window):
     window.qwindow().setStyleSheet("""
