@@ -18,7 +18,6 @@ class Redesign(Extension):
         super().__init__(parent)
 
     def setup(self):
-        print("Merda")
         if Application.readSetting("Redesign", "usesFlatTheme", "false") == "false":
             self.usesFlatTheme = False
 
@@ -33,17 +32,6 @@ class Redesign(Extension):
         
 
     def createActions(self, window):
-        print("Bosta")
-        print("\n\n")
-        print(self.usesBorderlessToolbar)
-        print("\n")
-        print(self.usesTransparentToolbox)
-        print("\n")
-        print(self.usesThinDocumentTabs)
-        print("\n")
-        print(self.usesFlatTheme)
-        print("\n")
-
         actions = []
 
         actions.append(window.createAction("toolbarBorder", "Borderless Toolbars", ""))
@@ -71,9 +59,6 @@ class Redesign(Extension):
         actions[1].toggled.connect(self.nuToolboxToggled)
         actions[2].toggled.connect(self.tabHeightToggled)
         actions[3].toggled.connect(self.flatThemeToggled)
-
-        if self.usesFlatTheme:
-            print("\n\nTeste\n\n")
         
         if self.usesBorderlessToolbar:
             self.setToolbarsBorder(window.qwindow(), True)
@@ -88,7 +73,6 @@ class Redesign(Extension):
             self.setFlatTheme(window.qwindow(), True)
 
     def toolbarBorderToggled(self, toggled):
-        # Save setting
         Application.writeSetting("Redesign", "usesBorderlessToolbar", str(toggled).lower())
         self.setToolbarsBorder(Application.activeWindow().qwindow(), toggled)
 
@@ -110,8 +94,8 @@ class Redesign(Extension):
         styleSheet = """"""
 
     def tabHeightToggled(self, toggled):
-        Application.instance().writeSetting("Redesign", "usesThinDocumentTabs", toggled)
-        self.setTabHeight(Application.activeWindow().qwindow(), str(toggled).lower())
+        Application.instance().writeSetting("Redesign", "usesThinDocumentTabs", str(toggled).lower())
+        self.setTabHeight(Application.activeWindow().qwindow(), toggled)
         
     def setTabHeight(self, window, toggled):
         styleSheet = """""" # Clear by default
