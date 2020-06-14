@@ -1,6 +1,5 @@
 from krita import *
 
-
 def removeBorder(window):
     window.qwindow().setStyleSheet("""
             QToolBar {
@@ -8,43 +7,89 @@ def removeBorder(window):
             }
         """)
 
-
 class Redesign(Extension):
 
+    usesFlatTheme = True
+    usesBorderlessToolbar = True
+    usesThinDocumentTabs = True
+    usesTransparentToolbox = True
+ 
     def __init__(self, parent):
         super().__init__(parent)
 
     def setup(self):
-        pass
-        # This function could possibly be used to import a CSS file  
+        print("Merda")
+        if Application.readSetting("Redesign", "usesFlatTheme", "false") == "false":
+            self.usesFlatTheme = False
+
+        if Application.readSetting("Redesign", "usesBorderlessToolbar", "false") == "false":
+            self.usesBorderlessToolbar = False
+
+        if Application.readSetting("Redesign", "usesThinDocumentTabs", "false") == "false":
+            self.usesThinDocumentTabs = False
+
+        if Application.readSetting("Redesign", "usesTransparentToolbox", "false") == "false":
+            self.usesTransparentToolbox = False
+        
 
     def createActions(self, window):
+        print("Bosta")
+        print("\n\n")
+        print(self.usesBorderlessToolbar)
+        print("\n")
+        print(self.usesTransparentToolbox)
+        print("\n")
+        print(self.usesThinDocumentTabs)
+        print("\n")
+        print(self.usesFlatTheme)
+        print("\n")
+
         actions = []
+
         actions.append(window.createAction("toolbarBorder", "Borderless Toolbars", ""))
+        actions[0].setCheckable(True)
+        actions[0].setChecked(self.usesBorderlessToolbar) 
+
         actions.append(window.createAction("nuToolbox", "Transparent Toolbox", ""))
+        actions[1].setCheckable(True)
+        actions[1].setChecked(self.usesTransparentToolbox)
+
         actions.append(window.createAction("tabHeight", "Thin Document Tabs", "window"))
-        actions.append(window.createAction("tabsClarity", "Enhance Tabs Clarity", "window"))
+        actions[2].setCheckable(True)
+        actions[2].setChecked(self.usesThinDocumentTabs)
+
+        actions.append(window.createAction("flatTheme", "Use flat theme", "window"))
+        actions[3].setCheckable(True)
+        actions[3].setChecked(self.usesFlatTheme)
 
         menu = window.qwindow().menuBar().addMenu("Redesign")
 
         for a in actions:
-            a.setCheckable(True)
-            a.setChecked(True) # Activate the tweaks by default
             menu.addAction(a)
 
         actions[0].toggled.connect(self.toolbarBorderToggled)
         actions[1].toggled.connect(self.nuToolboxToggled)
         actions[2].toggled.connect(self.tabHeightToggled)
-        actions[3].toggled.connect(self.increaseClarityToggled)
+        actions[3].toggled.connect(self.flatThemeToggled)
 
-        # TODO: Use settings from configparser
+        if self.usesFlatTheme:
+            print("\n\nTeste\n\n")
         
-        self.setNuToolbox(window.qwindow(), True)
-        self.setTabHeight(window.qwindow(), True)
-        self.setToolbarsBorder(window.qwindow(), True)
-        self.setIncreasedClarity(window.qwindow(), True)
+        if self.usesBorderlessToolbar:
+            self.setToolbarsBorder(window.qwindow(), True)
+        
+        if self.usesTransparentToolbox:
+            self.setNuToolbox(window.qwindow(), True)
+        
+        if self.usesThinDocumentTabs:
+            self.setTabHeight(window.qwindow(), True)
+        
+        if self.usesFlatTheme:
+            self.setFlatTheme(window.qwindow(), True)
 
     def toolbarBorderToggled(self, toggled):
+        # Save setting
+        Application.writeSetting("Redesign", "usesBorderlessToolbar", str(toggled).lower())
         self.setToolbarsBorder(Application.activeWindow().qwindow(), toggled)
 
     def setToolbarsBorder(self, window, toggled):
@@ -57,14 +102,16 @@ class Redesign(Extension):
 
         window.setStyleSheet(styleSheet)
 
-    def increaseClarityToggled(self, toggled):
-        self.setIncreasedClarity(Application.activeWindow().qwindow(), toggled)
+    def flatThemeToggled(self, toggled):
+        Application.writeSetting("Redesign", "usesFlatTheme", str(toggled).lower())
+        self.setFlatTheme(Application.activeWindow().qwindow(), toggled)
 
-    def setIncreasedClarity(self, window, toggled):
+    def setFlatTheme(self, window, toggled):
         styleSheet = """"""
 
     def tabHeightToggled(self, toggled):
-        self.setTabHeight(Application.activeWindow().qwindow(), toggled)
+        Application.instance().writeSetting("Redesign", "usesThinDocumentTabs", toggled)
+        self.setTabHeight(Application.activeWindow().qwindow(), str(toggled).lower())
         
     def setTabHeight(self, window, toggled):
         styleSheet = """""" # Clear by default
@@ -82,8 +129,8 @@ class Redesign(Extension):
         canvas.resize(canvas.sizeHint())
 
     def nuToolboxToggled(self, toggled):
+        Application.writeSetting("Redesign", "usesTransparentToolbox", str(toggled).lower())
         self.setNuToolbox( Application.activeWindow().qwindow(), toggled)
-
 
     def setNuToolbox(self, window, toggled): 
         toolbox = window.findChild(QWidget, 'ToolBox')
