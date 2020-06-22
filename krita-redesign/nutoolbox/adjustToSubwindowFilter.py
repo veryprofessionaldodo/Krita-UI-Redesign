@@ -33,7 +33,7 @@ class AdjustToSubwindowFilter(QObject):
             pos = self.mdiArea.mapFromGlobal(view.mapToGlobal(QPoint(0,0))) # Move to top left corner of current view. Hacky, but works!
             self.target.move(pos)
 
-            resizeTarget(self)
+            self.resizeTarget()
 
 
     def resizeTarget(self):

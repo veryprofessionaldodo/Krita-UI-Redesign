@@ -23,7 +23,7 @@ class ToolBoxPad(QWidget):
         # Visibility toggle
         self.btnHide = QToolButton()
         self.btnHide.setIcon(Application.icon("light_visible"))
-        self.btnHide.setIconSize(QSize(14,14))
+        self.btnHide.setIconSize(QSize(12,12))
         self.btnHide.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
         self.btnHide.clicked.connect(self.togglePadVisible)
         self.layout().addWidget(self.btnHide)

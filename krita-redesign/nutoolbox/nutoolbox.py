@@ -10,7 +10,7 @@ class NuToolbox():
         toolbox = qWin.findChild(QDockWidget, 'ToolBox')
         
         # Create actions
-        action = window.createAction("nuToolbox", "Modern Toolbox", "window")
+        action = window.createAction("nuToolbox", "Modern Toolbox", "tools")
         action.setCheckable(True)
         action.setChecked(True)
 
@@ -18,7 +18,7 @@ class NuToolbox():
         self.pad = ToolBoxPad(mdiArea)
         self.pad.borrowDocker(toolbox)
         self.pad.setStyleSheet(self.styleSheet())
-        
+
         # Create and install event filter
         self.adjustFilter = AdjustToSubwindowFilter(mdiArea)
         self.adjustFilter.setTargetWidget(self.pad)
