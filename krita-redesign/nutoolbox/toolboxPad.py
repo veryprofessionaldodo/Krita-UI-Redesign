@@ -34,7 +34,14 @@ class ToolBoxPad(QWidget):
         widget we need to ensure its returned upon closing the pad"""
         self.returnDocker()
         return super().closeEvent(e)
-        
+
+
+    def paintEvent(self, e):
+        """Needed to prevent some ugliness and resize the Pad if 
+        the user decides to change the icon size of the toolbox"""
+        self.adjustToView()
+        return super().paintEvent(e)
+
 
     def borrowDocker(self, docker):
         """Borrow a docker widget from Krita's existing list of dockers and 
