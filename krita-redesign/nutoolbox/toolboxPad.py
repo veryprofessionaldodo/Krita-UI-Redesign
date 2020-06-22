@@ -1,13 +1,13 @@
 from PyQt5.QtWidgets import QWidget, QToolButton, QDockWidget, QVBoxLayout, QSizePolicy
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QSize, QPoint
 
 class ToolBoxPad(QWidget):
 
     """ An on-canvas toolbox widget. I'm dubbing widgets that 'float' 
     on top of the canvas '(lily) pads' for the time being :) """
 
-    def __init__(self, parent=None):
-        super(ToolBoxPad, self).__init__(parent)
+    def __init__(self, mdiArea):
+        super(ToolBoxPad, self).__init__(mdiArea)
         self.setObjectName("toolBoxPad")
         self.setWindowFlags(
             Qt.WindowStaysOnTopHint | 
@@ -53,7 +53,7 @@ class ToolBoxPad(QWidget):
             return True
             
         return False
-    
+
 
     def returnDocker(self):
         """Return the borrowed docker to it's original QDockWidget"""
@@ -62,8 +62,43 @@ class ToolBoxPad(QWidget):
             self.widgetDocker.setWidget(self.widget)
             self.widget = None
             self.widgetDocker = None
+
+
+    def adjustToView(self):
+        """Adjust the position and size of the Pad to that of the active View."""
+        view = self.activeView()
+        if view:
+            # NOTE: Determining the correct corner position might be better done based 
+            # on whether Krita is set to handle multiple documents as 'AdjustToSubwindows'  or 'Tabs'
             
+            # pos = self.parentWidget().pos() # Move to top of QMdiArea. Only suitable for 'AdjustToSubwindows' mode.
+            pos = self.parentWidget().mapFromGlobal(view.mapToGlobal(QPoint(0,0))) # Move to top left corner of current view. Hacky, but works!
+            self.move(pos)
+
+            self.resizeToView()
+
+
+    def resizeToView(self):
+        """Resize the Pad to an appropriate size that fits within the subwindow."""
+        view = self.activeView()
+
+        if view and self:
+            if view.height() < self.sizeHint().height():
+                self.resize(self.sizeHint().width(), view.height())
+            else:
+                self.resize(self.sizeHint())
+
+
+    def activeView(self):
+        """Get the View widget of the active subwindow."""
+        subWin = self.parentWidget().activeSubWindow()
+        
+        if subWin:
+            for child in subWin.children(): 
+                if 'view' in child.objectName(): # Grab the View from the active tab/sub-window
+                    return child
+
 
     def togglePadVisible(self):
         self.widget.setVisible(not self.widget.isVisible())
-        self.resize(self.sizeHint())
+        self.resizeToView()  

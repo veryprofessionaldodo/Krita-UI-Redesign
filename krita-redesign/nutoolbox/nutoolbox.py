@@ -31,13 +31,13 @@ class NuToolbox():
         and immediately move the Toolbox to current View."""
         if subWin:
             subWin.installEventFilter(self.adjustFilter)
-            self.adjustFilter.adjustTarget()
+            self.pad.adjustToView()
 
 
     def styleSheet(self):
         return """
             QWidget { 
-                background-color: rgba(128, 128, 128, .01);
+                background-color: #01808080;
             }
             
             .QScrollArea { 
@@ -53,7 +53,7 @@ class NuToolbox():
             }
             
             QAbstractButton {
-                background-color: #77000000;
+                background-color: #70000000;
                 border: none;
                 border-radius: 4px;
             }
