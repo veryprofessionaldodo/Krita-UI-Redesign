@@ -1,163 +1,151 @@
 from krita import *
 from .nutoolbox.nutoolbox import NuToolbox
-
-def removeBorder(window):
-    window.qwindow().setStyleSheet("""
-            QToolBar {
-                border: none;
-            }
-        """)
-
+from . import variables
 
 class Redesign(Extension):
 
+    usesFlatTheme = True
+    usesBorderlessToolbar = True
+    usesThinDocumentTabs = True
+    usesTransparentToolbox = True
+ 
     def __init__(self, parent):
         super().__init__(parent)
 
     def setup(self):
-        pass
-        # This function could possibly be used to import a CSS file  
+        variables.setBackground(qApp.palette().color(QPalette.Window).name())
+        variables.setAlternate(qApp.palette().color(QPalette.AlternateBase).name())
+        variables.setTextColor("#b4b4b4")
+
+        variables.buildFlatTheme()
+        
+        if Application.readSetting("Redesign", "usesFlatTheme", "false") == "false":
+            self.usesFlatTheme = False
+
+        if Application.readSetting("Redesign", "usesBorderlessToolbar", "false") == "false":
+            self.usesBorderlessToolbar = False
+
+        if Application.readSetting("Redesign", "usesThinDocumentTabs", "false") == "false":
+            self.usesThinDocumentTabs = False
+
+        if Application.readSetting("Redesign", "usesTransparentToolbox", "false") == "false":
+            self.usesTransparentToolbox = False
+        
 
     def createActions(self, window):
         actions = []
+
         actions.append(window.createAction("toolbarBorder", "Borderless Toolbars", ""))
+        actions[0].setCheckable(True)
+        actions[0].setChecked(self.usesBorderlessToolbar) 
+
         actions.append(window.createAction("nuToolbox", "Transparent Toolbox", ""))
+        actions[1].setCheckable(True)
+        actions[1].setChecked(self.usesTransparentToolbox)
+
         actions.append(window.createAction("tabHeight", "Thin Document Tabs", "window"))
-        actions.append(window.createAction("tabsClarity", "Enhance Tabs Clarity", "window"))
+        actions[2].setCheckable(True)
+        actions[2].setChecked(self.usesThinDocumentTabs)
+
+        actions.append(window.createAction("flatTheme", "Use flat theme", "window"))
+        actions[3].setCheckable(True)
+        actions[3].setChecked(self.usesFlatTheme)
 
         menu = window.qwindow().menuBar().addMenu("Redesign")
 
         for a in actions:
-            a.setCheckable(True)
-            a.setChecked(True) # Activate the tweaks by default
             menu.addAction(a)
 
         actions[0].toggled.connect(self.toolbarBorderToggled)
         actions[1].toggled.connect(self.nuToolboxToggled)
         actions[2].toggled.connect(self.tabHeightToggled)
-        actions[3].toggled.connect(self.increaseClarityToggled)
-
-        # TODO: Use settings from configparser
+        actions[3].toggled.connect(self.flatThemeToggled)
         
-        self.setNuToolbox(window.qwindow(), True)
-        self.setTabHeight(window.qwindow(), True)
-        self.setToolbarsBorder(window.qwindow(), True)
-        self.setIncreasedClarity(window.qwindow(), True)
+        self.rebuildStyleSheet(window.qwindow())
 
     def toolbarBorderToggled(self, toggled):
-        self.setToolbarsBorder(Application.activeWindow().qwindow(), toggled)
+        Application.writeSetting("Redesign", "usesBorderlessToolbar", str(toggled).lower())
 
-    def setToolbarsBorder(self, window, toggled):
-        styleSheet = """""" # Cleared by default
+        self.usesBorderlessToolbar = toggled
 
-        if toggled:
-            styleSheet = """
-                QToolBar { border: none; }            
-            """
+        self.rebuildStyleSheet(Application.activeWindow().qwindow())
 
-        window.setStyleSheet(styleSheet)
 
-    def increaseClarityToggled(self, toggled):
-        self.setIncreasedClarity(Application.activeWindow().qwindow(), toggled)
+    def flatThemeToggled(self, toggled):
+        Application.writeSetting("Redesign", "usesFlatTheme", str(toggled).lower())
 
-    def setIncreasedClarity(self, window, toggled):
-        styleSheet = """"""
+        self.usesFlatTheme = toggled
 
+        self.rebuildStyleSheet(Application.activeWindow().qwindow())
+
+    
     def tabHeightToggled(self, toggled):
-        self.setTabHeight(Application.activeWindow().qwindow(), toggled)
+        Application.instance().writeSetting("Redesign", "usesThinDocumentTabs", str(toggled).lower())
+
+        self.usesThinDocumentTabs = toggled
+
+        self.rebuildStyleSheet(Application.activeWindow().qwindow())
         
-    def setTabHeight(self, window, toggled):
-        styleSheet = """""" # Clear by default
-
-        if toggled:
-            styleSheet = """
-                QTabBar::tab { height: 23px; }
-            """
-            
-        canvas = window.centralWidget()
-        canvas.setStyleSheet(styleSheet)
-
-        # This is ugly, but it's the least ugly way I can get the canvas to 
-        # update it's size (for now)
-        canvas.resize(canvas.sizeHint())
 
     def nuToolboxToggled(self, toggled):
-        self.setNuToolbox( Application.activeWindow().qwindow(), toggled)
+        Application.writeSetting("Redesign", "usesTransparentToolbox", str(toggled).lower())
+        
+        self.usesTransparentToolbox = toggled
 
+        self.rebuildStyleSheet(Application.activeWindow().qwindow())
 
-    def setNuToolbox(self, window, toggled): 
+    def rebuildStyleSheet(self, window):
+        full_style_sheet = ""
+
+        # Full Window Changes 
+        
+        # Dockers
+        if self.usesFlatTheme:
+            full_style_sheet += f"\n {variables.flat_dock_style} \n"
+            full_style_sheet += f"\n {variables.flat_tools_style} \n"
+            full_style_sheet += f"\n {variables.flat_main_window_style} \n"
+            full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
+            full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
+            full_style_sheet += f"\n {variables.flat_spin_box_style} \n"
+            full_style_sheet += f"\n {variables.flat_toolbox_style} \n"
+            full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
+
+        # Tabs 
+        if self.usesFlatTheme:
+            if self.usesThinDocumentTabs:
+                full_style_sheet += f"\n {variables.flat_tab_small_style} \n"
+            else: 
+                full_style_sheet += f"\n {variables.flat_tab_big_style} \n"
+        else: 
+            if self.usesThinDocumentTabs:
+                full_style_sheet += f"\n {variables.small_tab_style} \n"
+        
+        # Toolbar
+        if self.usesFlatTheme:
+            full_style_sheet += f"\n {variables.flat_toolbar_style} \n"
+        elif self.usesBorderlessToolbar:
+            full_style_sheet += f"\n {variables.no_borders_style} \n"
+        
+        window.setStyleSheet(full_style_sheet)
+
+        # Toolbox
         toolbox = window.findChild(QWidget, 'ToolBox')
-        
-        # Hides the handle at the top of the toolbox. It can still be manipulated though.
-        # Maybe it's a title bar that can be disabled instead?
-        # handle = toolbox.findChild(QLabel)
-        # handle.setVisible(False) 
-        
-        # Lock the size of the toolbox. Not necessary, just my preference.
-        toolbox.setFixedWidth(58) 
-        toolbox.setFixedHeight(549)
-        
-        styleSheet = """""" # Clear by default
+        toolbox_style = ""
 
-        if toggled:
-            styleSheet = """
+        if self.usesTransparentToolbox: 
+            toolbox = window.findChild(QWidget, 'ToolBox')
+            toolbox_style = variables.nu_toolbox_style
 
-            KoToolBoxDocker { 
-                background-color: rgba(128, 128, 128, .01);
-                margin: 2px; 
-            }
-            
-            .KoToolBoxScrollArea { 
-                background-color: rgba(0,0,0,0);
-            }
-            
-            KoToolBoxScrollArea * { 
-                background-color: rgba(0,0,0,0);
-            }
-            
-            KoToolBoxDocker QLabel {
-                border: none;
-                border-radius: 3px; 
-                background-color: #66000000;
-            }
-            
-            KoToolBoxScrollArea QToolTip {
-                background-color: #ffffff;                           
-            }
-            
-            KoToolBoxButton {
-                background-color: #66000000;
-                border: none;
-                border-radius: 3px;
-                margin-right: 1px;
-                margin-top: 1px;
-            }
-            
-            KoToolBoxButton:checked {
-                background-color: #aa306fa8;
-            }
-            
-            KoToolBoxButton:hover {
-                background-color: inherit;
-            }
-            
-            KoToolBoxButton:pressed {
-                background-color: #53728e;
-            }
-            
-        """
+            # Hides the handle at the top of the toolbox. It can still be manipulated though.
+            # Maybe it's a title bar that can be disabled instead?
+            # handle = toolbox.findChild(QLabel)
+            # handle.setVisible(False) 
 
-        toolbox = window.findChild(QWidget, 'ToolBox')
+            # Lock the size of the toolbox. Not necessary, just my preference.
+            toolbox.setFixedWidth(58) 
+            toolbox.setFixedHeight(549)
 
-         # Hides the handle at the top of the toolbox. It can still be manipulated though.
-        # Maybe it's a title bar that can be disabled instead?
-        # handle = toolbox.findChild(QLabel)
-        # handle.setVisible(False) 
+        toolbox.setStyleSheet(toolbox_style)
         
-        # Lock the size of the toolbox. Not necessary, just my preference.
-        toolbox.setFixedWidth(58) 
-        toolbox.setFixedHeight(549)
 
-        toolbox.setStyleSheet(styleSheet)
-        
 Krita.instance().addExtension(Redesign(Krita.instance()))
