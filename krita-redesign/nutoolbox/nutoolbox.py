@@ -1,4 +1,6 @@
-from krita import *
+from PyQt5.QtWidgets import QMdiArea, QDockWidget
+from PyQt5.QtGui import QKeySequence
+from PyQt5.QtCore import Qt
 from .adjustToSubwindowFilter import AdjustToSubwindowFilter
 from .toolBoxPad import ToolBoxPad
 
@@ -8,11 +10,6 @@ class NuToolbox():
         qWin = window.qwindow()
         mdiArea = qWin.findChild(QMdiArea)
         toolbox = qWin.findChild(QDockWidget, 'ToolBox')
-        
-        # Create actions
-        action = window.createAction("nuToolbox", "Modern Toolbox", "tools")
-        action.setCheckable(True)
-        action.setChecked(True)
 
         # Create "pad"
         self.pad = ToolBoxPad(mdiArea)
@@ -24,6 +21,16 @@ class NuToolbox():
         self.adjustFilter.setTargetWidget(self.pad)
         mdiArea.subWindowActivated.connect(self.ensureFilterIsInstalled)
         qWin.installEventFilter(self.adjustFilter)
+
+        # Create actions
+        action = window.createAction("nuToolbox", "Modern Toolbox", "tools/scripts")
+        action.setCheckable(True)
+        action.setChecked(True)
+
+        self.toggleAction = window.createAction("showToolbox", "Show Toolbox", "settings")
+        self.toggleAction.toggled.connect(self.pad.toggleWidgetVisible)
+        action.setCheckable(True)
+        action.setChecked(True)
 
 
     def ensureFilterIsInstalled(self, subWin):
