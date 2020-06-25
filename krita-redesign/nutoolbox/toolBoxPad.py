@@ -106,6 +106,10 @@ class ToolBoxPad(QWidget):
                     return child
 
 
-    def togglePadVisible(self):
-        self.widget.setVisible(not self.widget.isVisible())
-        self.resizeToView()  
+    def toggleWidgetVisible(self, value=None):
+
+        if not value:
+            value = not self.widget.isVisible()
+            
+        self.widget.setVisible(value)
+        self.resizeToView()   
