@@ -1,4 +1,6 @@
 from krita import *
+from .nutoolbox.nutoolbox import NuToolbox
+from .nutooloptions.nutooloptions import NuToolOptions
 from . import variables
 
 class Redesign(Extension):
