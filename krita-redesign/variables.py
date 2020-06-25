@@ -119,10 +119,29 @@ def buildFlatTheme():
         }} 
 
         KisMainWindow::separator {{
-            height: 0px;
-        }}"""
+            background: {alternate};
+        }}
+        
+        QHeaderView {{
+            background: {alternate};
+        }}
+        
+        QLineEdit {{
+            background: {alternate};
+        }}
+        
+        QStatusBar > QPushButton:hover {{
+            background: #2e2e2e;
+        }}
+        """
     flat_tools_style = f"""QToolButton, QPushButton {{
             background-color: {background};
+            border-radius: 4px;
+            border: 2px solid {alternate};
+        }}
+
+        QToolButton:checked, QPushButton:checked {{
+            background-color: {alternate};
             border-radius: 4px;
         }}
 
@@ -139,7 +158,14 @@ def buildFlatTheme():
             border: none;
             border-radius: 4px;
         }}"""
-    flat_dock_style = f""" QDockWidget {{
+
+    flat_dock_style = f""" 
+        QAbstractScrollArea {{
+            background: {background};
+            border: none;
+        }}
+    
+        QDockWidget {{
             titlebar-close-icon: url(:/16_dark_tab-close.svg);
             titlebar-normal-icon: url(:/light_duplicatelayer.svg);
             border-bottom-right-radius: 4px;
@@ -167,20 +193,33 @@ def buildFlatTheme():
         QDockWidget::title {{
             background-color: {background};
             border: none;
+            margin-top: 2px;
         }}"""
     flat_toolbar_style = f"""QToolBar {{
             background-color: {background};
             border: none;
+        }}
+        
+        QToolBar > * {{
+            border: none;
+        }}
+        
+        QToolBar > * > QToolButton {{
+            border: none;
         }} """
     flat_menu_bar_style = f"QMenuBar {{background-color: {background};}}"
     flat_combo_box_style = f"""QComboBox {{ 
-            background-color: {background};
-            border: none;
+            background: {background};
+            border: 2px solid {alternate};
             border-radius: 4px;
             padding-left: 5px;
             padding-right: 5px;
             padding-bottom: 2px;
             padding-top: 2px;
+        }}
+
+        QComboBox:hover {{
+            background: {alternate};
         }}
         
         QComboBox::drop-down {{
@@ -194,6 +233,7 @@ def buildFlatTheme():
         }}"""
     flat_spin_box_style = f"""QSpinBox {{
             border: none;
+            background-color: {alternate};
             border-radius: 4px;
         }}    
 

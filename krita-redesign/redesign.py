@@ -122,12 +122,9 @@ class Redesign(Extension):
         # For widget tabs
         if self.usesFlatTheme:
             if self.usesThinDocumentTabs:
-                full_style_sheet += f"\n {variables.flat_tab_small_style} \n"
-            else: 
-                full_style_sheet += f"\n {variables.flat_tab_big_style} \n"
+                full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
         else: 
-            if self.usesThinDocumentTabs:
-                full_style_sheet += f"\n {variables.small_tab_style} \n"
+            full_style_sheet += f"\n {variables.small_tab_style} \n"
 
         window.setStyleSheet(full_style_sheet)
 
