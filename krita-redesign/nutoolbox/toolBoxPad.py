@@ -25,7 +25,7 @@ class ToolBoxPad(QWidget):
         self.btnHide.setIcon(Application.icon("light_visible"))
         self.btnHide.setIconSize(QSize(12,12))
         self.btnHide.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
-        self.btnHide.clicked.connect(self.togglePadVisible)
+        self.btnHide.clicked.connect(self.toggleWidgetVisible)
         self.layout().addWidget(self.btnHide)
 
 
@@ -112,4 +112,4 @@ class ToolBoxPad(QWidget):
             value = not self.widget.isVisible()
             
         self.widget.setVisible(value)
-        self.resizeToView()   
+        self.resizeToView()    
