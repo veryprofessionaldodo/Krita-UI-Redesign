@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ActionCollection version="2" name="Scripts">
+    <Actions category="Settings">
+        <text>nuToolOptions</text>
+
+        <Action name="showToolOptions">
+        <icon></icon>
+        <text>Show/Hide the Tool Options</text>
+        <whatsThis>Show/Hide the Tool Options</whatsThis>
+        <toolTip>Show/Hide the Tool Options</toolTip>
+        <iconText>nT</iconText>
+        <activationFlags>10000</activationFlags>
+        <activationConditions>0</activationConditions>
+        <shortcut>n</shortcut>
+        <isCheckable>true</isCheckable>
+        <statusTip></statusTip>
+        </Action>
+    </Actions>
+</ActionCollection>
