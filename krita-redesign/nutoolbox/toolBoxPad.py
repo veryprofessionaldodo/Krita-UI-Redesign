@@ -9,6 +9,7 @@ class ToolBoxPad(QWidget):
     def __init__(self, mdiArea):
         super(ToolBoxPad, self).__init__(mdiArea)
         self.setObjectName("toolBoxPad")
+        self.setAttribute(Qt.WA_DeleteOnClose)
         self.setWindowFlags(
             Qt.WindowStaysOnTopHint | 
             Qt.FramelessWindowHint

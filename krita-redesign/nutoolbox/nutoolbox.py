@@ -1,6 +1,4 @@
 from PyQt5.QtWidgets import QMdiArea, QDockWidget
-from PyQt5.QtGui import QKeySequence
-from PyQt5.QtCore import Qt
 from .adjustToSubwindowFilter import AdjustToSubwindowFilter
 from .toolBoxPad import ToolBoxPad
 
@@ -22,13 +20,9 @@ class NuToolbox():
         mdiArea.subWindowActivated.connect(self.ensureFilterIsInstalled)
         qWin.installEventFilter(self.adjustFilter)
 
-        # Create actions
-        action = window.createAction("nuToolbox", "Modern Toolbox", "tools/scripts")
-        action.setCheckable(True)
-        action.setChecked(True)
-
-        self.toggleAction = window.createAction("showToolbox", "Show Toolbox", "settings")
-        self.toggleAction.toggled.connect(self.pad.toggleWidgetVisible)
+        # Create visibility toggle action
+        action = window.createAction("showToolbox", "Show Toolbox", "settings")
+        action.toggled.connect(self.pad.toggleWidgetVisible)
         action.setCheckable(True)
         action.setChecked(True)
 
@@ -77,3 +71,6 @@ class NuToolbox():
                 background-color: #53728e;
             }
         """
+
+    def close(self):
+        return self.pad.close()

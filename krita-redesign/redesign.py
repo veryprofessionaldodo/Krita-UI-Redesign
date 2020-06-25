@@ -8,7 +8,10 @@ class Redesign(Extension):
     usesFlatTheme = True
     usesBorderlessToolbar = True
     usesThinDocumentTabs = True
-    usesTransparentToolbox = True
+    usesNuToolbox = True
+    usesNuToolOptions = True
+    nuTb = None
+    nuTO = None
  
     def __init__(self, parent):
         super().__init__(parent)
@@ -29,9 +32,12 @@ class Redesign(Extension):
         if Application.readSetting("Redesign", "usesThinDocumentTabs", "false") == "false":
             self.usesThinDocumentTabs = False
 
-        if Application.readSetting("Redesign", "usesTransparentToolbox", "false") == "false":
-            self.usesTransparentToolbox = False
+        if Application.readSetting("Redesign", "usesNuToolbox", "false") == "false":
+            self.usesNuToolbox = False
         
+        if Application.readSetting("Redesign", "usesNuToolOptions", "false") == "false":
+            self.usesNuToolOptions = False
+
 
     def createActions(self, window):
         actions = []
@@ -40,17 +46,21 @@ class Redesign(Extension):
         actions[0].setCheckable(True)
         actions[0].setChecked(self.usesBorderlessToolbar) 
 
-        actions.append(window.createAction("nuToolbox", "Transparent Toolbox", ""))
+        actions.append(window.createAction("tabHeight", "Thin Document Tabs", ""))
         actions[1].setCheckable(True)
-        actions[1].setChecked(self.usesTransparentToolbox)
+        actions[1].setChecked(self.usesThinDocumentTabs)
 
-        actions.append(window.createAction("tabHeight", "Thin Document Tabs", "window"))
+        actions.append(window.createAction("flatTheme", "Use flat theme", ""))
         actions[2].setCheckable(True)
-        actions[2].setChecked(self.usesThinDocumentTabs)
+        actions[2].setChecked(self.usesFlatTheme)
 
-        actions.append(window.createAction("flatTheme", "Use flat theme", "window"))
+        actions.append(window.createAction("nuToolbox", "NuToolbox", ""))
         actions[3].setCheckable(True)
-        actions[3].setChecked(self.usesFlatTheme)
+        actions[3].setChecked(self.usesNuToolbox)
+
+        actions.append(window.createAction("nuToolOptions", "NuToolOptions", ""))
+        actions[4].setCheckable(True)
+        actions[4].setChecked(self.usesNuToolOptions)
 
         menu = window.qwindow().menuBar().addMenu("Redesign")
 
@@ -58,11 +68,19 @@ class Redesign(Extension):
             menu.addAction(a)
 
         actions[0].toggled.connect(self.toolbarBorderToggled)
-        actions[1].toggled.connect(self.nuToolboxToggled)
-        actions[2].toggled.connect(self.tabHeightToggled)
-        actions[3].toggled.connect(self.flatThemeToggled)
+        actions[1].toggled.connect(self.tabHeightToggled)
+        actions[2].toggled.connect(self.flatThemeToggled)
+        actions[3].toggled.connect(self.nuToolboxToggled)
+        actions[4].toggled.connect(self.nuToolOptionsToggled)
         
         self.rebuildStyleSheet(window.qwindow())
+
+        if self.usesNuToolbox: 
+            self.nuTb = NuToolbox(window)
+            
+        if self.usesNuToolOptions: 
+            self.nuTO = NuToolOptions(window)
+
 
     def toolbarBorderToggled(self, toggled):
         Application.writeSetting("Redesign", "usesBorderlessToolbar", str(toggled).lower())
@@ -86,14 +104,33 @@ class Redesign(Extension):
         self.usesThinDocumentTabs = toggled
 
         self.rebuildStyleSheet(Application.activeWindow().qwindow())
-        
+
 
     def nuToolboxToggled(self, toggled):
-        Application.writeSetting("Redesign", "usesTransparentToolbox", str(toggled).lower())
-        
-        self.usesTransparentToolbox = toggled
+        Application.writeSetting("Redesign", "usesNuToolbox", str(toggled).lower())
 
-        self.rebuildStyleSheet(Application.activeWindow().qwindow())
+        self.usesNuToolbox = toggled
+
+        if toggled and not self.nuTb:
+            self.nuTb = NuToolbox(Application.activeWindow())
+            self.nuTb.pad.show() # This shouldn't be needed, but it is...
+        elif not toggled and self.nuTb:
+            self.nuTb.close()
+            self.nuTb = None
+
+
+    def nuToolOptionsToggled(self, toggled):
+        Application.writeSetting("Redesign", "usesNuToolOptions", str(toggled).lower())
+
+        self.usesNuToolOptions = toggled
+
+        if toggled and not self.nuTO:
+            self.nuTO = NuToolOptions(Application.activeWindow())
+            self.nuTO.pad.show()
+        elif not toggled and self.nuTO:
+            self.nuTO.close()
+            self.nuTO = None
+
 
     def rebuildStyleSheet(self, window):
         full_style_sheet = ""
@@ -128,25 +165,6 @@ class Redesign(Extension):
             full_style_sheet += f"\n {variables.no_borders_style} \n"
         
         window.setStyleSheet(full_style_sheet)
-
-        # Toolbox
-        toolbox = window.findChild(QWidget, 'ToolBox')
-        toolbox_style = ""
-
-        if self.usesTransparentToolbox: 
-            toolbox = window.findChild(QWidget, 'ToolBox')
-            toolbox_style = variables.nu_toolbox_style
-
-            # Hides the handle at the top of the toolbox. It can still be manipulated though.
-            # Maybe it's a title bar that can be disabled instead?
-            # handle = toolbox.findChild(QLabel)
-            # handle.setVisible(False) 
-
-            # Lock the size of the toolbox. Not necessary, just my preference.
-            toolbox.setFixedWidth(58) 
-            toolbox.setFixedHeight(549)
-
-        toolbox.setStyleSheet(toolbox_style)
         
 
 Krita.instance().addExtension(Redesign(Krita.instance()))

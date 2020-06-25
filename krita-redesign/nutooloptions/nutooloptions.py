@@ -20,13 +20,9 @@ class NuToolOptions():
         mdiArea.subWindowActivated.connect(self.ensureFilterIsInstalled)
         qWin.installEventFilter(self.adjustFilter)
 
-        # Create actions
-        action = window.createAction("nuToolOptions", "Modern Tool Options Panel", "tools/scripts")
-        action.setCheckable(True)
-        action.setChecked(True)
-
-        self.toggleAction = window.createAction("showToolOptions", "Show Tool Options", "settings")
-        self.toggleAction.toggled.connect(self.pad.toggleWidgetVisible)
+        # Create visibility toggle action 
+        action = window.createAction("showToolOptions", "Show Tool Options", "settings")
+        action.toggled.connect(self.pad.toggleWidgetVisible)
         action.setCheckable(True)
         action.setChecked(True)
 
@@ -92,3 +88,6 @@ class NuToolOptions():
                 border: none;
             }
         """
+    
+    def close(self): 
+        return self.pad.close()

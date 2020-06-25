@@ -23,7 +23,7 @@ class ToolOptionsPad(QWidget):
     def __init__(self, mdiArea):
         super(ToolOptionsPad, self).__init__(mdiArea)
         self.setObjectName("toolOptionsPad")
-        # self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.setAttribute(Qt.WA_DeleteOnClose)
         self.setWindowFlags(
             Qt.WindowStaysOnTopHint | 
             Qt.FramelessWindowHint
@@ -62,7 +62,7 @@ class ToolOptionsPad(QWidget):
             }
             """)
 
-        self.layout().addWidget(self.btnHide)#, 0, Qt.AlignRight)
+        self.layout().addWidget(self.btnHide)
 
 
     def closeEvent(self, e):
