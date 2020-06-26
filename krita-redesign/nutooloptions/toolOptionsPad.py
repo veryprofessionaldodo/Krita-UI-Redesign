@@ -1,19 +1,12 @@
-from PyQt5.QtWidgets import QWidget, QLayout, QToolButton, QDockWidget, QVBoxLayout, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QToolButton, QDockWidget, QVBoxLayout, QSizePolicy
 from PyQt5.QtCore import Qt, QSize, QPoint
+from .scrollAreaContainer import ScrollAreaContainer
 
 from PyQt5.QtWidgets import QMessageBox
 def boop(text): # Print a message to a dialog box
     msg = QMessageBox()
     msg.setText(str(text))
     msg.exec_()
-
-class ToolOptionsContainer(QWidget):
-
-    def __init__(self, parent=None):
-        super(ToolOptionsContainer, self).__init__(parent)
-        self.setLayout(QVBoxLayout())
-        self.layout().setContentsMargins(0,0,0,0)
-
 
 class ToolOptionsPad(QWidget):
 
