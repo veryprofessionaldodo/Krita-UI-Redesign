@@ -108,7 +108,6 @@ class Redesign(Extension):
             full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
             full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
             full_style_sheet += f"\n {variables.flat_spin_box_style} \n"
-            full_style_sheet += f"\n {variables.flat_toolbox_style} \n"
             full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
             full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
             full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
@@ -121,11 +120,8 @@ class Redesign(Extension):
         
         # For widget tabs
         if self.usesFlatTheme:
-            if self.usesThinDocumentTabs:
-                full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
-        else: 
-            full_style_sheet += f"\n {variables.small_tab_style} \n"
-
+            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
+        
         window.setStyleSheet(full_style_sheet)
 
         print("\n\n")
@@ -135,19 +131,17 @@ class Redesign(Extension):
         # Toolbox
         toolbox = window.findChild(QWidget, 'ToolBox')
         toolbox_style = ""
-
+        
         if self.usesTransparentToolbox: 
-            toolbox = window.findChild(QWidget, 'ToolBox')
-            toolbox_style = variables.nu_toolbox_style
+            toolbox_style = f"\n {variables.nu_toolbox_style} \n"
 
             # Hides the handle at the top of the toolbox. It can still be manipulated though.
             # Maybe it's a title bar that can be disabled instead?
             # handle = toolbox.findChild(QLabel)
             # handle.setVisible(False) 
 
-            # Lock the size of the toolbox. Not necessary, just my preference.
-            toolbox.setFixedWidth(58) 
-            toolbox.setFixedHeight(549)
+        if self.usesFlatTheme:
+            toolbox_style += f"\n {variables.flat_toolbox_style} \n" 
 
         toolbox.setStyleSheet(toolbox_style)
 

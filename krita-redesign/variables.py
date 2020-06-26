@@ -2,6 +2,8 @@ background = "black"
 alternate = "black"
 tab_text_color = "#b4b4b4"
 
+small_tab_size = 7
+
 no_borders_style = " QToolBar { border: none; } "
 nu_toolbox_style = """
 
@@ -47,7 +49,7 @@ nu_toolbox_style = """
             KoToolBoxButton:pressed {
                 background-color: #53728e;
             }"""
-small_tab_style = "QTabBar::tab { height: 23px; }"
+small_tab_style = f"QTabBar::tab {{ height: {small_tab_size}px; }}"
 
 flat_tab_base_style = ""
 flat_tab_big_style = ""
@@ -80,7 +82,6 @@ def buildFlatTheme():
     
     flat_tab_base_style = f""" 
         QTabBar {{
-            background-color: {background};
             border: none;
             qproperty-drawBase: 0;
             qproperty-expanding: 1;
@@ -88,6 +89,11 @@ def buildFlatTheme():
     
        QTabBar::tab:!selected {{
            background-color: {alternate};
+           color: {tab_text_color};
+       }}
+
+        QTabBar::tab:selected {{
+           background-color: {background};
            color: {tab_text_color};
        }}
 
@@ -100,24 +106,19 @@ def buildFlatTheme():
        }}
        """ 
     flat_tab_big_style = f"""QTabBar::tab {{
-            background-color: {background};
             border-top-right-radius: 4px;
             border-top-left-radius: 4px;
             padding: 8px;
         }}"""
     flat_tab_small_style = f""" 
         QTabBar::tab {{
-            background-color: {background};
             border-top-right-radius: 4px;
             border-top-left-radius: 4px;
-            height: 23px;
+            height: {small_tab_size}px;
             padding: 8px;
         }}"""
 
-    flat_main_window_style = f"""KisMainWindow {{
-            background-color: {background};
-        }} 
-
+    flat_main_window_style = f"""
         KisMainWindow::separator {{
             background: {alternate};
         }}
@@ -128,6 +129,10 @@ def buildFlatTheme():
         
         QLineEdit {{
             background: {alternate};
+        }}
+
+        QStatusBar > QPushButton {{
+            border: none;
         }}
         
         QStatusBar > QPushButton:hover {{
@@ -204,7 +209,7 @@ def buildFlatTheme():
             border: none;
         }}
         
-        QToolBar > * > QToolButton {{
+        QToolBar > * > QToolButton, QPushButton {{
             border: none;
         }} """
     flat_menu_bar_style = f"QMenuBar {{background-color: {background};}}"
@@ -260,7 +265,7 @@ def buildFlatTheme():
             image: url(:16_light_draw-arrow-down.svg);
             width: 9px;
         }}"""
-    flat_toolbox_style = f"QToolBox {{background-color: {background};}}"   
+    flat_toolbox_style = "* > QToolButton {border: none;}"
     flat_status_bar_style = f"QStatusBar {{ background-color: {background}; }}"
     flat_tree_view_style = f"""QTreeView {{
         background-color: {background}; 
