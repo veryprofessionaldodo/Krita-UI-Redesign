@@ -2,15 +2,10 @@ from PyQt5.QtWidgets import QWidget, QToolButton, QDockWidget, QVBoxLayout, QSiz
 from PyQt5.QtCore import Qt, QSize, QPoint
 from .scrollAreaContainer import ScrollAreaContainer
 
-from PyQt5.QtWidgets import QMessageBox
-def boop(text): # Print a message to a dialog box
-    msg = QMessageBox()
-    msg.setText(str(text))
-    msg.exec_()
-
 class ToolOptionsPad(QWidget):
 
-    """ An on-canvas toolbox widget. I'm dubbing widgets that 'float' 
+    """
+    An on-canvas toolbox widget. I'm dubbing widgets that 'float' 
     on top of the canvas '(lily) pads' for the time being :) """
 
     def __init__(self, mdiArea):
@@ -27,7 +22,7 @@ class ToolOptionsPad(QWidget):
         # Members to hold a borrowed widget and it's original parent docker for returning
         self.widget = None
         self.widgetDocker = None
-        self.container = ToolOptionsContainer()
+        self.container = None
         
         # Visibility toggle
         self.btnHide = QToolButton()
@@ -59,22 +54,25 @@ class ToolOptionsPad(QWidget):
 
 
     def closeEvent(self, e):
-        """Since the plugins works by borrowing the actual docker 
+        """
+        Since the plugins works by borrowing the actual docker 
         widget we need to ensure its returned upon closing the pad"""
         self.returnDocker()
         return super().closeEvent(e)
 
 
     def paintEvent(self, e):
-        """Needed to resize the Pad if the user decides to 
+        """
+        Needed to resize the Pad if the user decides to 
         change the icon size of the toolbox"""
         self.adjustToView()
         return super().paintEvent(e)
 
 
     def borrowDocker(self, docker):
-        """Borrow a docker widget from Krita's existing list of dockers and 
-        returns True. Returns False if invalid widget was passed. """
+        """
+        Borrow a docker widget from Krita's existing list of dockers and 
+        returns True. Returns False if invalid widget was passed."""
 
         # Does requested widget exist?
         if isinstance(docker, QDockWidget) and docker.widget():
@@ -84,13 +82,9 @@ class ToolOptionsPad(QWidget):
             self.widgetDocker = docker
             self.widget = docker.widget()
 
-            # Because I'm forced to use "setFixedSize" to resize the tool options
-            # it needs to be put in a container, otherwise it's going to break if/when
-            # returned to its original docker. Manipulate the container; not the widget.
-            self.container = ToolOptionsContainer()
-            self.container.layout().addWidget(self.widget)
+            self.container = ScrollAreaContainer(self.widget)
 
-            self.layout().addWidget(self.container, 0, Qt.AlignRight) 
+            self.layout().addWidget(self.container) 
             self.adjustToView()        
             
             return True
@@ -99,7 +93,8 @@ class ToolOptionsPad(QWidget):
 
 
     def returnDocker(self):
-        """Return the borrowed docker to it's original QDockWidget"""
+        """
+        Return the borrowed docker to it's original QDockWidget"""
         # Ensure there's a widget to return
         if self.widget:
             self.widgetDocker.setWidget(self.widget)
@@ -108,7 +103,8 @@ class ToolOptionsPad(QWidget):
 
 
     def adjustToView(self):
-        """Adjust the position and size of the Pad to that of the active View."""
+        """
+        Adjust the position and size of the Pad to that of the active View."""
         view = self.activeView()
         if view:
             
@@ -118,14 +114,22 @@ class ToolOptionsPad(QWidget):
             pos = self.parentWidget().mapFromGlobal(view.mapToGlobal(QPoint(view.width() - self.width(), 0))) # Move to top left corner of current view. Hacky, but works!
             self.move(pos)
     
+    
     def resizeToView(self): # The Tool Options widget is a nightmare to resize :)
-        """Resize the Pad to an appropriate size that fits within the subwindow."""
+        """
+        Resize the Pad to an appropriate size that fits within the current subwindow."""
         view = self.activeView()
+        # if view:
+        #     if view.height() < self.sizeHint().height():
+        #         self.resize(self.sizeHint().width(), view.height())
+        #     else:
+        #         self.resize(self.sizeHint())
+
 
         if view and self.widget.isVisible():
             # We start with the tool options sizeHint as a goal size and then
             # shrink it down if necessary to fit inside the view.
-            containerSize = self.widget.widget().sizeHint()
+            containerSize = self.container.sizeHint()
 
             # I don't like all these magic numbers (And repeteition) but I honestly don't know what they
             # correspond to either. Margins, I suppose, but then why is one of the numbers 14
@@ -150,17 +154,13 @@ class ToolOptionsPad(QWidget):
             
             self.setFixedSize(padSize)
 
-        elif not self.widget.isVisible():
-            # Resize the widget to the size of the button + some extra height for the hidden widget I guess?
-
-            # I just don't know what these numbers are, or why I can't use the 
-            # button's own sizeHint. The result also varies if something else
-            # about the layout varies.
-            self.setFixedSize(23, 54) 
+        elif not self.container.isVisible():
+            self.setFixedSize(self.sizeHint()) 
 
 
     def activeView(self):
-        """Get the View widget of the active subwindow."""
+        """
+        Get the View widget of the active subwindow."""
         subWin = self.parentWidget().activeSubWindow()
         
         if subWin:
@@ -172,7 +172,7 @@ class ToolOptionsPad(QWidget):
     def toggleWidgetVisible(self, value=None):
 
         if not value:
-            value = not self.widget.isVisible()
+            value = not self.container.isVisible()
             
-        self.widget.setVisible(value)
-        self.resizeToView()  
+        self.container.setVisible(value)
+        self.adjustToView()  
