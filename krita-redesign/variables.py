@@ -1,8 +1,9 @@
 background = "black"
 alternate = "black"
 tab_text_color = "#b4b4b4"
+active_text_color = "#eeeeee"
 
-small_tab_size = 7
+small_tab_size = 9
 
 no_borders_style = " QToolBar { border: none; } "
 nu_toolbox_style = """
@@ -64,6 +65,7 @@ flat_spin_box_style = ""
 flat_toolbox_style = ""
 flat_status_bar_style = ""
 flat_tree_view_style = ""
+flat_overview_docker_style = ""
 
 def buildFlatTheme():
     global flat_tab_base_style
@@ -79,7 +81,20 @@ def buildFlatTheme():
     global flat_toolbox_style
     global flat_status_bar_style
     global flat_tree_view_style
+    global flat_overview_docker_style 
     
+    flat_overview_docker_style = f"""
+        * {{
+            background: {background};
+        }} 
+
+        * > QSpinBox {{
+            border: none;
+            background-color: {alternate};
+            border-radius: 4px;
+        }}    
+    """
+
     flat_tab_base_style = f""" 
         QTabBar {{
             border: none;
@@ -94,7 +109,7 @@ def buildFlatTheme():
 
         QTabBar::tab:selected {{
            background-color: {background};
-           color: {tab_text_color};
+           color: {active_text_color};
        }}
 
        QTabBar::tab:only-one {{
@@ -121,8 +136,9 @@ def buildFlatTheme():
     flat_main_window_style = f"""
         KisMainWindow::separator {{
             background: {alternate};
+            width: 0px;
         }}
-        
+
         QHeaderView {{
             background: {alternate};
         }}
@@ -198,6 +214,7 @@ def buildFlatTheme():
         QDockWidget::title {{
             background-color: {background};
             border: none;
+            padding: 5px;
             margin-top: 2px;
         }}"""
     flat_toolbar_style = f"""QToolBar {{
@@ -270,6 +287,7 @@ def buildFlatTheme():
     flat_tree_view_style = f"""QTreeView {{
         background-color: {background}; 
         border: none;
+        padding: 5px;
     }}"""
 
 def setBackground(new_background):
