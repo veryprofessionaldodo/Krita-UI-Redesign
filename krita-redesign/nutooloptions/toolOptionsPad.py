@@ -110,7 +110,7 @@ class ToolOptionsPad(QWidget):
             
             self.resizeToView() # Resize first because the x-position is dependant on correct width.
 
-            # pos = self.parentWidget().mapFromGlobal(view.mapToGlobal(QPoint(view.width() - self.parentWidget().width(), 0))) # Move to top of QMdiArea. Only suitable for 'AdjustToSubwindows' mode.
+            # pos = self.parentWidget().mapFromGlobal(view.mapToGlobal(QPoint(self.parentWidget().width() - self.width(), 0))) # Move to top of QMdiArea. Only suitable for 'AdjustToSubwindows' mode.
             pos = self.parentWidget().mapFromGlobal(view.mapToGlobal(QPoint(view.width() - self.width(), 0))) # Move to top left corner of current view. Hacky, but works!
             self.move(pos)
     
@@ -119,43 +119,36 @@ class ToolOptionsPad(QWidget):
         """
         Resize the Pad to an appropriate size that fits within the current subwindow."""
         view = self.activeView()
-        # if view:
-        #     if view.height() < self.sizeHint().height():
-        #         self.resize(self.sizeHint().width(), view.height())
-        #     else:
-        #         self.resize(self.sizeHint())
 
 
-        if view and self.widget.isVisible():
+        if view:
             # We start with the tool options sizeHint as a goal size and then
             # shrink it down if necessary to fit inside the view.
-            containerSize = self.container.sizeHint()
 
             # I don't like all these magic numbers (And repeteition) but I honestly don't know what they
             # correspond to either. Margins, I suppose, but then why is one of the numbers 14
             # when the margins are all 4?
-
-            if view.height() < containerSize.height() + self.btnHide.height() + 14:
-                containerSize.setHeight(view.height() - self.btnHide.height() - 14)
-
-            if view.width() < containerSize.width() + 8:
-                containerSize.setWidth(view.width() - 8)
             
-            self.container.setFixedSize(containerSize)
+            # containerSize = self.container.sizeHint() 
+            
+            # if view.height() < containerSize.height() + self.btnHide.height() + 14:
+            #     containerSize.setHeight(view.height() - self.btnHide.height() - 14)
+
+            # if view.width() < containerSize.width() + 8:
+            #     containerSize.setWidth(view.width() - 8)
+            
+            # self.container.setFixedSize(containerSize)
 
             # Once the tool options container is an appropriate size, resize the
             # Pad widget to it's appropriate sizes
-            padSize = self.sizeHint()
-            if view.height() < padSize.height():
-                padSize.setHeight(view.height())
+            newSize = self.sizeHint()
+            if view.height() < newSize.height():
+                newSize.setHeight(view.height())
 
-            if view.width() < padSize.width():
-                padSize.setWidth(view.width())
+            if view.width() < newSize.width():
+                newSize.setWidth(view.width())
             
-            self.setFixedSize(padSize)
-
-        elif not self.container.isVisible():
-            self.setFixedSize(self.sizeHint()) 
+            self.resize(newSize)
 
 
     def activeView(self):

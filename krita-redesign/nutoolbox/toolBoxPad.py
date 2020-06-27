@@ -3,7 +3,8 @@ from PyQt5.QtCore import Qt, QSize, QPoint
 
 class ToolBoxPad(QWidget):
 
-    """ An on-canvas toolbox widget. I'm dubbing widgets that 'float' 
+    """
+    An on-canvas toolbox widget. I'm dubbing widgets that 'float' 
     on top of the canvas '(lily) pads' for the time being :) """
 
     def __init__(self, mdiArea):
@@ -31,21 +32,24 @@ class ToolBoxPad(QWidget):
 
 
     def closeEvent(self, e):
-        """Since the plugins works by borrowing the actual docker 
+        """
+        Since the plugins works by borrowing the actual docker 
         widget we need to ensure its returned upon closing the pad"""
         self.returnDocker()
         return super().closeEvent(e)
 
 
     def paintEvent(self, e):
-        """Needed to prevent some ugliness and resize the Pad if 
+        """
+        Needed to prevent some ugliness and resize the Pad if 
         the user decides to change the icon size of the toolbox"""
         self.adjustToView()
         return super().paintEvent(e)
 
 
     def borrowDocker(self, docker):
-        """Borrow a docker widget from Krita's existing list of dockers and 
+        """
+        Borrow a docker widget from Krita's existing list of dockers and 
         returns True. Returns False if invalid widget was passed. """
 
         # Does requested widget exist?
@@ -64,7 +68,8 @@ class ToolBoxPad(QWidget):
 
 
     def returnDocker(self):
-        """Return the borrowed docker to it's original QDockWidget"""
+        """
+        Return the borrowed docker to it's original QDockWidget"""
         # Ensure there's a widget to return
         if self.widget:
             self.widgetDocker.setWidget(self.widget)
@@ -73,7 +78,8 @@ class ToolBoxPad(QWidget):
 
 
     def adjustToView(self):
-        """Adjust the position and size of the Pad to that of the active View."""
+        """
+        Adjust the position and size of the Pad to that of the active View."""
         view = self.activeView()
         if view:
             # NOTE: Determining the correct corner position might be better done based 
@@ -87,18 +93,24 @@ class ToolBoxPad(QWidget):
 
 
     def resizeToView(self):
-        """Resize the Pad to an appropriate size that fits within the subwindow."""
+        """
+        Resize the Pad to an appropriate size that fits within the subwindow."""
         view = self.activeView()
 
-        if view and self:
-            if view.height() < self.sizeHint().height():
-                self.resize(self.sizeHint().width(), view.height())
-            else:
-                self.resize(self.sizeHint())
+        if view:
+            newSize = self.sizeHint()
+            if view.height() < newSize.height():
+                newSize.setHeight(view.height())
+
+            if view.width() < newSize.width():
+                newSize.setWidth(view.width())
+            
+            self.resize(newSize)
 
 
     def activeView(self):
-        """Get the View widget of the active subwindow."""
+        """
+        Get the View widget of the active subwindow."""
         subWin = self.parentWidget().activeSubWindow()
         
         if subWin:
