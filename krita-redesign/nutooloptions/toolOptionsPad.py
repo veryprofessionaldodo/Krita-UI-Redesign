@@ -129,15 +129,15 @@ class ToolOptionsPad(QWidget):
             # correspond to either. Margins, I suppose, but then why is one of the numbers 14
             # when the margins are all 4?
             
-            # containerSize = self.container.sizeHint() 
+            containerSize = self.container.sizeHint() 
             
-            # if view.height() < containerSize.height() + self.btnHide.height() + 14:
-            #     containerSize.setHeight(view.height() - self.btnHide.height() - 14)
+            if view.height() < containerSize.height() + self.btnHide.height() + 14:
+                containerSize.setHeight(view.height() - self.btnHide.height() - 14)
 
-            # if view.width() < containerSize.width() + 8:
-            #     containerSize.setWidth(view.width() - 8)
+            if view.width() < containerSize.width() + 8:
+                containerSize.setWidth(view.width() - 8)
             
-            # self.container.setFixedSize(containerSize)
+            self.container.setFixedSize(containerSize)
 
             # Once the tool options container is an appropriate size, resize the
             # Pad widget to it's appropriate sizes
