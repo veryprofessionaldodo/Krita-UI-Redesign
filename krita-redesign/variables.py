@@ -1,6 +1,9 @@
 background = "black"
 alternate = "black"
 tab_text_color = "#b4b4b4"
+active_text_color = "#eeeeee"
+
+small_tab_size = 9
 
 no_borders_style = " QToolBar { border: none; } "
 nu_toolbox_style = """
@@ -47,8 +50,9 @@ nu_toolbox_style = """
             KoToolBoxButton:pressed {
                 background-color: #53728e;
             }"""
-small_tab_style = "QTabBar::tab { height: 23px; }"
+small_tab_style = f"QTabBar::tab {{ height: {small_tab_size}px; }}"
 
+flat_tab_base_style = ""
 flat_tab_big_style = ""
 flat_tab_small_style = ""
 flat_main_window_style = ""
@@ -60,8 +64,11 @@ flat_combo_box_style = ""
 flat_spin_box_style = ""
 flat_toolbox_style = ""
 flat_status_bar_style = ""
+flat_tree_view_style = ""
+flat_overview_docker_style = ""
 
 def buildFlatTheme():
+    global flat_tab_base_style
     global flat_tab_big_style
     global flat_tab_small_style
     global flat_main_window_style
@@ -73,29 +80,36 @@ def buildFlatTheme():
     global flat_spin_box_style
     global flat_toolbox_style
     global flat_status_bar_style
+    global flat_tree_view_style
+    global flat_overview_docker_style 
     
-    flat_tab_big_style = f""" 
+    flat_overview_docker_style = f"""
+        * {{
+            background: {background};
+        }} 
+
+        * > QSpinBox {{
+            border: none;
+            background-color: {alternate};
+            border-radius: 4px;
+        }}    
+    """
+
+    flat_tab_base_style = f""" 
         QTabBar {{
-            background-color: {background};
             border: none;
             qproperty-drawBase: 0;
             qproperty-expanding: 1;
         }}
     
-        QTabBar::tab {{
-            background-color: {alternate};
-            border-top-right-radius: 4px;
-            border-top-left-radius: 4px;
-            padding: 8px;
-        }}
-    
-       QTabBar::tab:!first {{
-           margin-left: 2px;
+       QTabBar::tab:!selected {{
+           background-color: {alternate};
+           color: {tab_text_color};
        }}
 
-       QTabBar::tab:!selected {{
+        QTabBar::tab:selected {{
            background-color: {background};
-           color: {tab_text_color};
+           color: {active_text_color};
        }}
 
        QTabBar::tab:only-one {{
@@ -103,59 +117,52 @@ def buildFlatTheme():
        }}
 
        QTabBar::tab:hover {{
-           color: {tab_text_color};
-       }}
-
-       QTabBar::tab:selected:hover {{
            color: white;
-       }}"""
-    flat_tab_small_style = f""" 
-         QTabBar {{
-            background-color: {background};
-            border: none;
-            qproperty-drawBase: 0;
-            qproperty-expanding: 1;
-        }}
-
-        QTabBar::tab {{
-            background-color: {alternate};
+       }}
+       """ 
+    flat_tab_big_style = f"""QTabBar::tab {{
             border-top-right-radius: 4px;
             border-top-left-radius: 4px;
-            height: 23px;
             padding: 8px;
-        }}
-
-        QTabBar::tab:!first {{
-            margin-left: 2px;
-        }}
-
-        QTabBar::tab:!selected {{
-            background-color: {background};
-            color: {tab_text_color};
-        }}
-
-        QTabBar::tab:only-one {{
-            margin: 0px;
-        }}
-
-        QTabBar::tab:hover {{
-            color: {tab_text_color};
-        }}
-
-        QTabBar::tab:selected:hover {{
-            color: white;
+        }}"""
+    flat_tab_small_style = f""" 
+        QTabBar::tab {{
+            border-top-right-radius: 4px;
+            border-top-left-radius: 4px;
+            height: {small_tab_size}px;
+            padding: 8px;
         }}"""
 
-    flat_main_window_style = f"""KisMainWindow {{
-            background-color: {background};
-        }} 
-
+    flat_main_window_style = f"""
         KisMainWindow::separator {{
-            width: 4px;
-            height: 4px;
-        }}"""
+            background: {alternate};
+            width: 0px;
+        }}
+
+        QHeaderView {{
+            background: {alternate};
+        }}
+        
+        QLineEdit {{
+            background: {alternate};
+        }}
+
+        QStatusBar > QPushButton {{
+            border: none;
+        }}
+        
+        QStatusBar > QPushButton:hover {{
+            background: #2e2e2e;
+        }}
+        """
     flat_tools_style = f"""QToolButton, QPushButton {{
             background-color: {background};
+            border-radius: 4px;
+            border: 2px solid {alternate};
+        }}
+
+        QToolButton:checked, QPushButton:checked {{
+            background-color: {alternate};
             border-radius: 4px;
         }}
 
@@ -172,11 +179,18 @@ def buildFlatTheme():
             border: none;
             border-radius: 4px;
         }}"""
-    flat_dock_style = f""" QDockWidget {{
+
+    flat_dock_style = f""" 
+        QAbstractScrollArea {{
+            background: {background};
+            border: none;
+        }}
+    
+        QDockWidget {{
             titlebar-close-icon: url(:/16_dark_tab-close.svg);
             titlebar-normal-icon: url(:/light_duplicatelayer.svg);
-            border-radius-bottom-right: 4px;
-            border-radius-bottom-left: 4px;
+            border-bottom-right-radius: 4px;
+            border-bottom-left-radius: 4px;
         }}
 
         QDockWidget::close-button {{
@@ -190,30 +204,44 @@ def buildFlatTheme():
         }}
 
         QDockWidget > * {{
-            background-color: {alternate};
+            background-color: {background};
             border: none;
-            border-radius-bottom-right: 4px;
-            border-radius-bottom-left: 4px;
+            border-bottom-right-radius: 4px;
+            border-bottom-left-radius: 4px;
             titlebar-close-icon: url(/:16_dark_tab-close.svg);
         }}
 
         QDockWidget::title {{
-            background-color: {alternate};
+            background-color: {background};
             border: none;
+            padding: 5px;
+            margin-top: 2px;
         }}"""
     flat_toolbar_style = f"""QToolBar {{
             background-color: {background};
             border: none;
+        }}
+        
+        QToolBar > * {{
+            border: none;
+        }}
+        
+        QToolBar > * > QToolButton, QPushButton {{
+            border: none;
         }} """
     flat_menu_bar_style = f"QMenuBar {{background-color: {background};}}"
-    flat_combo_box_style = f"""QComboBox {{
-            background-color: {background};
-            border: none;
+    flat_combo_box_style = f"""QComboBox {{ 
+            background: {background};
+            border: 2px solid {alternate};
             border-radius: 4px;
             padding-left: 5px;
             padding-right: 5px;
             padding-bottom: 2px;
             padding-top: 2px;
+        }}
+
+        QComboBox:hover {{
+            background: {alternate};
         }}
         
         QComboBox::drop-down {{
@@ -227,6 +255,7 @@ def buildFlatTheme():
         }}"""
     flat_spin_box_style = f"""QSpinBox {{
             border: none;
+            background-color: {alternate};
             border-radius: 4px;
         }}    
 
@@ -253,8 +282,13 @@ def buildFlatTheme():
             image: url(:16_light_draw-arrow-down.svg);
             width: 9px;
         }}"""
-    flat_toolbox_style = f"QToolBox {{background-color: {background};}}"   
+    flat_toolbox_style = "* > QToolButton {border: none;}"
     flat_status_bar_style = f"QStatusBar {{ background-color: {background}; }}"
+    flat_tree_view_style = f"""QTreeView {{
+        background-color: {background}; 
+        border: none;
+        padding: 5px;
+    }}"""
 
 def setBackground(new_background):
     global background

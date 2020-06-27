@@ -21,6 +21,8 @@ class Redesign(Extension):
         variables.setAlternate(qApp.palette().color(QPalette.AlternateBase).name())
         variables.setTextColor("#b4b4b4")
 
+        # TODO Rebuild flat theme and reapply stylesheet if theme changes
+
         variables.buildFlatTheme()
         
         if Application.readSetting("Redesign", "usesFlatTheme", "false") == "false":
@@ -134,8 +136,6 @@ class Redesign(Extension):
 
     def rebuildStyleSheet(self, window):
         full_style_sheet = ""
-
-        # Full Window Changes 
         
         # Dockers
         if self.usesFlatTheme:
@@ -145,26 +145,50 @@ class Redesign(Extension):
             full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
             full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
             full_style_sheet += f"\n {variables.flat_spin_box_style} \n"
-            full_style_sheet += f"\n {variables.flat_toolbox_style} \n"
             full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
+            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
+            full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
+            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
 
-        # Tabs 
-        if self.usesFlatTheme:
-            if self.usesThinDocumentTabs:
-                full_style_sheet += f"\n {variables.flat_tab_small_style} \n"
-            else: 
-                full_style_sheet += f"\n {variables.flat_tab_big_style} \n"
-        else: 
-            if self.usesThinDocumentTabs:
-                full_style_sheet += f"\n {variables.small_tab_style} \n"
-        
         # Toolbar
         if self.usesFlatTheme:
             full_style_sheet += f"\n {variables.flat_toolbar_style} \n"
         elif self.usesBorderlessToolbar:
-            full_style_sheet += f"\n {variables.no_borders_style} \n"
+            full_style_sheet += f"\n {variables.no_borders_style} \n"    
         
         window.setStyleSheet(full_style_sheet)
+
+        print("\n\n")
+        print(full_style_sheet)
+        print("\n\n")
+
+        # Overview
+        overview = window.findChild(QWidget, 'OverviewDocker')
+        overview_style = ""
+
+        if self.usesFlatTheme:
+            overview_style += f"\n {variables.flat_overview_docker_style} \n"
+
+        overview.setStyleSheet(overview_style)
+
+        # For document tab
+        canvas_style_sheet = ""
+
+        if self.usesFlatTheme:
+            if self.usesThinDocumentTabs:
+                canvas_style_sheet += f"\n {variables.flat_tab_small_style} \n"
+            else: 
+                canvas_style_sheet += f"\n {variables.flat_tab_big_style} \n"
+        else: 
+            if self.usesThinDocumentTabs:
+                canvas_style_sheet += f"\n {variables.small_tab_style} \n"
+
+        canvas = window.centralWidget()
+        canvas.setStyleSheet(canvas_style_sheet)
+
+        # This is ugly, but it's the least ugly way I can get the canvas to 
+        # update it's size (for now)
+        canvas.resize(canvas.sizeHint())
         
 
 Krita.instance().addExtension(Redesign(Krita.instance()))
