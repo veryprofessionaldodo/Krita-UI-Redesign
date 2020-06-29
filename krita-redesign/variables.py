@@ -134,11 +134,6 @@ def buildFlatTheme():
         }}"""
 
     flat_main_window_style = f"""
-        KisMainWindow::separator {{
-            background: {alternate};
-            width: 0px;
-        }}
-
         QHeaderView {{
             background: {alternate};
         }}
