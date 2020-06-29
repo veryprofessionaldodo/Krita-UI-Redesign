@@ -2,7 +2,6 @@ from PyQt5.QtWidgets import QWidget, QToolButton, QDockWidget, QVBoxLayout, QSiz
 from PyQt5.QtCore import Qt, QSize, QPoint
 
 class ToolBoxPad(QWidget):
-
     """
     An on-canvas toolbox widget. I'm dubbing widgets that 'float' 
     on top of the canvas '(lily) pads' for the time being :) """
@@ -24,12 +23,10 @@ class ToolBoxPad(QWidget):
         
         # Visibility toggle
         self.btnHide = QToolButton()
-        self.btnHide.setIcon(Application.icon("light_visible"))
-        self.btnHide.setIconSize(QSize(12,12))
         self.btnHide.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
+        self.btnHide.setArrowType(Qt.ArrowType.LeftArrow)
         self.btnHide.clicked.connect(self.toggleWidgetVisible)
         self.layout().addWidget(self.btnHide)
-
 
     def closeEvent(self, e):
         """
@@ -120,9 +117,15 @@ class ToolBoxPad(QWidget):
 
 
     def toggleWidgetVisible(self, value=None):
-
         if not value:
             value = not self.widget.isVisible()
-            
+        
         self.widget.setVisible(value)
         self.resizeToView()    
+        self.updateIcons(value)
+        
+    def updateIcons(self, isVisible):
+        if isVisible:
+            self.btnHide.setArrowType(Qt.ArrowType.LeftArrow)
+        else: 
+            self.btnHide.setArrowType(Qt.ArrowType.RightArrow)

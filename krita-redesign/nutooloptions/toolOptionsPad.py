@@ -26,9 +26,8 @@ class ToolOptionsPad(QWidget):
         
         # Visibility toggle
         self.btnHide = QToolButton()
-        self.btnHide.setIcon(Application.icon("light_visible"))
-        self.btnHide.setIconSize(QSize(12,12))
         self.btnHide.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
+        self.btnHide.setArrowType(Qt.ArrowType.RightArrow)
         self.btnHide.clicked.connect(self.toggleWidgetVisible)
         self.btnHide.setStyleSheet("""
             QToolButton {
@@ -161,11 +160,17 @@ class ToolOptionsPad(QWidget):
                 if 'view' in child.objectName(): # Grab the View from the active tab/sub-window
                     return child
 
-
     def toggleWidgetVisible(self, value=None):
 
         if not value:
             value = not self.container.isVisible()
-            
+        
         self.container.setVisible(value)
         self.adjustToView()  
+        self.updateIcons(value)
+
+    def updateIcons(self, isVisible): 
+        if isVisible:
+            self.btnHide.setArrowType(Qt.ArrowType.RightArrow)
+        else:
+            self.btnHide.setArrowType(Qt.ArrowType.LeftArrow)
