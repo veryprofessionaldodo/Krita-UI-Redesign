@@ -28,6 +28,7 @@ class ToolOptionsPad(QWidget):
         self.btnHide = QToolButton()
         self.btnHide.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
         self.btnHide.setArrowType(Qt.ArrowType.RightArrow)
+        self.btnHide.setIconSize(QSize(11, 11))
         self.btnHide.clicked.connect(self.toggleWidgetVisible)
         self.btnHide.setStyleSheet("""
             QToolButton {
@@ -128,6 +129,7 @@ class ToolOptionsPad(QWidget):
             # correspond to either. Margins, I suppose, but then why is one of the numbers 14
             # when the margins are all 4?
             
+            ### GOAL: REMOVE THIS BLOCK OF CODE
             containerSize = self.container.sizeHint() 
             
             if view.height() < containerSize.height() + self.btnHide.height() + 14:
@@ -160,16 +162,19 @@ class ToolOptionsPad(QWidget):
                 if 'view' in child.objectName(): # Grab the View from the active tab/sub-window
                     return child
 
-    def toggleWidgetVisible(self, value=None):
 
+    def toggleWidgetVisible(self, value=None):
         if not value:
             value = not self.container.isVisible()
         
         self.container.setVisible(value)
         self.adjustToView()  
-        self.updateIcons(value)
+        self.updateHideButtonIcon(value)
 
-    def updateIcons(self, isVisible): 
+
+    def updateHideButtonIcon(self, isVisible): 
+        """
+        Flip the direction of the arrow to fit the Pads current visibility"""
         if isVisible:
             self.btnHide.setArrowType(Qt.ArrowType.RightArrow)
         else:

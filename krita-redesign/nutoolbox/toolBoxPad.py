@@ -24,9 +24,11 @@ class ToolBoxPad(QWidget):
         # Visibility toggle
         self.btnHide = QToolButton()
         self.btnHide.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Maximum)
+        self.btnHide.setIconSize(QSize(11, 11))
         self.btnHide.setArrowType(Qt.ArrowType.LeftArrow)
         self.btnHide.clicked.connect(self.toggleWidgetVisible)
         self.layout().addWidget(self.btnHide)
+
 
     def closeEvent(self, e):
         """
@@ -122,9 +124,12 @@ class ToolBoxPad(QWidget):
         
         self.widget.setVisible(value)
         self.resizeToView()    
-        self.updateIcons(value)
+        self.updateHideButtonIcon(value)
         
-    def updateIcons(self, isVisible):
+
+    def updateHideButtonIcon(self, isVisible):
+        """
+        Flip the direction of the arrow to fit the Pads current visibility"""
         if isVisible:
             self.btnHide.setArrowType(Qt.ArrowType.LeftArrow)
         else: 
