@@ -1,4 +1,3 @@
 .vscode
-krita-redesign/nutoolbox/__pycache__/
-
-krita-redesign/nutooloptions/__pycache__/
+krita-redesign/nuTools/__pycache__/
+*.pyc
