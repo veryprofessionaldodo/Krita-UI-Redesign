@@ -1,12 +1,12 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea
 
-class ScrollAreaContainer(QWidget):
+class ntScrollAreaContainer(QWidget):
 
     def __init__(self, scrollArea = None, parent=None):
-        super(ScrollAreaContainer, self).__init__(parent)
+        super(ntScrollAreaContainer, self).__init__(parent)
         self.setLayout(QVBoxLayout())
         self.layout().setContentsMargins(0,0,0,0)
-        self.scrollArea = None
+        self.sa = None
         
         self.setScrollArea(scrollArea)
 
@@ -15,8 +15,8 @@ class ScrollAreaContainer(QWidget):
         """
         Reimplemented function. If a QScrollArea as been set
         the size hint of it's widget will be returned."""
-        if self.scrollArea and self.scrollArea.widget():
-            return self.scrollArea.widget().sizeHint()
+        if self.sa and self.sa.widget():
+            return self.sa.widget().sizeHint()
 
         return super().sizeHint()
 
@@ -32,19 +32,19 @@ class ScrollAreaContainer(QWidget):
         If an invalid arguement (i.e. not a QScrollArea) or the same QScrollArea
         as the currently set one is passed, nothing happens and False is returned."""
         if (isinstance(scrollArea, QScrollArea) and
-            scrollArea is not self.scrollArea):
+            scrollArea is not self.sa):
             ret = True
 
-            if not self.scrollArea:
+            if not self.sa:
                 self.layout().addWidget(scrollArea)
             else:
-                self.layout().replaceWidget(self.scrollArea, scrollArea)
-                ret = self.scrollArea # set the old QScrollArea to be returned
+                self.layout().replaceWidget(self.sa, scrollArea)
+                ret = self.sa # set the old QScrollArea to be returned
             
-            self.scrollArea = scrollArea
+            self.sa = scrollArea
             return ret
         
         return False
 
     def scrollArea(self):
-        return self.scrollArea
+        return self.sa

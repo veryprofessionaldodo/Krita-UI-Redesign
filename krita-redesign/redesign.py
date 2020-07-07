@@ -1,6 +1,6 @@
 from krita import *
-from .nutoolbox.nutoolbox import NuToolbox
-from .nutooloptions.nutooloptions import NuToolOptions
+from .nuTools.nttoolbox import ntToolBox
+from .nuTools.nttooloptions import ntToolOptions
 from . import variables
 
 class Redesign(Extension):
@@ -10,8 +10,8 @@ class Redesign(Extension):
     usesThinDocumentTabs = True
     usesNuToolbox = True
     usesNuToolOptions = True
-    nuTb = None
-    nuTO = None
+    ntTB = None
+    ntTO = None
  
     def __init__(self, parent):
         super().__init__(parent)
@@ -76,12 +76,12 @@ class Redesign(Extension):
         actions[4].toggled.connect(self.nuToolOptionsToggled)
         
         self.rebuildStyleSheet(window.qwindow())
-
-        if self.usesNuToolbox: 
-            self.nuTb = NuToolbox(window)
             
         if self.usesNuToolOptions: 
-            self.nuTO = NuToolOptions(window)
+            self.ntTO = ntToolOptions(window)
+
+        if self.usesNuToolbox: 
+            self.ntTB = ntToolBox(window)
 
 
     def toolbarBorderToggled(self, toggled):
@@ -113,12 +113,12 @@ class Redesign(Extension):
 
         self.usesNuToolbox = toggled
 
-        if toggled and not self.nuTb:
-            self.nuTb = NuToolbox(Application.activeWindow())
-            self.nuTb.pad.show() # This shouldn't be needed, but it is...
-        elif not toggled and self.nuTb:
-            self.nuTb.close()
-            self.nuTb = None
+        if toggled and not self.ntTB:
+            self.ntTB = ntToolBox(Application.activeWindow())
+            self.ntTB.pad.show() # This shouldn't be needed, but it is...
+        elif not toggled and self.ntTB:
+            self.ntTB.close()
+            self.ntTB = None
 
 
     def nuToolOptionsToggled(self, toggled):
@@ -126,12 +126,12 @@ class Redesign(Extension):
 
         self.usesNuToolOptions = toggled
 
-        if toggled and not self.nuTO:
-            self.nuTO = NuToolOptions(Application.activeWindow())
-            self.nuTO.pad.show()
-        elif not toggled and self.nuTO:
-            self.nuTO.close()
-            self.nuTO = None
+        if toggled and not self.ntTO:
+            self.ntTO = ntToolOptions(Application.activeWindow())
+            self.ntTO.pad.show()
+        elif not toggled and self.ntTO:
+            self.ntTO.close()
+            self.ntTO = None
 
 
     def rebuildStyleSheet(self, window):

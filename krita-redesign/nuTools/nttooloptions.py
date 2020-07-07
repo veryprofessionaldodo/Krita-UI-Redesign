@@ -1,27 +1,29 @@
 from PyQt5.QtWidgets import QMdiArea, QDockWidget
-from .adjustToSubwindowFilter import AdjustToSubwindowFilter
-from .toolBoxPad import ToolBoxPad
+from .ntadjusttosubwindowfilter import ntAdjustToSubwindowFilter
+from .ntwidgetpad import ntWidgetPad
 
-class NuToolbox():
+class ntToolOptions():
 
     def __init__(self, window):
         qWin = window.qwindow()
         mdiArea = qWin.findChild(QMdiArea)
-        toolbox = qWin.findChild(QDockWidget, 'ToolBox')
+        toolOptions = qWin.findChild(QDockWidget, 'sharedtooldocker')
 
         # Create "pad"
-        self.pad = ToolBoxPad(mdiArea)
-        self.pad.borrowDocker(toolbox)
-        self.pad.setStyleSheet(self.styleSheet())
+        self.pad = ntWidgetPad(mdiArea)
+        self.pad.setObjectName("toolOptionsPad")
+        self.pad.setViewAlignment('right')
+        self.pad.borrowDocker(toolOptions)
+        # self.pad.setStyleSheet(self.styleSheet()) # Maybe worth tinkering with another time
 
         # Create and install event filter
-        self.adjustFilter = AdjustToSubwindowFilter(mdiArea)
+        self.adjustFilter = ntAdjustToSubwindowFilter(mdiArea)
         self.adjustFilter.setTargetWidget(self.pad)
         mdiArea.subWindowActivated.connect(self.ensureFilterIsInstalled)
         qWin.installEventFilter(self.adjustFilter)
 
-        # Create visibility toggle action
-        action = window.createAction("showToolbox", "Show Toolbox", "settings")
+        # Create visibility toggle action 
+        action = window.createAction("showToolOptions", "Show Tool Options", "settings")
         action.toggled.connect(self.pad.toggleWidgetVisible)
         action.setCheckable(True)
         action.setChecked(True)
@@ -37,8 +39,8 @@ class NuToolbox():
 
     def styleSheet(self):
         return """
-            QWidget { 
-                background-color: #01808080;
+            * { 
+                background-color: #00000000;
             }
             
             .QScrollArea { 
@@ -53,24 +55,41 @@ class NuToolbox():
                 background-color: #ffffff;                           
             }
             
-            QAbstractButton {
-                background-color: #70000000;
+            QToolButton, QPushButton {
+                background-color: #80000000;
                 border: none;
                 border-radius: 4px;
             }
             
-            QAbstractButton:checked {
+            QToolButton:checked, QPushButton:checked {
                 background-color: #aa306fa8;
             }
             
-            QAbstractButton:hover {
+            QToolButton:hover, QPushButton:hover {
                 background-color: #1c1c1c;
             }
             
-            QAbstractButton:pressed {
+            QToolButton:pressed, QPushButton:pressed {
                 background-color: #53728e;
             }
-        """
 
-    def close(self):
+            QAbstractSpinBox {
+                background-color: #80000000;
+                border: none;
+                border-radius: 4px;
+            }
+
+            QComboBox {
+                background-color: #80000000;
+                border: none;
+                border-radius: 4px;
+            }
+
+            KisSliderSpinBox {
+                background-color: #80000000;
+                border: none;
+            }
+        """
+    
+    def close(self): 
         return self.pad.close()
