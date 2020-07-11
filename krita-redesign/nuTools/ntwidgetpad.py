@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget, QToolButton, QDockWidget, QVBoxLayout, QSiz
 from PyQt5.QtCore import Qt, QSize, QPoint
 from .ntscrollareacontainer import ntScrollAreaContainer
 from .nttogglevisiblebutton import ntToggleVisibleButton
+from krita import Krita
 
 class ntWidgetPad(QWidget):
     """
@@ -49,9 +50,9 @@ class ntWidgetPad(QWidget):
 
             globalTargetPos = QPoint()
             if self.alignment == 'left':
-               globalTargetPos = view.mapToGlobal(QPoint(0,0))
+                globalTargetPos = view.mapToGlobal(QPoint(0,0))
             elif self.alignment == 'right':
-               globalTargetPos = view.mapToGlobal(QPoint(view.width() - self.width(), 0))
+                globalTargetPos = view.mapToGlobal(QPoint(view.width() - self.width() - self.scrollBarMargin(), 0))
 
             self.move(self.parentWidget().mapFromGlobal(globalTargetPos))
 
@@ -103,15 +104,16 @@ class ntWidgetPad(QWidget):
         view = self.activeView()
 
         if view:
-            ### GOAL: REMOVE THIS BLOCK OF CODE
+            
+            ### GOAL: REMOVE THIS IF-STATEMENT
             if isinstance(self.widget, ntScrollAreaContainer):
                 containerSize = self.widget.sizeHint() 
                 
-                if view.height() < containerSize.height() + self.btnHide.height() + 14:
-                    containerSize.setHeight(view.height() - self.btnHide.height() - 14)
+                if view.height() < containerSize.height() + self.btnHide.height() + 14 + self.scrollBarMargin():
+                    containerSize.setHeight(view.height() - self.btnHide.height() - 14 - self.scrollBarMargin())
 
-                if view.width() < containerSize.width() + 8:
-                    containerSize.setWidth(view.width() - 8)
+                if view.width() < containerSize.width() + 8 + self.scrollBarMargin():
+                    containerSize.setWidth(view.width() - 8 - self.scrollBarMargin())
                 
                 self.widget.setFixedSize(containerSize)
 
@@ -138,6 +140,13 @@ class ntWidgetPad(QWidget):
 
             self.widget = None
             self.widgetDocker = None
+
+
+    def scrollBarMargin(self):
+        if Krita.instance().readSetting("", "hideScrollbars", "false") == "true":
+            return 0
+
+        return 14 # Canvas scrollbar pixel width/height on Windows 
 
 
     def setViewAlignment(self, newAlignment):
