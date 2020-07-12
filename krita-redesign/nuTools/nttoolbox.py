@@ -27,6 +27,10 @@ class ntToolBox():
         action.setCheckable(True)
         action.setChecked(True)
 
+        # Disable the related QDockWidget
+        self.dockerAction = self.findDockerAction(window, "Toolbox")
+        self.dockerAction.setEnabled(False)
+
 
     def ensureFilterIsInstalled(self, subWin):
         """Ensure that the current SubWindow has the filter installed,
@@ -34,6 +38,20 @@ class ntToolBox():
         if subWin:
             subWin.installEventFilter(self.adjustFilter)
             self.pad.adjustToView()
+
+
+    def findDockerAction(self, window, text):
+        dockerMenu = None
+        
+        for m in window.qwindow().actions():
+            if m.objectName() == "settings_dockers_menu":
+                dockerMenu = m
+
+                for a in dockerMenu.menu().actions():
+                    if a.text().replace('&', '') == text:
+                        return a
+                
+        return False
 
 
     def styleSheet(self):
@@ -74,4 +92,5 @@ class ntToolBox():
         """
 
     def close(self):
+        self.dockerAction.setEnabled(True)
         return self.pad.close()

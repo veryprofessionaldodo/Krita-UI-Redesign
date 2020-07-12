@@ -2,7 +2,8 @@ from krita import *
 from .nuTools.nttoolbox import ntToolBox
 from .nuTools.nttooloptions import ntToolOptions
 from . import variables
-
+from PyQt5.QtWidgets import QMessageBox
+    
 class Redesign(Extension):
 
     usesFlatTheme = True
@@ -62,7 +63,8 @@ class Redesign(Extension):
 
         actions.append(window.createAction("nuToolOptions", "NuToolOptions", ""))
         actions[4].setCheckable(True)
-        actions[4].setChecked(self.usesNuToolOptions)
+        if Application.readSetting("", "ToolOptionsInDocker", "false") == "true":
+            actions[4].setChecked(self.usesNuToolOptions)
 
         menu = window.qwindow().menuBar().addMenu("Redesign")
 
@@ -76,9 +78,10 @@ class Redesign(Extension):
         actions[4].toggled.connect(self.nuToolOptionsToggled)
         
         self.rebuildStyleSheet(window.qwindow())
-            
-        if self.usesNuToolOptions: 
-            self.ntTO = ntToolOptions(window)
+        
+        if (self.usesNuToolOptions and
+            Application.readSetting("", "ToolOptionsInDocker", "false") == "true"):
+                self.ntTO = ntToolOptions(window)
 
         if self.usesNuToolbox: 
             self.ntTB = ntToolBox(window)
@@ -110,7 +113,6 @@ class Redesign(Extension):
 
     def nuToolboxToggled(self, toggled):
         Application.writeSetting("Redesign", "usesNuToolbox", str(toggled).lower())
-
         self.usesNuToolbox = toggled
 
         if toggled and not self.ntTB:
@@ -122,16 +124,22 @@ class Redesign(Extension):
 
 
     def nuToolOptionsToggled(self, toggled):
-        Application.writeSetting("Redesign", "usesNuToolOptions", str(toggled).lower())
+        if Application.readSetting("", "ToolOptionsInDocker", "false") == "true":
+            Application.writeSetting("Redesign", "usesNuToolOptions", str(toggled).lower())
+            self.usesNuToolOptions = toggled
 
-        self.usesNuToolOptions = toggled
-
-        if toggled and not self.ntTO:
-            self.ntTO = ntToolOptions(Application.activeWindow())
-            self.ntTO.pad.show()
-        elif not toggled and self.ntTO:
-            self.ntTO.close()
-            self.ntTO = None
+            if toggled and not self.ntTO:
+                self.ntTO = ntToolOptions(Application.activeWindow())
+                self.ntTO.pad.show() # This shouldn't be needed, but it is..
+            elif not toggled and self.ntTO:
+                self.ntTO.close()
+                self.ntTO = None
+        else:
+            msg = QMessageBox()
+            msg.setText("nuTools requires the Tool Options Location to be set to 'In Docker'. \n\n" +
+                        "This setting can be found at Settings -> Configure Krita... -> General -> Tools -> Tool Options Location." +
+                        "Once the setting has been changed, please restart Krita.")
+            msg.exec_()
 
 
     def rebuildStyleSheet(self, window):

@@ -76,7 +76,8 @@ class ntWidgetPad(QWidget):
 
             self.layout().addWidget(self.widget) 
             self.adjustToView()        
-            
+            self.widgetDocker.hide()
+
             return True
             
         return False
@@ -138,6 +139,7 @@ class ntWidgetPad(QWidget):
             else:
                 self.widgetDocker.setWidget(self.widget)
 
+            self.widgetDocker.show()
             self.widget = None
             self.widgetDocker = None
 
@@ -146,7 +148,7 @@ class ntWidgetPad(QWidget):
         if Krita.instance().readSetting("", "hideScrollbars", "false") == "true":
             return 0
 
-        return 14 # Canvas scrollbar pixel width/height on Windows 
+        return 14 # Canvas crollbar pixel width/height on Windows 
 
 
     def setViewAlignment(self, newAlignment):
