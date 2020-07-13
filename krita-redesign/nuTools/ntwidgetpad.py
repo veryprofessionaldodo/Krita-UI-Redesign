@@ -28,7 +28,6 @@ class ntWidgetPad(QWidget):
         self.btnHide = ntToggleVisibleButton()
         self.btnHide.clicked.connect(self.toggleWidgetVisible)
         self.layout().addWidget(self.btnHide)
-    
 
     def activeView(self):
         """
@@ -159,6 +158,9 @@ class ntWidgetPad(QWidget):
             if (newAlignment.lower() == 'left' or
                 newAlignment.lower() == 'right'):
                 self.alignment = newAlignment.lower()
+
+                self.btnHide.setArrow(self.alignment)
+
                 return True
     
         return False
@@ -187,6 +189,5 @@ class ntWidgetPad(QWidget):
             else:
                 self.btnHide.setArrowType(Qt.ArrowType.LeftArrow)
 
-
-    def viewAlignment(self):
+    def getViewAlignment(self):
         return self.alignment

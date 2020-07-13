@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMdiArea, QDockWidget
 from .ntadjusttosubwindowfilter import ntAdjustToSubwindowFilter
 from .ntwidgetpad import ntWidgetPad
+from .. import variables
 
 class ntToolBox():
 
@@ -13,8 +14,8 @@ class ntToolBox():
         self.pad = ntWidgetPad(mdiArea)
         self.pad.setObjectName("toolBoxPad")
         self.pad.borrowDocker(toolbox)
-        self.pad.setStyleSheet(self.styleSheet())
-
+        self.pad.setViewAlignment('left')
+        
         # Create and install event filter
         self.adjustFilter = ntAdjustToSubwindowFilter(mdiArea)
         self.adjustFilter.setTargetWidget(self.pad)
@@ -38,6 +39,7 @@ class ntToolBox():
         if subWin:
             subWin.installEventFilter(self.adjustFilter)
             self.pad.adjustToView()
+            self.updateStyleSheet()
 
 
     def findDockerAction(self, window, text):
@@ -54,42 +56,9 @@ class ntToolBox():
         return False
 
 
-    def styleSheet(self):
-        return """
-            QWidget { 
-                background-color: #01808080;
-            }
-            
-            .QScrollArea { 
-                background-color: #00000000;
-            }
-            
-            QScrollArea * { 
-                background-color: #00000000;
-            }
-            
-            QScrollArea QToolTip {
-                background-color: #ffffff;                           
-            }
-            
-            QAbstractButton {
-                background-color: #70000000;
-                border: none;
-                border-radius: 4px;
-            }
-            
-            QAbstractButton:checked {
-                background-color: #aa306fa8;
-            }
-            
-            QAbstractButton:hover {
-                background-color: #1c1c1c;
-            }
-            
-            QAbstractButton:pressed {
-                background-color: #53728e;
-            }
-        """
+    def updateStyleSheet(self):
+        print("Setting ToolBox")
+        self.pad.setStyleSheet(variables.nu_toolbox_style)
 
     def close(self):
         self.dockerAction.setEnabled(True)

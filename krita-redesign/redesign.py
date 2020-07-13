@@ -22,8 +22,6 @@ class Redesign(Extension):
         variables.setAlternate(qApp.palette().color(QPalette.AlternateBase).name())
         variables.setTextColor("#b4b4b4")
 
-        # TODO Rebuild flat theme and reapply stylesheet if theme changes
-
         variables.buildFlatTheme()
         
         if Application.readSetting("Redesign", "usesFlatTheme", "false") == "false":
@@ -77,8 +75,6 @@ class Redesign(Extension):
         actions[3].toggled.connect(self.nuToolboxToggled)
         actions[4].toggled.connect(self.nuToolOptionsToggled)
         
-        self.rebuildStyleSheet(window.qwindow())
-        
         if (self.usesNuToolOptions and
             Application.readSetting("", "ToolOptionsInDocker", "false") == "true"):
                 self.ntTO = ntToolOptions(window)
@@ -86,6 +82,7 @@ class Redesign(Extension):
         if self.usesNuToolbox: 
             self.ntTB = ntToolBox(window)
 
+        self.rebuildStyleSheet(window.qwindow())
 
     def toolbarBorderToggled(self, toggled):
         Application.writeSetting("Redesign", "usesBorderlessToolbar", str(toggled).lower())
@@ -118,6 +115,7 @@ class Redesign(Extension):
         if toggled and not self.ntTB:
             self.ntTB = ntToolBox(Application.activeWindow())
             self.ntTB.pad.show() # This shouldn't be needed, but it is...
+            self.ntTB.updateStyleSheet()
         elif not toggled and self.ntTB:
             self.ntTB.close()
             self.ntTB = None
@@ -131,6 +129,7 @@ class Redesign(Extension):
             if toggled and not self.ntTO:
                 self.ntTO = ntToolOptions(Application.activeWindow())
                 self.ntTO.pad.show() # This shouldn't be needed, but it is..
+                self.ntTO.updateStyleSheet()
             elif not toggled and self.ntTO:
                 self.ntTO.close()
                 self.ntTO = None
@@ -197,6 +196,13 @@ class Redesign(Extension):
         # This is ugly, but it's the least ugly way I can get the canvas to 
         # update it's size (for now)
         canvas.resize(canvas.sizeHint())
-        
+
+        # Update Tool Options stylesheet
+        if self.usesNuToolOptions and self.ntTO:
+            self.ntTO.updateStyleSheet()
+
+        # Update Toolbox stylesheet
+        if self.usesNuToolbox and self.ntTB:
+            self.ntTB.updateStyleSheet()  
 
 Krita.instance().addExtension(Redesign(Krita.instance()))

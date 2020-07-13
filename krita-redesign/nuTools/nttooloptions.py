@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMdiArea, QDockWidget
 from .ntadjusttosubwindowfilter import ntAdjustToSubwindowFilter
 from .ntwidgetpad import ntWidgetPad
+from .. import variables
 
 class ntToolOptions():
 
@@ -14,7 +15,6 @@ class ntToolOptions():
         self.pad.setObjectName("toolOptionsPad")
         self.pad.setViewAlignment('right')
         self.pad.borrowDocker(toolOptions)
-        # self.pad.setStyleSheet(self.styleSheet()) # Maybe worth tinkering with another time
 
         # Create and install event filter
         self.adjustFilter = ntAdjustToSubwindowFilter(mdiArea)
@@ -39,6 +39,7 @@ class ntToolOptions():
         if subWin:
             subWin.installEventFilter(self.adjustFilter)
             self.pad.adjustToView()
+            self.updateStyleSheet()
     
 
     def findDockerAction(self, window, text):
@@ -55,59 +56,9 @@ class ntToolOptions():
         return False
 
 
-    def styleSheet(self):
-        return """
-            * { 
-                background-color: #00000000;
-            }
-            
-            .QScrollArea { 
-                background-color: #00000000;
-            }
-            
-            QScrollArea * { 
-                background-color: #00000000;
-            }
-            
-            QScrollArea QToolTip {
-                background-color: #ffffff;                           
-            }
-            
-            QToolButton, QPushButton {
-                background-color: #80000000;
-                border: none;
-                border-radius: 4px;
-            }
-            
-            QToolButton:checked, QPushButton:checked {
-                background-color: #aa306fa8;
-            }
-            
-            QToolButton:hover, QPushButton:hover {
-                background-color: #1c1c1c;
-            }
-            
-            QToolButton:pressed, QPushButton:pressed {
-                background-color: #53728e;
-            }
-
-            QAbstractSpinBox {
-                background-color: #80000000;
-                border: none;
-                border-radius: 4px;
-            }
-
-            QComboBox {
-                background-color: #80000000;
-                border: none;
-                border-radius: 4px;
-            }
-
-            KisSliderSpinBox {
-                background-color: #80000000;
-                border: none;
-            }
-        """
+    def updateStyleSheet(self):
+        #self.pad.setStyleSheet(variables.nu_tool_options_style)
+        return
     
     def close(self):
         self.dockerAction.setEnabled(True)
