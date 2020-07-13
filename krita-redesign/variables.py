@@ -7,49 +7,92 @@ small_tab_size = 9
 
 no_borders_style = " QToolBar { border: none; } "
 nu_toolbox_style = """
-
-            KoToolBoxDocker { 
-                background-color: rgba(128, 128, 128, .01);
-                margin: 2px; 
+            QWidget { 
+                background-color: #01808085;
             }
             
-            .KoToolBoxScrollArea { 
-                background-color: rgba(0,0,0,0);
+            .QScrollArea { 
+                background-color: #00000000;
             }
             
-            KoToolBoxScrollArea * { 
-                background-color: rgba(0,0,0,0);
+            QScrollArea * { 
+                background-color: #00000000;
             }
             
-            KoToolBoxDocker QLabel {
-                border: none;
-                border-radius: 3px; 
-                background-color: #66000000;
-            }
-            
-            KoToolBoxScrollArea QToolTip {
+            QScrollArea QToolTip {
                 background-color: #ffffff;                           
             }
             
-            KoToolBoxButton {
-                background-color: #66000000;
+            QAbstractButton {
+                background-color: #70000000;
                 border: none;
-                border-radius: 3px;
-                margin-right: 1px;
-                margin-top: 1px;
+                border-radius: 4px;
             }
             
-            KoToolBoxButton:checked {
+            QAbstractButton:checked {
                 background-color: #aa306fa8;
             }
             
-            KoToolBoxButton:hover {
-                background-color: inherit;
+            QAbstractButton:hover {
+                background-color: #1c1c1c;
             }
             
-            KoToolBoxButton:pressed {
+            QAbstractButton:pressed {
                 background-color: #53728e;
-            }"""
+            }
+        """
+nu_tool_options_style = """
+            * { 
+                background-color: #00000000;
+            }
+            
+            .QScrollArea { 
+                background-color: #00000000;
+            }
+            
+            QScrollArea * { 
+                background-color: #00000000;
+            }
+            
+            QScrollArea QToolTip {
+                background-color: #ffffff;                           
+            }
+            
+            QToolButton, QPushButton {
+                background-color: #80000000;
+                border: none;
+                border-radius: 4px;
+            }
+            
+            QToolButton:checked, QPushButton:checked {
+                background-color: #aa306fa8;
+            }
+            
+            QToolButton:hover, QPushButton:hover {
+                background-color: #1c1c1c;
+            }
+            
+            QToolButton:pressed, QPushButton:pressed {
+                background-color: #53728e;
+            }
+
+            QAbstractSpinBox {
+                background-color: #80000000;
+                border: none;
+                border-radius: 4px;
+            }
+
+            QComboBox {
+                background-color: #80000000;
+                border: none;
+                border-radius: 4px;
+            }
+
+            KisSliderSpinBox {
+                background-color: #80000000;
+                border: none;
+            }
+        """
 small_tab_style = f"QTabBar::tab {{ height: {small_tab_size}px; }}"
 
 flat_tab_base_style = ""
