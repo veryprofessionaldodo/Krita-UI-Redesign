@@ -57,7 +57,6 @@ class ntToolBox():
 
 
     def updateStyleSheet(self):
-        print("Setting ToolBox")
         self.pad.setStyleSheet(variables.nu_toolbox_style)
 
     def close(self):

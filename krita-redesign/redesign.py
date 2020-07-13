@@ -165,9 +165,9 @@ class Redesign(Extension):
         
         window.setStyleSheet(full_style_sheet)
 
-        print("\n\n")
-        print(full_style_sheet)
-        print("\n\n")
+        #print("\n\n")
+        #print(full_style_sheet)
+        #print("\n\n")
 
         # Overview
         overview = window.findChild(QWidget, 'OverviewDocker')
