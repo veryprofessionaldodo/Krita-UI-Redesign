@@ -23,11 +23,11 @@ from PyQt5.QtWidgets import QMessageBox
     
 class Redesign(Extension):
 
-    usesFlatTheme = True
-    usesBorderlessToolbar = True
-    usesThinDocumentTabs = True
-    usesNuToolbox = True
-    usesNuToolOptions = True
+    usesFlatTheme = False
+    usesBorderlessToolbar = False
+    usesThinDocumentTabs = False
+    usesNuToolbox = False
+    usesNuToolOptions = False
     ntTB = None
     ntTO = None
  
@@ -41,20 +41,20 @@ class Redesign(Extension):
 
         variables.buildFlatTheme()
         
-        if Application.readSetting("Redesign", "usesFlatTheme", "false") == "false":
-            self.usesFlatTheme = False
+        if Application.readSetting("Redesign", "usesFlatTheme", "true") == "true":
+            self.usesFlatTheme = True
 
-        if Application.readSetting("Redesign", "usesBorderlessToolbar", "false") == "false":
-            self.usesBorderlessToolbar = False
+        if Application.readSetting("Redesign", "usesBorderlessToolbar", "true") == "true":
+            self.usesBorderlessToolbar = True
 
-        if Application.readSetting("Redesign", "usesThinDocumentTabs", "false") == "false":
-            self.usesThinDocumentTabs = False
+        if Application.readSetting("Redesign", "usesThinDocumentTabs", "true") == "true":
+            self.usesThinDocumentTabs = True
 
-        if Application.readSetting("Redesign", "usesNuToolbox", "false") == "false":
-            self.usesNuToolbox = False
+        if Application.readSetting("Redesign", "usesNuToolbox", "true") == "true":
+            self.usesNuToolbox = True
         
-        if Application.readSetting("Redesign", "usesNuToolOptions", "false") == "false":
-            self.usesNuToolOptions = False
+        if Application.readSetting("Redesign", "usesNuToolOptions", "true") == "true":
+            self.usesNuToolOptions = True
 
 
     def createActions(self, window):

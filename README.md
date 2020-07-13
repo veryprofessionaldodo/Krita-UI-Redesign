@@ -10,6 +10,8 @@ To install, download this repo and unzip it to Krita's *pykrita* folder:
 
 Alternatively, this folder can be found by opening Krita and clicking `Settings -> Manage Resources -> Open Resource Folder... -> pykrita`.
 
+After installing it, you can enable the features you want on the "Redesign" tab on the menu. 
+
 ## Features 
 
 #### Collapsible Toolbox and Tool Options (with customizable shortcuts)
