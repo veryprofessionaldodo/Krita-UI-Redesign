@@ -10,7 +10,7 @@ To install, download this repo and unzip it to Krita's *pykrita* folder:
 
 Alternatively, this folder can be found by opening Krita and clicking `Settings -> Manage Resources -> Open Resource Folder... -> pykrita`.
 
-After installing it, you can enable the features you want on the "Redesign" tab on the menu. 
+After installing it, you need to enable the plugin itself. Go to `Settings -> Configure Krita -> Python Plugin Manager` and enable it. After that, just restart Krita, and you can check the features you want on the "Redesign" tab on the menu! 
 
 ## Features 
 
@@ -27,3 +27,5 @@ After installing it, you can enable the features you want on the "Redesign" tab 
 Here's how it's looking so far:
 
 ![Screenshot](https://user-images.githubusercontent.com/22790704/87299481-01dca580-c504-11ea-804c-d98d09cd2f1f.png)
+
+### Hope you like it!
