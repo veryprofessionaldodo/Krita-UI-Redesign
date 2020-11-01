@@ -21,7 +21,7 @@ alternate = "black"
 tab_text_color = "#b4b4b4"
 active_text_color = "#eeeeee"
 
-small_tab_size = 9
+small_tab_size = 20
 
 no_borders_style = " QToolBar { border: none; } "
 nu_toolbox_style = """
@@ -117,12 +117,12 @@ flat_tab_base_style = ""
 flat_tab_big_style = ""
 flat_tab_small_style = ""
 flat_main_window_style = ""
-flat_tools_style = ""
+flat_tool_button_style = ""
+flat_push_button_style = ""
 flat_dock_style = ""
 flat_toolbar_style = ""
 flat_menu_bar_style = ""
 flat_combo_box_style = ""
-flat_spin_box_style = ""
 flat_toolbox_style = ""
 flat_status_bar_style = ""
 flat_tree_view_style = ""
@@ -133,12 +133,12 @@ def buildFlatTheme():
     global flat_tab_big_style
     global flat_tab_small_style
     global flat_main_window_style
-    global flat_tools_style
+    global flat_tool_button_style
+    global flat_push_button_style
     global flat_dock_style
     global flat_toolbar_style
     global flat_menu_bar_style
     global flat_combo_box_style
-    global flat_spin_box_style
     global flat_toolbox_style
     global flat_status_bar_style
     global flat_tree_view_style
@@ -184,14 +184,15 @@ def buildFlatTheme():
     flat_tab_big_style = f"""QTabBar::tab {{
             border-top-right-radius: 4px;
             border-top-left-radius: 4px;
-            padding: 8px;
+            padding: 10px;
         }}"""
     flat_tab_small_style = f""" 
         QTabBar::tab {{
             border-top-right-radius: 4px;
             border-top-left-radius: 4px;
             height: {small_tab_size}px;
-            padding: 8px;
+            padding-left: 10px;
+            padding-right: 10px;
         }}"""
 
     flat_main_window_style = f"""
@@ -211,18 +212,18 @@ def buildFlatTheme():
             background: #2e2e2e;
         }}
         """
-    flat_tools_style = f"""QToolButton, QPushButton {{
+    flat_tool_button_style = f"""QToolButton {{
             background-color: {background};
             border-radius: 4px;
             border: 2px solid {alternate};
         }}
 
-        QToolButton:checked, QPushButton:checked {{
+        QToolButton:checked {{
             background-color: {alternate};
             border-radius: 4px;
         }}
 
-        QToolButton:hover, QPushButton:hover {{
+        QToolButton:hover {{
             border: none;
             background-color: {alternate};
         }}
@@ -234,6 +235,26 @@ def buildFlatTheme():
         QToolButton::menu-button {{
             border: none;
             border-radius: 4px;
+        }}"""
+    
+    flat_push_button_style = f"""QPushButton {{
+            background-color: {background};
+            border-radius: 4px;
+            border: 2px solid {alternate};
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }}
+
+        QPushButton:checked {{
+            background-color: {alternate};
+            border-radius: 4px;
+        }}
+
+        QPushButton:hover {{
+            border: none;
+            background-color: {alternate};
         }}"""
 
     flat_dock_style = f""" 
@@ -277,21 +298,14 @@ def buildFlatTheme():
             background-color: {background};
             border: none;
         }}
-        
-        QToolBar > * {{
-            border: none;
-        }}
-        
-        QToolBar > * > QToolButton, QPushButton {{
-            border: none;
-        }} """
+        """
     flat_menu_bar_style = f"QMenuBar {{background-color: {background};}}"
     flat_combo_box_style = f"""QComboBox {{ 
             background: {background};
             border: 2px solid {alternate};
             border-radius: 4px;
-            padding-left: 5px;
-            padding-right: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
             padding-bottom: 2px;
             padding-top: 2px;
         }}
@@ -306,35 +320,6 @@ def buildFlatTheme():
         }}
         
         QComboBox::down-arrow {{
-            image: url(:16_light_draw-arrow-down.svg);
-            width: 9px;
-        }}"""
-    flat_spin_box_style = f"""QSpinBox {{
-            border: none;
-            background-color: {alternate};
-            border-radius: 4px;
-        }}    
-
-        QSpinBox::up-button {{
-            border: none;
-            border-radius: 4px;
-            margin-left: 2px;
-            subcontrol-origin: margin;
-        }}
-
-         QSpinBox::down-button {{
-            border: none;
-            border-radius: 4px;
-            margin-left: 2px;
-            subcontrol-origin: padding;
-        }}
-
-        QSpinBox::up-arrow {{
-            image: url(:16_light_draw-arrow-up.svg);
-            width: 9px;
-        }}
-
-         QSpinBox::down-arrow {{
             image: url(:16_light_draw-arrow-down.svg);
             width: 9px;
         }}"""
