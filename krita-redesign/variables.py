@@ -204,7 +204,7 @@ def buildFlatTheme():
             background: {alternate};
         }}
 
-        QStatusBar > QPushButton {{
+        QStatusBar > * {{
             border: none;
         }}
         

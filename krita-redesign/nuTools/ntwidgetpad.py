@@ -50,12 +50,19 @@ class ntWidgetPad(QWidget):
     def activeView(self):
         """
         Get the View widget of the active subwindow."""
+        if not self.parentWidget():
+            return None 
+        
         subWin = self.parentWidget().activeSubWindow()
         
-        if subWin:
-            for child in subWin.children(): 
-                if 'view' in child.objectName(): # Grab the View from the active tab/sub-window
-                    return child
+        if not subWin:
+            return None
+
+        for child in subWin.children(): 
+            if 'view' in child.objectName(): # Grab the View from the active tab/sub-window
+                return child
+        
+        return None
 
 
     def adjustToView(self):
