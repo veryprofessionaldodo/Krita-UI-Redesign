@@ -56,7 +56,6 @@ class Redesign(Extension):
         if Application.readSetting("Redesign", "usesNuToolOptions", "true") == "true":
             self.usesNuToolOptions = True
 
-
     def createActions(self, window):
         actions = []
 
@@ -164,8 +163,7 @@ class Redesign(Extension):
         # Dockers
         if self.usesFlatTheme:
             full_style_sheet += f"\n {variables.flat_dock_style} \n"
-            full_style_sheet += f"\n {variables.flat_tool_button_style} \n"
-            full_style_sheet += f"\n {variables.flat_push_button_style} \n"
+            full_style_sheet += f"\n {variables.flat_button_style} \n"
             full_style_sheet += f"\n {variables.flat_main_window_style} \n"
             full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
             full_style_sheet += f"\n {variables.flat_combo_box_style} \n"

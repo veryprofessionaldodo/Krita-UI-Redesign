@@ -133,8 +133,7 @@ def buildFlatTheme():
     global flat_tab_big_style
     global flat_tab_small_style
     global flat_main_window_style
-    global flat_tool_button_style
-    global flat_push_button_style
+    global flat_button_style
     global flat_dock_style
     global flat_toolbar_style
     global flat_menu_bar_style
@@ -164,12 +163,12 @@ def buildFlatTheme():
         }}
     
        QTabBar::tab:!selected {{
-           background-color: {alternate};
+           background-color: {background};
            color: {tab_text_color};
        }}
 
         QTabBar::tab:selected {{
-           background-color: {background};
+           background-color: {alternate};
            color: {active_text_color};
        }}
 
@@ -207,54 +206,34 @@ def buildFlatTheme():
         QStatusBar > * {{
             border: none;
         }}
+
+        KisDoubleSliderSpinBox {{
+            background: {alternate};
+            border: none;
+        }} 
         
         QStatusBar > QPushButton:hover {{
             background: #2e2e2e;
         }}
         """
-    flat_tool_button_style = f"""QToolButton {{
+    flat_button_style = f"""QAbstractButton {{
             background-color: {background};
-            border-radius: 4px;
-            border: 2px solid {alternate};
-        }}
-
-        QToolButton:checked {{
-            background-color: {alternate};
-            border-radius: 4px;
-        }}
-
-        QToolButton:hover {{
             border: none;
-            background-color: {alternate};
         }}
 
-        QToolButton[popupMode="1"] {{
+        QAbstractButton:checked {{
+            background-color: {alternate};
+            border: none;
+        }}
+
+        QAbstractButton:hover {{
+            background-color: {alternate};
+            border: none;
+        }}
+
+        QAbstractButton[popupMode="1"] {{
             padding-right: 13px;
-        }}
-
-        QToolButton::menu-button {{
             border: none;
-            border-radius: 4px;
-        }}"""
-    
-    flat_push_button_style = f"""QPushButton {{
-            background-color: {background};
-            border-radius: 4px;
-            border: 2px solid {alternate};
-            padding-left: 10px;
-            padding-right: 10px;
-            padding-top: 2px;
-            padding-bottom: 2px;
-        }}
-
-        QPushButton:checked {{
-            background-color: {alternate};
-            border-radius: 4px;
-        }}
-
-        QPushButton:hover {{
-            border: none;
-            background-color: {alternate};
         }}"""
 
     flat_dock_style = f""" 
@@ -299,10 +278,13 @@ def buildFlatTheme():
             border: none;
         }}
         """
-    flat_menu_bar_style = f"QMenuBar {{background-color: {background};}}"
+    flat_menu_bar_style = f"""QMenuBar {{
+        background-color: {background};
+        }}
+        """
     flat_combo_box_style = f"""QComboBox {{ 
             background: {background};
-            border: 2px solid {alternate};
+            border-bottom: 2px solid {alternate};
             border-radius: 4px;
             padding-left: 10px;
             padding-right: 10px;

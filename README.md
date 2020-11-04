@@ -8,6 +8,8 @@ To install, download this repo and unzip it to Krita's *pykrita* folder:
 + Linux user will find this folder at `~/.local/share/krita/pykrita/`.
 + Windows users till find this folder at `C:\Users\USERNAME\AppData\Roaming\krita\pykrita`.
 
+Make sure the '.desktop' file is in the main folder of the `pykrita` folder!
+
 Alternatively, this folder can be found by opening Krita and clicking `Settings -> Manage Resources -> Open Resource Folder... -> pykrita`.
 
 After installing it, you need to enable the plugin itself. Go to `Settings -> Configure Krita -> Python Plugin Manager` and enable it. After that, just restart Krita, and you can check the features you want on the "Redesign" tab on the menu! 
