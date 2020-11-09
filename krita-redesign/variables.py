@@ -128,6 +128,7 @@ flat_status_bar_style = ""
 flat_tree_view_style = ""
 flat_overview_docker_style = ""
 
+
 def buildFlatTheme():
     global flat_tab_base_style
     global flat_tab_big_style
@@ -141,8 +142,8 @@ def buildFlatTheme():
     global flat_toolbox_style
     global flat_status_bar_style
     global flat_tree_view_style
-    global flat_overview_docker_style 
-    
+    global flat_overview_docker_style
+
     flat_overview_docker_style = f"""
         * {{
             background: {background};
@@ -155,31 +156,50 @@ def buildFlatTheme():
         }}    
     """
 
-    flat_tab_base_style = f""" 
+    flat_tab_base_style = f"""         
+        QTabBar::tab:!selected {{
+            background: #232323;
+            border-bottom: 10px solid #232323;
+            border-top: 10px solid #232323;
+            margin-top: 5px;
+        }} 
+        
+        QTabBar::tab:selected {{
+            background: #3e3e3e;
+            border-bottom: 10px solid #323232;
+            border-top: 10px solid #323232;
+            margin-top: 5px;
+        }} 
+
         QTabBar {{
+            background-color: {alternate};
             border: none;
             qproperty-drawBase: 0;
             qproperty-expanding: 1;
         }}
     
-       QTabBar::tab:!selected {{
-           background-color: {background};
-           color: {tab_text_color};
-       }}
+        QTabBar::tab:!selected {{
+            background: {alternate};
+            border-bottom: 7px solid {alternate};
+            border-top: 7px solid {alternate};
+            margin-top: 5px;
+        }}
 
         QTabBar::tab:selected {{
-           background-color: {alternate};
-           color: {active_text_color};
-       }}
+            background: {background};
+            border-bottom: 7px solid {background};
+            border-top: 7px solid {background};
+            margin-top: 5px;
+        }}
 
-       QTabBar::tab:only-one {{
-           margin: 0px;
-       }}
+        QTabBar::tab:only-one {{
+            margin: 0px;
+        }}
 
        QTabBar::tab:hover {{
            color: white;
        }}
-       """ 
+       """
     flat_tab_big_style = f"""QTabBar::tab {{
             border-top-right-radius: 4px;
             border-top-left-radius: 4px;
@@ -187,6 +207,9 @@ def buildFlatTheme():
         }}"""
     flat_tab_small_style = f""" 
         QTabBar::tab {{
+            margin:0px;
+            border-top:0px;
+            border-bottom: 0px;
             border-top-right-radius: 4px;
             border-top-left-radius: 4px;
             height: {small_tab_size}px;
@@ -217,24 +240,32 @@ def buildFlatTheme():
         }}
         """
     flat_button_style = f"""QAbstractButton {{
-            background-color: {background};
+            background: {background};
             border: none;
         }}
 
         QAbstractButton:checked {{
-            background-color: {alternate};
+            background: {alternate};
             border: none;
         }}
 
         QAbstractButton:hover {{
-            background-color: {alternate};
+            background: {alternate};
             border: none;
         }}
 
         QAbstractButton[popupMode="1"] {{
             padding-right: 13px;
             border: none;
-        }}"""
+        }}
+
+        QPushButton {{
+            background: {background};
+            border-radius: 4px;
+            border: 2px solid {alternate};
+        }}
+        
+        """
 
     flat_dock_style = f""" 
         QAbstractScrollArea {{
@@ -313,13 +344,16 @@ def buildFlatTheme():
         padding: 5px;
     }}"""
 
+
 def setBackground(new_background):
     global background
     background = new_background
 
+
 def setAlternate(new_alternate):
     global alternate
     alternate = new_alternate
+
 
 def setTextColor(new_color):
     global tab_text_color
