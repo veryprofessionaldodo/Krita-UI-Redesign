@@ -50,6 +50,9 @@ class ntToolOptions():
         self.dockerAction = window.qwindow().findChild(QDockWidget, "sharedtooldocker").toggleViewAction()
         self.dockerAction.setEnabled(False)
 
+        self.pad.show() 
+        self.updateStyleSheet()
+
     def ensureFilterIsInstalled(self, subWin):
         """Ensure that the current SubWindow has the filter installed,
         and immediately move the Toolbox to current View."""
