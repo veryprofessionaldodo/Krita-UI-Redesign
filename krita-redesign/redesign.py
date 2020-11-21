@@ -100,13 +100,8 @@ class Redesign(Extension):
 
         self.rebuildStyleSheet(window.qwindow())
 
-        # fixes for launching pads on first run
-        self.launchingWindow = window
-
-        self.nuToolOptionsToggled(self.usesNuToolOptions)
-        self.nuToolOptionsToggled(self.usesNuToolOptions)
-
-        self.launchingWindow = None
+        #self.nuToolOptionsToggled(self.usesNuToolOptions)
+        #self.nuToolOptionsToggled(self.usesNuToolOptions)
 
     def toolbarBorderToggled(self, toggled):
         Application.writeSetting("Redesign", "usesBorderlessToolbar", str(toggled).lower())
@@ -133,27 +128,26 @@ class Redesign(Extension):
 
 
     def nuToolboxToggled(self, toggled):
-        window = self.launchingWindow if self.launchingWindow else Application.activeWindow()
-
         Application.writeSetting("Redesign", "usesNuToolbox", str(toggled).lower())
         self.usesNuToolbox = toggled
 
         if toggled:
-            self.ntTB = ntToolBox(window)
+            self.ntTB = ntToolBox(Application.activeWindow())
+            self.ntTB.pad.show() 
+            self.ntTB.updateStyleSheet()
         elif not toggled and self.ntTB:
             self.ntTB.close()
             self.ntTB = None
 
-
     def nuToolOptionsToggled(self, toggled):
-        window = self.launchingWindow if self.launchingWindow else Application.activeWindow()
-
         if Application.readSetting("", "ToolOptionsInDocker", "false") == "true":
             Application.writeSetting("Redesign", "usesNuToolOptions", str(toggled).lower())
             self.usesNuToolOptions = toggled
 
             if toggled:
-                self.ntTO = ntToolOptions(window)
+                self.ntTO = ntToolOptions(Application.activeWindow())
+                self.ntTO.pad.show() 
+                self.ntTO.updateStyleSheet()
             elif not toggled and self.ntTO:
                 self.ntTO.close()
                 self.ntTO = None
