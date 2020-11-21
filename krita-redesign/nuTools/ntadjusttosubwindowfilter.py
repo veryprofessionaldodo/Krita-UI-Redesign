@@ -25,7 +25,6 @@ class ntAdjustToSubwindowFilter(QObject):
     def __init__(self, parent=None):
         super(ntAdjustToSubwindowFilter, self).__init__(parent)
         self.target = None
-        
 
     def eventFilter(self, obj, e):
         """Event filter: Update the Target's position to match to the current view 
@@ -37,7 +36,6 @@ class ntAdjustToSubwindowFilter(QObject):
             self.target.adjustToView()
             
         return False
-
 
     def setTargetWidget(self, wdgt):
         """Set which QWidget to adjust the position of."""
