@@ -15,7 +15,6 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-
 from PyQt5.QtWidgets import QMdiArea, QDockWidget
 from .ntadjusttosubwindowfilter import ntAdjustToSubwindowFilter
 from .ntwidgetpad import ntWidgetPad
@@ -70,7 +69,6 @@ class ntToolBox():
                         return a
                 
         return False
-
 
     def updateStyleSheet(self):
         self.pad.setStyleSheet(variables.nu_toolbox_style)

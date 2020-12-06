@@ -41,7 +41,7 @@ class ntScrollAreaContainer(QWidget):
 
     def setScrollArea(self, scrollArea):
         """
-        Set the QScrollArea for the conatiner to hold.
+        Set the QScrollArea for the container to hold.
 
         True will be returned upon success and if no prior QScrollArea was set. 
         If another QScrollArea was already set it will be returned so that 
