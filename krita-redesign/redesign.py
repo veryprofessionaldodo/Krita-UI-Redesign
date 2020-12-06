@@ -35,12 +35,6 @@ class Redesign(Extension):
         super().__init__(parent)
 
     def setup(self):
-        variables.setBackground(qApp.palette().color(QPalette.Window).name())
-        variables.setAlternate(qApp.palette().color(QPalette.AlternateBase).name())
-        variables.setTextColor("#b4b4b4")
-
-        variables.buildFlatTheme()
-        
         if Application.readSetting("Redesign", "usesFlatTheme", "true") == "true":
             self.usesFlatTheme = True
 
@@ -77,6 +71,7 @@ class Redesign(Extension):
 
         actions.append(window.createAction("nuToolOptions", "NuToolOptions", ""))
         actions[4].setCheckable(True)
+
         if Application.readSetting("", "ToolOptionsInDocker", "false") == "true":
             actions[4].setChecked(self.usesNuToolOptions)
 
@@ -90,7 +85,9 @@ class Redesign(Extension):
         actions[2].toggled.connect(self.flatThemeToggled)
         actions[3].toggled.connect(self.nuToolboxToggled)
         actions[4].toggled.connect(self.nuToolOptionsToggled)
-        
+
+        variables.buildFlatTheme()
+
         if (self.usesNuToolOptions and
             Application.readSetting("", "ToolOptionsInDocker", "false") == "true"):
                 self.ntTO = ntToolOptions(window)
