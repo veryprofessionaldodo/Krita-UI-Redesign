@@ -28,6 +28,6 @@ After installing it, you need to enable the plugin itself. Go to `Settings -> Co
 
 Here's how it's looking so far:
 
-![Screenshot](https://user-images.githubusercontent.com/22790704/101278689-1ff9b980-37b5-11eb-91b7-a3b9d761dfdf.png)
+![Screenshot](https://user-images.githubusercontent.com/22790704/101278717-58999300-37b5-11eb-995f-96ac56862ae7.png)
 
 ### Hope you like it!
