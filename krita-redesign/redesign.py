@@ -95,12 +95,11 @@ class Redesign(Extension):
         if self.usesNuToolbox: 
             self.ntTB = ntToolBox(window)
 
-        self.nuToolOptionsToggled(True)
-        self.nuToolboxToggled(True)
+        # self.nuToolOptionsToggled(True)
+        # self.nuToolboxToggled(True)
 
-        self.nuToolOptionsToggled(self.usesNuToolOptions)
-        self.nuToolboxToggled(self.usesNuToolbox)
-
+        # self.nuToolOptionsToggled(self.usesNuToolOptions)
+        # self.nuToolboxToggled(self.usesNuToolbox)
 
     def toolbarBorderToggled(self, toggled):
         Application.writeSetting("Redesign", "usesBorderlessToolbar", str(toggled).lower())
