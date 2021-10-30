@@ -95,10 +95,12 @@ class Redesign(Extension):
         if self.usesNuToolbox: 
             self.ntTB = ntToolBox(window)
 
-        self.rebuildStyleSheet(window.qwindow())
+        self.nuToolOptionsToggled(True)
+        self.nuToolboxToggled(True)
 
-        #self.nuToolOptionsToggled(self.usesNuToolOptions)
-        #self.nuToolOptionsToggled(self.usesNuToolOptions)
+        self.nuToolOptionsToggled(self.usesNuToolOptions)
+        self.nuToolboxToggled(self.usesNuToolbox)
+
 
     def toolbarBorderToggled(self, toggled):
         Application.writeSetting("Redesign", "usesBorderlessToolbar", str(toggled).lower())
@@ -158,18 +160,18 @@ class Redesign(Extension):
 
     def rebuildStyleSheet(self, window):
         full_style_sheet = ""
-        
+
         # Dockers
         if self.usesFlatTheme:
             full_style_sheet += f"\n {variables.flat_dock_style} \n"
-            full_style_sheet += f"\n {variables.flat_button_style} \n"
-            full_style_sheet += f"\n {variables.flat_main_window_style} \n"
-            full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
-            full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
-            full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
-            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
-            full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
-            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
+            # full_style_sheet += f"\n {variables.flat_button_style} \n"
+            # full_style_sheet += f"\n {variables.flat_main_window_style} \n"
+            # full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
+            # full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
+            # full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
+            # full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
+            # full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
+            # full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
 
         # Toolbar
         if self.usesFlatTheme:
