@@ -24,7 +24,6 @@ from PyQt5.QtWidgets import QMessageBox
 class Redesign(Extension):
 
     usesFlatTheme = False
-    usesBorderlessToolbar = False
     usesThinDocumentTabs = False
     usesNuToolbox = False
     usesNuToolOptions = False
@@ -38,9 +37,6 @@ class Redesign(Extension):
         if Application.readSetting("Redesign", "usesFlatTheme", "true") == "true":
             self.usesFlatTheme = True
 
-        if Application.readSetting("Redesign", "usesBorderlessToolbar", "true") == "true":
-            self.usesBorderlessToolbar = True
-
         if Application.readSetting("Redesign", "usesThinDocumentTabs", "true") == "true":
             self.usesThinDocumentTabs = True
 
@@ -51,11 +47,7 @@ class Redesign(Extension):
             self.usesNuToolOptions = True
 
     def createActions(self, window):
-        actions = []
-
-        actions.append(window.createAction("toolbarBorder", "Borderless Toolbars", ""))
-        actions[0].setCheckable(True)
-        actions[0].setChecked(self.usesBorderlessToolbar) 
+        actions = [] 
 
         actions.append(window.createAction("tabHeight", "Thin Document Tabs", ""))
         actions[1].setCheckable(True)
@@ -80,7 +72,6 @@ class Redesign(Extension):
         for a in actions:
             menu.addAction(a)
 
-        actions[0].toggled.connect(self.toolbarBorderToggled)
         actions[1].toggled.connect(self.tabHeightToggled)
         actions[2].toggled.connect(self.flatThemeToggled)
         actions[3].toggled.connect(self.nuToolboxToggled)
@@ -100,14 +91,6 @@ class Redesign(Extension):
 
         # self.nuToolOptionsToggled(self.usesNuToolOptions)
         # self.nuToolboxToggled(self.usesNuToolbox)
-
-    def toolbarBorderToggled(self, toggled):
-        Application.writeSetting("Redesign", "usesBorderlessToolbar", str(toggled).lower())
-
-        self.usesBorderlessToolbar = toggled
-
-        self.rebuildStyleSheet(Application.activeWindow().qwindow())
-
 
     def flatThemeToggled(self, toggled):
         Application.writeSetting("Redesign", "usesFlatTheme", str(toggled).lower())
@@ -165,18 +148,11 @@ class Redesign(Extension):
             full_style_sheet += f"\n {variables.flat_dock_style} \n"
             # full_style_sheet += f"\n {variables.flat_button_style} \n"
             # full_style_sheet += f"\n {variables.flat_main_window_style} \n"
-            # full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
             # full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
             # full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
             # full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
             # full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
             # full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
-
-        # Toolbar
-        if self.usesFlatTheme:
-            full_style_sheet += f"\n {variables.flat_toolbar_style} \n"
-        elif self.usesBorderlessToolbar:
-            full_style_sheet += f"\n {variables.no_borders_style} \n"    
         
         window.setStyleSheet(full_style_sheet)
 

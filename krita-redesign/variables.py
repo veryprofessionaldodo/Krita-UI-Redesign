@@ -131,46 +131,39 @@ def buildFlatTheme():
     """
 
     flat_tab_base_style = f"""
-        QTabBar::tab:!selected {{
+          QTabBar::tab:!selected {{
             background: #{alternate};
-            border-bottom: 10px solid #{alternate};
-            border-top: 10px solid #{alternate};
-            margin-top: 5px;
             color: #{inactive_text_color};
         }} 
         
-        QTabBar::tab:selected {{
-            background: #{alternate};
-            border-bottom: 10px solid #{background};
-            border-top: 10px solid #{background};
-            margin-top: 5px;
-        }} 
-
         QTabBar {{
             background-color: #{alternate};
+        }}
+        
+        QMainWindow > QTabBar::tab {{
+            margin-top: 5px;
+            padding: 5px;
+            background: #{background};
+            qproperty-drawBase: 0;
+            qproperty-expanding: 1;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+        }}
+        
+        QMainWindow > QTabBar {{
             border: none;
             qproperty-drawBase: 0;
             qproperty-expanding: 1;
         }}
-    
-        QTabBar::tab:!selected {{
-            background: #{alternate};
-            border-bottom: 7px solid #{alternate};
-            border-top: 7px solid #{alternate};
-            margin-top: 5px;
-        }}
 
         QTabBar::tab:selected {{
             background: #{background};
-            border-bottom: 7px solid #{background};
-            border-top: 7px solid #{background};
-            margin-top: 5px;
         }}
 
        QTabBar::tab:hover {{
            color: #{active_text_color};
        }}
-       """
+    """
     flat_tab_big_style = f"""QTabBar::tab {{
             border-top-right-radius: 4px;
             border-top-left-radius: 4px;
@@ -206,13 +199,9 @@ def buildFlatTheme():
             background: #2e2e2e;
         }}
         """
-    flat_button_style = f"""QAbstractButton {{
+    flat_button_style = f"""
+        QAbstractButton {{
             background: #{background};
-            border: none;
-        }}
-
-        QAbstractButton:checked {{
-            background: #{alternate};
             border: none;
         }}
 
@@ -274,10 +263,6 @@ def buildFlatTheme():
     flat_toolbar_style = f"""QToolBar {{
             background-color: #{background};
             border: none;
-        }}
-        """
-    flat_menu_bar_style = f"""QMenuBar {{
-        background-color: #{background};
         }}
         """
     flat_combo_box_style = f"""QComboBox {{ 

@@ -1,4 +1,4 @@
-# This file is only useful for debugging. It's never used, and is merely 
+    # This file is only useful for debugging. It's never used, and is merely 
 # a reminder as to styling can be done (so that I don't forget again)
 from krita import * 
 
@@ -10,6 +10,9 @@ alternate = qApp.palette().color(QPalette.AlternateBase).name().split("#")[1]
 inactive_text_color = qApp.palette().color(QPalette.ToolTipText).name().split("#")[1]
 active_text_color = qApp.palette().color(QPalette.WindowText).name().split("#")[1]
 
+darker_background = "404040"
+lighter_background = "555555"
+
 stretch_tab_base_style = f"""
 QTabBar {{
             background-color: #{alternate};
@@ -19,62 +22,131 @@ QTabBar {{
       }}
     
 """
-flat_tab_base_style = f"""
-    QTabBar::tab:!selected {{
-        background: #{alternate};
-        border-bottom: 10px solid #{alternate};
-        border-top: 10px solid #{alternate};
-        margin-top: 5px;
-        color: #{inactive_text_color};
-    }} 
-        
-     QTabBar::tab:selected {{
-         background: #{alternate};
-         border-bottom: 10px solid #{background};
-         border-top: 10px solid #{background};
-         margin-top: 5px;
-     }} 
 
-      QTabBar::tab:!selected {{
+flat_tab_base_style = f"""
+  QTabBar::tab:!selected {{
             background: #{alternate};
-            border-bottom: 7px solid #{alternate};
-            border-top: 7px solid #{alternate};
+            color: #{inactive_text_color};
+        }} 
+        
+        QTabBar {{
+            background-color: #{alternate};
+        }}
+        
+        QMainWindow > QTabBar::tab {{
             margin-top: 5px;
-      }}
+            padding: 5px;
+            background: #{background};
+            qproperty-drawBase: 0;
+            qproperty-expanding: 1;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+        }}
+        
+        QMainWindow > QTabBar {{
+            border: none;
+            qproperty-drawBase: 0;
+            qproperty-expanding: 1;
+        }}
 
         QTabBar::tab:selected {{
             background: #{background};
-            border-bottom: 7px solid #{background};
-            border-top: 7px solid #{background};
-            margin-top: 5px;
         }}
 
        QTabBar::tab:hover {{
            color: #{active_text_color};
        }}
-       """
+    """
 
-stylesheet = """
-QAbstractScrollArea {
-   background: red;
-   border: none;
-}
+flat_button_style = f"""
+        QToolButton {{
+            background: #{background};
+            border: none;
+        }}
+
+        QToolButton:checked {{
+            background: #{alternate};
+            border: none;
+        }}
+
+        QToolButton:hover {{
+            background: #{alternate};
+            border: none;
+        }}
+
+        QToolButton[popupMode="1"] {{
+            padding-right: 13px;
+            border: none;
+        }}
+
+        QPushButton {{
+            background: #{lighter_background};
+        }}
+        
+        QPushButton:hover {{
+            background: #{alternate};
+        }}
+
+        QStatusBar QPushButton {{
+            background: #{background};
+        }}
+        
+        """
+
+flat_combo_box_style = f"""
+        QComboBox {{ 
+            background: #{darker_background};
+            border-bottom: 2px solid #{inactive_text_color};
+            border-radius: 4px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-bottom: 2px;
+            padding-top: 2px;
+        }}
+
+        QComboBox:hover {{
+            background: #{alternate};
+        }}
+        
+        QComboBox::drop-down {{
+            border: none;
+            border-radius: 4px;
+        }}
+        
+        QComboBox::down-arrow {{
+            image: url(:16_light_draw-arrow-down.svg);
+            width: 9px;
+        }}"""
+
+flat_layers_docker = f"""
+    QHeaderView QWidget {{
+        background: red;
+    }}
 """
+
+full_style_sheet = ""
+full_style_sheet += f"\n {stretch_tab_base_style} \n"
+full_style_sheet += f"\n {flat_tab_base_style} \n"
+full_style_sheet += f"\n {flat_button_style} \n"
+full_style_sheet += f"\n {flat_combo_box_style} \n"
+full_style_sheet += f"\n {flat_layers_docker} \n"
 
 # get object to apply styling
 
 window = instance.activeWindow().qwindow()
 
-print(window)
-
 # apply styling 
 
-window.setStyleSheet(stylesheet)
-window.setStyleSheet(flat_tab_base_style)
+window.setStyleSheet(full_style_sheet)
 
 # print color pallette
 # regular types are Window, Background, Foreground, WindowText for example
-print(qApp.palette().color(QPalette.ToolTipBackground).name())
+print(qApp.palette().color(QPalette.Background).name())
 
 # reset stylesheet 
-# window.setStyleSheet("")
+# stylesheet = "QMainWindowLayout {}"
+# window.setStyleSheet(stylesheet)
+
+# list children
+#for child in window.children():
+#    print(child.objectName())
