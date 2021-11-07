@@ -50,32 +50,32 @@ class Redesign(Extension):
         actions = [] 
 
         actions.append(window.createAction("tabHeight", "Thin Document Tabs", ""))
-        actions[1].setCheckable(True)
-        actions[1].setChecked(self.usesThinDocumentTabs)
+        actions[0].setCheckable(True)
+        actions[0].setChecked(self.usesThinDocumentTabs)
 
         actions.append(window.createAction("flatTheme", "Use flat theme", ""))
-        actions[2].setCheckable(True)
-        actions[2].setChecked(self.usesFlatTheme)
+        actions[1].setCheckable(True)
+        actions[1].setChecked(self.usesFlatTheme)
 
         actions.append(window.createAction("nuToolbox", "NuToolbox", ""))
-        actions[3].setCheckable(True)
-        actions[3].setChecked(self.usesNuToolbox)
+        actions[2].setCheckable(True)
+        actions[2].setChecked(self.usesNuToolbox)
 
         actions.append(window.createAction("nuToolOptions", "NuToolOptions", ""))
-        actions[4].setCheckable(True)
+        actions[3].setCheckable(True)
 
         if Application.readSetting("", "ToolOptionsInDocker", "false") == "true":
-            actions[4].setChecked(self.usesNuToolOptions)
+            actions[3].setChecked(self.usesNuToolOptions)
 
         menu = window.qwindow().menuBar().addMenu("Redesign")
 
         for a in actions:
             menu.addAction(a)
 
-        actions[1].toggled.connect(self.tabHeightToggled)
-        actions[2].toggled.connect(self.flatThemeToggled)
-        actions[3].toggled.connect(self.nuToolboxToggled)
-        actions[4].toggled.connect(self.nuToolOptionsToggled)
+        actions[0].toggled.connect(self.tabHeightToggled)
+        actions[1].toggled.connect(self.flatThemeToggled)
+        actions[2].toggled.connect(self.nuToolboxToggled)
+        actions[3].toggled.connect(self.nuToolOptionsToggled)
 
         variables.buildFlatTheme()
 

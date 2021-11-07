@@ -1,4 +1,4 @@
-    # This file is only useful for debugging. It's never used, and is merely 
+# This file is only useful for debugging. It's never used, and is merely 
 # a reminder as to styling can be done (so that I don't forget again)
 from krita import * 
 
