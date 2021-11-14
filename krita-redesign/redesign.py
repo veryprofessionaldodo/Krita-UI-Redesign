@@ -82,15 +82,15 @@ class Redesign(Extension):
         if (self.usesNuToolOptions and
             Application.readSetting("", "ToolOptionsInDocker", "false") == "true"):
                 self.ntTO = ntToolOptions(window)
+                self.ntTO.pad.show() 
+                self.ntTO.updateStyleSheet()
 
         if self.usesNuToolbox: 
             self.ntTB = ntToolBox(window)
+            self.ntTB.pad.show() 
+            self.ntTB.updateStyleSheet()
 
-        # self.nuToolOptionsToggled(True)
-        # self.nuToolboxToggled(True)
-
-        # self.nuToolOptionsToggled(self.usesNuToolOptions)
-        # self.nuToolboxToggled(self.usesNuToolbox)
+        self.rebuildStyleSheet(window.qwindow())
 
     def flatThemeToggled(self, toggled):
         Application.writeSetting("Redesign", "usesFlatTheme", str(toggled).lower())
@@ -147,12 +147,12 @@ class Redesign(Extension):
         if self.usesFlatTheme:
             full_style_sheet += f"\n {variables.flat_dock_style} \n"
             # full_style_sheet += f"\n {variables.flat_button_style} \n"
-            # full_style_sheet += f"\n {variables.flat_main_window_style} \n"
+            full_style_sheet += f"\n {variables.flat_main_window_style} \n"
             # full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
-            # full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
-            # full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
-            # full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
-            # full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
+            full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
+            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
+            full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
+            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
         
         window.setStyleSheet(full_style_sheet)
 
