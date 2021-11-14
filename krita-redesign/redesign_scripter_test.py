@@ -58,8 +58,84 @@ flat_tab_base_style = f"""
        }}
     """
 
+flat_combo_box_style = f"""
+        QComboBox {{ 
+            background: #{darker_background};
+            border-bottom: 2px solid #{inactive_text_color};
+            border-radius: 4px;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-bottom: 2px;
+            padding-top: 2px;
+        }}
+
+        QComboBox:hover {{
+            background: #{alternate};
+        }}
+        
+        QComboBox::drop-down {{
+            border: none;
+            border-radius: 4px;
+        }}
+        
+        QComboBox::down-arrow {{
+            image: url(:16_light_draw-arrow-down.svg);
+            width: 9px;
+        }}"""
+
+
+flat_main_window_style = f"""
+        QStackedWidget, QStackedLayout {{
+            background: #{background};
+        }}
+        QHeaderView {{
+            background: transparent;
+            background-color: #{background};
+        }}
+        
+        QLineEdit {{
+            background: #{alternate};
+        }}
+
+        QStatusBar > * {{
+            border: none;
+        }}
+
+        QDoubleSpinBox::up-button {{
+            border: transparent;
+        }} 
+        
+        QToolButton::menu-button{{
+            background: #{background};
+        }}
+        
+        QToolButton:hover {{
+            background: #{alternate};
+        }}
+        
+        QToolButton::menu-button:hover {{
+            background: #{alternate};
+        }}
+        
+        QStatusBar > QPushButton:hover {{
+            background: #2e2e2e;
+        }}
+        """
+
+flat_layers_docker = f"""
+    QHeaderView QWidget {{
+        background: red;
+    }}
+"""
+
+flat_tree_view_style = f"""QTreeView {{
+    background-color: #{background}; 
+    border: none;
+    padding: 5px;
+}}"""
+
 flat_button_style = f"""
-        QToolButton {{
+        QToolButton, QFrame {{
             background: #{background};
             border: none;
         }}
@@ -93,43 +169,14 @@ flat_button_style = f"""
         
         """
 
-flat_combo_box_style = f"""
-        QComboBox {{ 
-            background: #{darker_background};
-            border-bottom: 2px solid #{inactive_text_color};
-            border-radius: 4px;
-            padding-left: 10px;
-            padding-right: 10px;
-            padding-bottom: 2px;
-            padding-top: 2px;
-        }}
-
-        QComboBox:hover {{
-            background: #{alternate};
-        }}
-        
-        QComboBox::drop-down {{
-            border: none;
-            border-radius: 4px;
-        }}
-        
-        QComboBox::down-arrow {{
-            image: url(:16_light_draw-arrow-down.svg);
-            width: 9px;
-        }}"""
-
-flat_layers_docker = f"""
-    QHeaderView QWidget {{
-        background: red;
-    }}
-"""
-
 full_style_sheet = ""
 full_style_sheet += f"\n {stretch_tab_base_style} \n"
 full_style_sheet += f"\n {flat_tab_base_style} \n"
 full_style_sheet += f"\n {flat_button_style} \n"
 full_style_sheet += f"\n {flat_combo_box_style} \n"
 full_style_sheet += f"\n {flat_layers_docker} \n"
+full_style_sheet += f"\n {flat_main_window_style} \n"
+full_style_sheet += f"\n {flat_tree_view_style} \n"
 
 # get object to apply styling
 
@@ -141,7 +188,7 @@ window.setStyleSheet(full_style_sheet)
 
 # print color pallette
 # regular types are Window, Background, Foreground, WindowText for example
-print(qApp.palette().color(QPalette.Background).name())
+# print(qApp.palette().color(QPalette.Background).name())
 
 # reset stylesheet 
 # stylesheet = "QMainWindowLayout {}"
@@ -150,3 +197,12 @@ print(qApp.palette().color(QPalette.Background).name())
 # list children
 #for child in window.children():
 #    print(child.objectName())
+
+# get recent documents docker
+recentDocuments = window.findChild(QWidget, 'recentDocsStackedWidget')
+#recentDocuments = window.findChild(QWidget, 'recentDocsListView')
+print(recentDocuments.frameShape())
+recentDocuments.setFrameStyle(QFrame.NoFrame)
+recentDocuments.setFrameShape(QFrame.NoFrame)
+recentDocuments.setLineWidth(0)
+#recentDocuments.setFrameShadow(QFrame.Shadow)

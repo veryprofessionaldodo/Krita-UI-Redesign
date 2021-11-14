@@ -192,7 +192,6 @@ def buildFlatTheme():
 
         KisDoubleSliderSpinBox {{
             background: #{alternate};
-            border: none;
         }} 
         
         QStatusBar > QPushButton:hover {{
@@ -200,25 +199,36 @@ def buildFlatTheme():
         }}
         """
     flat_button_style = f"""
-        QAbstractButton {{
+        QToolButton {{
             background: #{background};
             border: none;
         }}
 
-        QAbstractButton:hover {{
+        QToolButton:checked {{
             background: #{alternate};
             border: none;
         }}
 
-        QAbstractButton[popupMode="1"] {{
+        QToolButton:hover {{
+            background: #{alternate};
+            border: none;
+        }}
+
+        QToolButton[popupMode="1"] {{
             padding-right: 13px;
             border: none;
         }}
 
         QPushButton {{
             background: #{background};
-            border-radius: 4px;
-            border: 2px solid #{alternate};
+        }}
+        
+        QPushButton:hover {{
+            background: #{alternate};
+        }}
+
+        QStatusBar QPushButton {{
+            background: #{background};
         }}
         
         """

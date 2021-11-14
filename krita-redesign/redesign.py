@@ -146,9 +146,9 @@ class Redesign(Extension):
         # Dockers
         if self.usesFlatTheme:
             full_style_sheet += f"\n {variables.flat_dock_style} \n"
-            # full_style_sheet += f"\n {variables.flat_button_style} \n"
+            full_style_sheet += f"\n {variables.flat_button_style} \n"
             full_style_sheet += f"\n {variables.flat_main_window_style} \n"
-            # full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
+            full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
             full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
             full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
             full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
