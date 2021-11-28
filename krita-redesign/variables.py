@@ -76,7 +76,9 @@ nu_toggle_button_style = f"""
             background-color: #{alternate};
         }}
         """
-
+nu_tool_options_style = f"""
+    border-radius: 5px;
+"""
 nu_scroll_area_style = f"""
         QScrollArea {{ 
             background-color: red;
@@ -117,6 +119,12 @@ def buildFlatTheme():
     global flat_status_bar_style
     global flat_tree_view_style
     global flat_overview_docker_style
+
+    flat_menu_bar_style = f"""
+        QMenuBar {{
+            border-bottom: 0px solid white;        
+        }} 
+    """
 
     flat_overview_docker_style = f"""
         * {{
@@ -164,10 +172,12 @@ def buildFlatTheme():
            color: #{active_text_color};
        }}
     """
+
     flat_tab_big_style = f"""QTabBar::tab {{
             border-top-right-radius: 4px;
             border-top-left-radius: 4px;
         }}"""
+
     flat_tab_small_style = f""" 
         QTabBar::tab {{
             border-top:0px;
@@ -198,8 +208,9 @@ def buildFlatTheme():
             background: #2e2e2e;
         }}
         """
+
     flat_button_style = f"""
-        QToolButton {{
+        QToolButton, QFrame {{
             background: #{background};
             border: none;
         }}
@@ -270,11 +281,13 @@ def buildFlatTheme():
             padding: 5px;
             margin-top: 2px;
         }}"""
+
     flat_toolbar_style = f"""QToolBar {{
             background-color: #{background};
             border: none;
         }}
         """
+
     flat_combo_box_style = f"""QComboBox {{ 
             background: #{background};
             border-bottom: 2px solid #{inactive_text_color};
@@ -298,8 +311,11 @@ def buildFlatTheme():
             image: url(:16_light_draw-arrow-down.svg);
             width: 9px;
         }}"""
+
     flat_toolbox_style = "* > QToolButton {border: none;}"
+
     flat_status_bar_style = f"QStatusBar {{ background-color: #{background}; }}"
+
     flat_tree_view_style = f"""QTreeView {{
         background-color: #{background}; 
         border: none;

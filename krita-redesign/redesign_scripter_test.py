@@ -122,6 +122,12 @@ flat_main_window_style = f"""
         }}
         """
 
+flat_menu_bar_style = f"""
+    QMenuBar {{
+        border-bottom: 0px solid white;        
+    }} 
+"""
+
 flat_layers_docker = f"""
     QHeaderView QWidget {{
         background: red;
@@ -135,7 +141,7 @@ flat_tree_view_style = f"""QTreeView {{
 }}"""
 
 flat_button_style = f"""
-        QToolButton, QFrame {{
+        QToolButton, QFrame{{
             background: #{background};
             border: none;
         }}
@@ -156,7 +162,7 @@ flat_button_style = f"""
         }}
 
         QPushButton {{
-            background: #{lighter_background};
+            background: #{background};
         }}
         
         QPushButton:hover {{
@@ -177,6 +183,8 @@ full_style_sheet += f"\n {flat_combo_box_style} \n"
 full_style_sheet += f"\n {flat_layers_docker} \n"
 full_style_sheet += f"\n {flat_main_window_style} \n"
 full_style_sheet += f"\n {flat_tree_view_style} \n"
+full_style_sheet += f"\n {flat_menu_bar_style} \n"
+full_style_sheet += f"\n {flat_layers_docker} \n"
 
 # get object to apply styling
 
@@ -198,11 +206,20 @@ window.setStyleSheet(full_style_sheet)
 #for child in window.children():
 #    print(child.objectName())
 
-# get recent documents docker
-recentDocuments = window.findChild(QWidget, 'recentDocsStackedWidget')
-#recentDocuments = window.findChild(QWidget, 'recentDocsListView')
-print(recentDocuments.frameShape())
-recentDocuments.setFrameStyle(QFrame.NoFrame)
-recentDocuments.setFrameShape(QFrame.NoFrame)
-recentDocuments.setLineWidth(0)
-#recentDocuments.setFrameShadow(QFrame.Shadow)
+# get random element
+elem = window.findChild(QWidget, 'listLayers')
+elem2 = elem.findChild(QWidget, 'qt_scrollarea_viewport')
+
+elem.setStyleSheet("background: blue; border: 2px solid white;")
+elem2.setStyleSheet("* {background: red; border: 2px solid white;} * > * > * > * {background: green; border: 2px solid black;}")
+elem2.setFrameStyle(QFrame.NoFrame)
+elem2.setFrameShape(QFrame.NoFrame)
+elem2.setLineWidth(0)
+elem2.setFrameShadow(QFrame.Shadow)
+
+elem2.setStyleSheet("*::separator {width: 0px; height: 0px;} * > *::separator {width: 0px; height: 0px;}")
+
+elem.setFrameStyle(QFrame.NoFrame)
+elem.setFrameShape(QFrame.NoFrame)
+elem.setLineWidth(0)
+elem.setFrameShadow(QFrame.Shadow) 

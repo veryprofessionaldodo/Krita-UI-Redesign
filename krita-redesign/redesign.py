@@ -153,6 +153,7 @@ class Redesign(Extension):
             full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
             full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
             full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
+            full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
         
         window.setStyleSheet(full_style_sheet)
 
@@ -164,6 +165,17 @@ class Redesign(Extension):
         overview = window.findChild(QWidget, 'OverviewDocker')
         overview_style = ""
 
+        # No border for Recent Documents and News Frame
+        recentDocuments = window.findChild(QWidget, 'recentDocsStackedWidget')
+        newsFrame = window.findChild(QWidget, 'newsFrame')
+        remove_frame_elems = [recentDocuments, newsFrame]
+
+        for elem in remove_frame_elems:
+            elem.setFrameStyle(QFrame.NoFrame)
+            elem.setFrameShape(QFrame.NoFrame)
+            elem.setLineWidth(0)
+            elem.setStyleSheet("")
+        
         if self.usesFlatTheme:
             overview_style += f"\n {variables.flat_overview_docker_style} \n"
 
