@@ -10,9 +10,6 @@ alternate = qApp.palette().color(QPalette.AlternateBase).name().split("#")[1]
 inactive_text_color = qApp.palette().color(QPalette.ToolTipText).name().split("#")[1]
 active_text_color = qApp.palette().color(QPalette.WindowText).name().split("#")[1]
 
-darker_background = "404040"
-lighter_background = "555555"
-
 stretch_tab_base_style = f"""
 QTabBar {{
             background-color: #{alternate};
@@ -60,7 +57,7 @@ flat_tab_base_style = f"""
 
 flat_combo_box_style = f"""
         QComboBox {{ 
-            background: #{darker_background};
+            background: #{background};
             border-bottom: 2px solid #{inactive_text_color};
             border-radius: 4px;
             padding-left: 10px;
@@ -99,22 +96,6 @@ flat_main_window_style = f"""
 
         QStatusBar > * {{
             border: none;
-        }}
-
-        QDoubleSpinBox::up-button {{
-            border: transparent;
-        }} 
-        
-        QToolButton::menu-button{{
-            background: #{background};
-        }}
-        
-        QToolButton:hover {{
-            background: #{alternate};
-        }}
-        
-        QToolButton::menu-button:hover {{
-            background: #{alternate};
         }}
         
         QStatusBar > QPushButton:hover {{
@@ -156,6 +137,18 @@ flat_button_style = f"""
             border: none;
         }}
 
+        QToolButton::menu-button{{
+            background: #{background};
+        }}
+
+        QToolButton:hover {{
+            background: #{alternate};
+        }}
+
+        QToolButton::menu-button:hover {{
+            background: #{alternate};
+        }}
+
         QToolButton[popupMode="1"] {{
             padding-right: 13px;
             border: none;
@@ -163,8 +156,11 @@ flat_button_style = f"""
 
         QPushButton {{
             background: #{background};
+            border: 1px solid #{alternate};
+            padding: 5px;
+            border-radius: 2px;
         }}
-        
+
         QPushButton:hover {{
             background: #{alternate};
         }}
@@ -172,7 +168,33 @@ flat_button_style = f"""
         QStatusBar QPushButton {{
             background: #{background};
         }}
+
+        QDoubleSpinBox {{
+            border: 1px solid #{alternate};
+            border-radius: 2px;
+            background: #{background};
+        }}
+
+        QDoubleSpinBox::up-button,
+        QDoubleSpinBox::up-arrow,        
+        QDoubleSpinBox::down-button,
+        QDoubleSpinBox::down-arrow {{
+            width: 10px;
+            height: 10px;
+            margin: 3px;
+        }}
+
+        QDoubleSpinBox::up-button,
+        QDoubleSpinBox::up-arrow {{
+            image: url(:24_light_draw-arrow-up.svg);
+            margin-top: 2px;
+         }}
         
+        QDoubleSpinBox::down-button,
+        QDoubleSpinBox::down-arrow {{
+            image: url(:24_light_draw-arrow-down.svg);
+            margin-bottom: 2px;
+        }}         
         """
 
 full_style_sheet = ""
@@ -206,20 +228,22 @@ window.setStyleSheet(full_style_sheet)
 #for child in window.children():
 #    print(child.objectName())
 
+def recursive_remove_border(element):
+    if hasattr(element, 'setFrameStyle'):
+        element.setFrameStyle(QFrame.NoFrame)
+    if hasattr(element, 'setFrameShape'):
+        element.setFrameShape(QFrame.NoFrame)
+    if hasattr(element, 'setFrameShadow'):
+        element.setFrameShadow(QFrame.Plain)
+    if hasattr(element, 'setLineWidth'):
+        element.setLineWidth(0)
+
+    for child in element.children():
+        recursive_remove_border(child)
+
 # get random element
 elem = window.findChild(QWidget, 'listLayers')
 elem2 = elem.findChild(QWidget, 'qt_scrollarea_viewport')
 
-elem.setStyleSheet("background: blue; border: 2px solid white;")
-elem2.setStyleSheet("* {background: red; border: 2px solid white;} * > * > * > * {background: green; border: 2px solid black;}")
-elem2.setFrameStyle(QFrame.NoFrame)
-elem2.setFrameShape(QFrame.NoFrame)
-elem2.setLineWidth(0)
-elem2.setFrameShadow(QFrame.Shadow)
-
-elem2.setStyleSheet("*::separator {width: 0px; height: 0px;} * > *::separator {width: 0px; height: 0px;}")
-
-elem.setFrameStyle(QFrame.NoFrame)
-elem.setFrameShape(QFrame.NoFrame)
-elem.setLineWidth(0)
-elem.setFrameShadow(QFrame.Shadow) 
+recursive_remove_border(elem)
+recursive_remove_border(elem2)

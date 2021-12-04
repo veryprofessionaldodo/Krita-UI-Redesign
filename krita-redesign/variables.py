@@ -188,8 +188,12 @@ def buildFlatTheme():
         }}"""
 
     flat_main_window_style = f"""
+        QStackedWidget, QStackedLayout {{
+            background: #{background};
+        }}
         QHeaderView {{
-            background: #{alternate};
+            background: transparent;
+            background-color: #{background};
         }}
         
         QLineEdit {{
@@ -199,18 +203,10 @@ def buildFlatTheme():
         QStatusBar > * {{
             border: none;
         }}
-
-        KisDoubleSliderSpinBox {{
-            background: #{alternate};
-        }} 
-        
-        QStatusBar > QPushButton:hover {{
-            background: #2e2e2e;
-        }}
         """
 
     flat_button_style = f"""
-        QToolButton, QFrame {{
+        QToolButton, QFrame{{
             background: #{background};
             border: none;
         }}
@@ -225,6 +221,18 @@ def buildFlatTheme():
             border: none;
         }}
 
+        QToolButton::menu-button{{
+            background: #{background};
+        }}
+
+        QToolButton:hover {{
+            background: #{alternate};
+        }}
+
+        QToolButton::menu-button:hover {{
+            background: #{alternate};
+        }}
+
         QToolButton[popupMode="1"] {{
             padding-right: 13px;
             border: none;
@@ -232,8 +240,11 @@ def buildFlatTheme():
 
         QPushButton {{
             background: #{background};
+            border: 1px solid #{alternate};
+            padding: 5px;
+            border-radius: 2px;
         }}
-        
+
         QPushButton:hover {{
             background: #{alternate};
         }}
@@ -241,7 +252,37 @@ def buildFlatTheme():
         QStatusBar QPushButton {{
             background: #{background};
         }}
+      
+        QStatusBar > QPushButton:hover {{
+            background: #2e2e2e;
+        }}
+
+        QDoubleSpinBox {{
+            border: 1px solid #{alternate};
+            border-radius: 2px;
+            background: #{background};
+        }}
+
+        QDoubleSpinBox::up-button,
+        QDoubleSpinBox::up-arrow,        
+        QDoubleSpinBox::down-button,
+        QDoubleSpinBox::down-arrow {{
+            width: 10px;
+            height: 10px;
+            margin: 3px;
+        }}
+
+        QDoubleSpinBox::up-button,
+        QDoubleSpinBox::up-arrow {{
+            image: url(:24_light_draw-arrow-up.svg);
+            margin-top: 2px;
+         }}
         
+        QDoubleSpinBox::down-button,
+        QDoubleSpinBox::down-arrow {{
+            image: url(:24_light_draw-arrow-down.svg);
+            margin-bottom: 2px;
+        }}         
         """
 
     flat_dock_style = f""" 
