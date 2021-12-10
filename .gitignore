@@ -1,3 +1,5 @@
 .vscode
 krita-redesign/nuTools/__pycache__/
 *.pyc
+*.tar.gz
+*.zip
