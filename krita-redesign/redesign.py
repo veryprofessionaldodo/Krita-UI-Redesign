@@ -154,7 +154,10 @@ class Redesign(Extension):
             full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
             full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
             full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
-        
+
+            welcomePage = window.findChild(QWidget, 'KisWelcomePage')
+            welcomePage.setStyleSheet(variables.flat_welcome_page)
+
         window.setStyleSheet(full_style_sheet)
 
         #print("\n\n")

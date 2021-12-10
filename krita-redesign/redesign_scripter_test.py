@@ -21,14 +21,10 @@ QTabBar {{
 """
 
 flat_tab_base_style = f"""
-  QTabBar::tab:!selected {{
+        QTabBar::tab:!selected {{
             background: #{alternate};
             color: #{inactive_text_color};
         }} 
-        
-        QTabBar {{
-            background-color: #{alternate};
-        }}
         
         QMainWindow > QTabBar::tab {{
             margin-top: 5px;
@@ -91,7 +87,8 @@ flat_main_window_style = f"""
         }}
         
         QLineEdit {{
-            background: #{alternate};
+            background: #{background};
+            selection-background-color: #{active_text_color};
         }}
 
         QStatusBar > * {{
@@ -187,15 +184,21 @@ flat_button_style = f"""
         QDoubleSpinBox::up-button,
         QDoubleSpinBox::up-arrow {{
             image: url(:24_light_draw-arrow-up.svg);
-            margin-top: 2px;
+            margin-top: 1px;
          }}
         
         QDoubleSpinBox::down-button,
         QDoubleSpinBox::down-arrow {{
             image: url(:24_light_draw-arrow-down.svg);
-            margin-bottom: 2px;
-        }}         
-        """
+            margin-bottom: 1px;
+        }}
+    """
+
+flat_welcome_page = f"""
+    QPushButton {{
+        border: none;
+    }}
+"""
 
 full_style_sheet = ""
 full_style_sheet += f"\n {stretch_tab_base_style} \n"
@@ -247,3 +250,6 @@ elem2 = elem.findChild(QWidget, 'qt_scrollarea_viewport')
 
 recursive_remove_border(elem)
 recursive_remove_border(elem2)
+
+welcomePage = window.findChild(QWidget, 'KisWelcomePage')
+welcomePage.setStyleSheet(flat_welcome_page)

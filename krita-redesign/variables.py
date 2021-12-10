@@ -104,6 +104,7 @@ flat_toolbox_style = ""
 flat_status_bar_style = ""
 flat_tree_view_style = ""
 flat_overview_docker_style = ""
+flat_welcome_page = ""
 
 def buildFlatTheme():
     global flat_tab_base_style
@@ -119,6 +120,7 @@ def buildFlatTheme():
     global flat_status_bar_style
     global flat_tree_view_style
     global flat_overview_docker_style
+    global flat_welcome_page
 
     flat_menu_bar_style = f"""
         QMenuBar {{
@@ -139,13 +141,15 @@ def buildFlatTheme():
     """
 
     flat_tab_base_style = f"""
-          QTabBar::tab:!selected {{
+        QTabBar::tab:!selected {{
             background: #{alternate};
             color: #{inactive_text_color};
-        }} 
-        
-        QTabBar {{
-            background-color: #{alternate};
+        }}
+
+        QTabBar::tab {{
+            background: red;
+            qproperty-drawBase: 0;
+            border-top: 10px solid white;
         }}
         
         QMainWindow > QTabBar::tab {{
@@ -168,15 +172,17 @@ def buildFlatTheme():
             background: #{background};
         }}
 
-       QTabBar::tab:hover {{
-           color: #{active_text_color};
-       }}
+        QTabBar::tab:hover {{
+            color: #{active_text_color};
+        }}
     """
 
-    flat_tab_big_style = f"""QTabBar::tab {{
+    flat_tab_big_style = f"""
+        QTabBar::tab {{
             border-top-right-radius: 4px;
             border-top-left-radius: 4px;
-        }}"""
+        }}
+    """
 
     flat_tab_small_style = f""" 
         QTabBar::tab {{
@@ -198,12 +204,13 @@ def buildFlatTheme():
         
         QLineEdit {{
             background: #{alternate};
+            selection-background-color: #{active_text_color};
         }}
 
         QStatusBar > * {{
             border: none;
         }}
-        """
+    """
 
     flat_button_style = f"""
         QToolButton, QFrame{{
@@ -275,13 +282,13 @@ def buildFlatTheme():
         QDoubleSpinBox::up-button,
         QDoubleSpinBox::up-arrow {{
             image: url(:24_light_draw-arrow-up.svg);
-            margin-top: 2px;
+            margin-top: 1px;
          }}
         
         QDoubleSpinBox::down-button,
         QDoubleSpinBox::down-arrow {{
             image: url(:24_light_draw-arrow-down.svg);
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }}         
         """
 
@@ -362,3 +369,9 @@ def buildFlatTheme():
         border: none;
         padding: 5px;
     }}"""
+
+    flat_welcome_page = f"""
+        QPushButton {{
+            border: none;
+        }}
+    """
