@@ -79,20 +79,20 @@ nu_toggle_button_style = f"""
 nu_tool_options_style = f"""
     border-radius: 5px;
 """
+
 nu_scroll_area_style = f"""
-        QScrollArea {{ 
-            background-color: red;
-            color: red;
-        }}
-            
-        """
+    QScrollArea {{
+        background-color: red;
+        color: red;
+    }}
+"""
+
 small_tab_style = f"QTabBar::tab {{ height: {small_tab_size}px; }}"
+big_tab_style = f"QTabBar::tab {{ }}"
 
 """ FLAT THEME """
 
-flat_tab_base_style = ""
-flat_tab_big_style = ""
-flat_tab_small_style = ""
+flat_tab_style = ""
 flat_main_window_style = ""
 flat_tool_button_style = ""
 flat_push_button_style = ""
@@ -107,9 +107,7 @@ flat_overview_docker_style = ""
 flat_welcome_page = ""
 
 def buildFlatTheme():
-    global flat_tab_base_style
-    global flat_tab_big_style
-    global flat_tab_small_style
+    global flat_tab_style
     global flat_main_window_style
     global flat_button_style
     global flat_dock_style
@@ -140,18 +138,12 @@ def buildFlatTheme():
         }}    
     """
 
-    flat_tab_base_style = f"""
+    flat_tab_style = f"""
         QTabBar::tab:!selected {{
             background: #{alternate};
             color: #{inactive_text_color};
         }}
 
-        QTabBar::tab {{
-            background: red;
-            qproperty-drawBase: 0;
-            border-top: 10px solid white;
-        }}
-        
         QMainWindow > QTabBar::tab {{
             margin-top: 5px;
             padding: 5px;
@@ -174,24 +166,8 @@ def buildFlatTheme():
 
         QTabBar::tab:hover {{
             color: #{active_text_color};
-        }}
+       }}
     """
-
-    flat_tab_big_style = f"""
-        QTabBar::tab {{
-            border-top-right-radius: 4px;
-            border-top-left-radius: 4px;
-        }}
-    """
-
-    flat_tab_small_style = f""" 
-        QTabBar::tab {{
-            border-top:0px;
-            border-bottom: 0px;
-            border-top-right-radius: 4px;
-            border-top-left-radius: 4px;
-            height: {small_tab_size}px;
-        }}"""
 
     flat_main_window_style = f"""
         QStackedWidget, QStackedLayout {{

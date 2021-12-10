@@ -10,6 +10,9 @@ alternate = qApp.palette().color(QPalette.AlternateBase).name().split("#")[1]
 inactive_text_color = qApp.palette().color(QPalette.ToolTipText).name().split("#")[1]
 active_text_color = qApp.palette().color(QPalette.WindowText).name().split("#")[1]
 
+# get object to apply styling
+window = instance.activeWindow().qwindow()
+
 stretch_tab_base_style = f"""
 QTabBar {{
             background-color: #{alternate};
@@ -46,10 +49,19 @@ flat_tab_base_style = f"""
             background: #{background};
         }}
 
-       QTabBar::tab:hover {{
-           color: #{active_text_color};
+        QTabBar::tab:hover {{
+            color: #{active_text_color};
        }}
     """
+
+flat_canvas_tab_style = f"""
+    QTabBar::tab {{
+        height: 20px;
+    }}
+"""
+canvas = window.centralWidget()
+canvas.setStyleSheet(flat_canvas_tab_style)
+canvas.resize(canvas.sizeHint())
 
 flat_combo_box_style = f"""
         QComboBox {{ 
@@ -210,10 +222,6 @@ full_style_sheet += f"\n {flat_main_window_style} \n"
 full_style_sheet += f"\n {flat_tree_view_style} \n"
 full_style_sheet += f"\n {flat_menu_bar_style} \n"
 full_style_sheet += f"\n {flat_layers_docker} \n"
-
-# get object to apply styling
-
-window = instance.activeWindow().qwindow()
 
 # apply styling 
 

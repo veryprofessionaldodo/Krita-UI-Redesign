@@ -150,9 +150,8 @@ class Redesign(Extension):
             full_style_sheet += f"\n {variables.flat_main_window_style} \n"
             full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
             full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
-            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
+            full_style_sheet += f"\n {variables.flat_tab_style} \n"
             full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
-            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
             full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
 
             welcomePage = window.findChild(QWidget, 'KisWelcomePage')
@@ -187,14 +186,10 @@ class Redesign(Extension):
         # For document tab
         canvas_style_sheet = ""
 
-        if self.usesFlatTheme:
-            if self.usesThinDocumentTabs:
-                canvas_style_sheet += f"\n {variables.flat_tab_small_style} \n"
-            else: 
-                canvas_style_sheet += f"\n {variables.flat_tab_big_style} \n"
-        else: 
-            if self.usesThinDocumentTabs:
-                canvas_style_sheet += f"\n {variables.small_tab_style} \n"
+        if self.usesThinDocumentTabs:
+            canvas_style_sheet += f"\n {variables.small_tab_style} \n"
+        else:
+            canvas_style_sheet += f"\n {variables.big_tab_style} \n"
 
         canvas = window.centralWidget()
         canvas.setStyleSheet(canvas_style_sheet)
