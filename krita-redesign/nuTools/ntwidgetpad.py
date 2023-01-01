@@ -74,7 +74,7 @@ class ntWidgetPad(QWidget):
 
             globalTargetPos = QPoint()
             if self.alignment == 'left':
-                globalTargetPos = view.mapToGlobal(QPoint(0,0))
+                globalTargetPos = view.mapToGlobal(QPoint(self.rulerMargin(), 0))
             elif self.alignment == 'right':
                 globalTargetPos = view.mapToGlobal(QPoint(view.width() - self.width() - self.scrollBarMargin(), 0))
 
@@ -166,6 +166,12 @@ class ntWidgetPad(QWidget):
             self.widgetDocker.show()
             self.widget = None
             self.widgetDocker = None
+
+
+    def rulerMargin(self):
+        if Krita.instance().readSetting("", 'showrulers', "true") == "true":
+            return 20 # Canvas ruler pixel width on Windows
+        return 0
 
 
     def scrollBarMargin(self):
