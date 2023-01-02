@@ -11,7 +11,7 @@
         <iconText>nT</iconText>
         <activationFlags>0</activationFlags>
         <activationConditions>0</activationConditions>
-        <shortcut>t</shortcut>
+        <shortcut>shift+t</shortcut>
         <isCheckable>true</isCheckable>
         <statusTip></statusTip>
         </Action>
