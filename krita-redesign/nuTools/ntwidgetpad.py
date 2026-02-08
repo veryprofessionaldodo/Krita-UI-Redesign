@@ -16,8 +16,8 @@
 """
 
 
-from PyQt5.QtWidgets import QWidget, QToolButton, QDockWidget, QVBoxLayout, QSizePolicy, QScrollArea
-from PyQt5.QtCore import Qt, QSize, QPoint
+from PyQt6.QtWidgets import QWidget, QToolButton, QDockWidget, QVBoxLayout, QSizePolicy, QScrollArea
+from PyQt6.QtCore import Qt, QSize, QPoint
 from .ntscrollareacontainer import ntScrollAreaContainer
 from .nttogglevisiblebutton import ntToggleVisibleButton
 from krita import Krita
@@ -29,10 +29,10 @@ class ntWidgetPad(QWidget):
 
     def __init__(self, parent):
         super(ntWidgetPad, self).__init__(parent)
-        self.setAttribute(Qt.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.setWindowFlags(
-            Qt.WindowStaysOnTopHint | 
-            Qt.FramelessWindowHint
+            Qt.WindowType.WindowStaysOnTopHint | 
+            Qt.WindowType.FramelessWindowHint
             )
         self.setLayout(QVBoxLayout())
         self.layout().setContentsMargins(4,4,4,4)

@@ -16,12 +16,14 @@
 """
 
 from krita import *
+from PyQt6.QtWidgets import QApplication
+from PyQt6.QtGui import QPalette
 
-highlight = qApp.palette().color(QPalette.Highlight).name().split("#")[1]
-background = qApp.palette().color(QPalette.Window).name().split("#")[1]
-alternate = qApp.palette().color(QPalette.AlternateBase).name().split("#")[1]
-inactive_text_color = qApp.palette().color(QPalette.ToolTipText).name().split("#")[1]
-active_text_color = qApp.palette().color(QPalette.WindowText).name().split("#")[1]
+highlight = QApplication.instance().palette().color(QPalette.ColorRole.Highlight).name().split("#")[1]
+background = QApplication.instance().palette().color(QPalette.ColorRole.Window).name().split("#")[1]
+alternate = QApplication.instance().palette().color(QPalette.ColorRole.AlternateBase).name().split("#")[1]
+inactive_text_color = QApplication.instance().palette().color(QPalette.ColorRole.ToolTipText).name().split("#")[1]
+active_text_color = QApplication.instance().palette().color(QPalette.ColorRole.WindowText).name().split("#")[1]
 
 small_tab_size = 20
 
