@@ -19,7 +19,7 @@ from krita import *
 from .nuTools.nttoolbox import ntToolBox
 from .nuTools.nttooloptions import ntToolOptions
 from . import variables
-from PyQt5.QtWidgets import QMessageBox
+from PyQt6.QtWidgets import QMessageBox
     
 class Redesign(Extension):
 
