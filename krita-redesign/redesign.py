@@ -167,9 +167,7 @@ class Redesign(Extension):
             full_style_sheet += f"\n {variables.flat_menu_bar_style} \n"
             full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
             full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
-            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
             full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
-            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
 
         # Toolbar
         if self.usesFlatTheme:
@@ -190,12 +188,16 @@ class Redesign(Extension):
         if self.usesFlatTheme:
             overview_style += f"\n {variables.flat_overview_docker_style} \n"
 
-        overview.setStyleSheet(overview_style)
+        if overview:
+            overview.setStyleSheet(overview_style)
 
         # For document tab
         canvas_style_sheet = ""
 
         if self.usesFlatTheme:
+            # Keep tab styling local to the canvas/doc area. Applying it
+            # globally affects dock/tab containers in Krita 5+.
+            canvas_style_sheet += f"\n {variables.flat_tab_base_style} \n"
             if self.usesThinDocumentTabs:
                 canvas_style_sheet += f"\n {variables.flat_tab_small_style} \n"
             else: 
