@@ -26,6 +26,9 @@ inactive_text_color = QApplication.instance().palette().color(QPalette.ColorRole
 active_text_color = QApplication.instance().palette().color(QPalette.ColorRole.WindowText).name().split("#")[1]
 
 small_tab_size = 20
+doc_tab_bar_selector = "QMdiArea QTabBar, QMdiArea > QTabBar"
+doc_tab_selector = "QMdiArea QTabBar::tab"
+doc_tab_selector_alt = "QMdiArea > QTabBar::tab"
 
 no_borders_style = " QToolBar { border: none; } "
 nu_toolbox_style = f"""
@@ -33,7 +36,7 @@ nu_toolbox_style = f"""
                 background-color: #01{alternate};
             }}
             
-            .QScrollArea {{ 
+            QScrollArea {{ 
                 background-color: #00{background};
             }}
             
@@ -86,7 +89,11 @@ nu_scroll_area_style = f"""
         }}
             
         """
-small_tab_style = f"QTabBar::tab {{ height: {small_tab_size}px; }}"
+small_tab_style = f"""
+{doc_tab_selector},
+{doc_tab_selector_alt} {{
+    height: {small_tab_size}px;
+}}"""
 
 """ FLAT THEME """
 
@@ -133,56 +140,44 @@ def buildFlatTheme():
     """
 
     flat_tab_base_style = f"""
-        QTabBar::tab:!selected {{
-            background: #{alternate};
-            border-bottom: 10px solid #{alternate};
-            border-top: 10px solid #{alternate};
-            margin-top: 5px;
-            color: #{inactive_text_color};
-        }} 
-        
-        QTabBar::tab:selected {{
-            background: #{alternate};
-            border-bottom: 10px solid #{background};
-            border-top: 10px solid #{background};
-            margin-top: 5px;
-        }} 
-
-        QTabBar {{
+        {doc_tab_bar_selector} {{
             background-color: #{alternate};
             border: none;
             qproperty-drawBase: 0;
             qproperty-expanding: 1;
         }}
-    
-        QTabBar::tab:!selected {{
+
+        {doc_tab_selector},
+        {doc_tab_selector_alt} {{
             background: #{alternate};
-            border-bottom: 7px solid #{alternate};
-            border-top: 7px solid #{alternate};
-            margin-top: 5px;
+            color: #{inactive_text_color};
+            border: none;
+            margin: 0px;
+            padding-left: 18px;
+            padding-right: 18px;
+            padding-top: 6px;
+            padding-bottom: 6px;
         }}
 
-        QTabBar::tab:selected {{
+        {doc_tab_selector}:selected,
+        {doc_tab_selector_alt}:selected {{
             background: #{background};
-            border-bottom: 7px solid #{background};
-            border-top: 7px solid #{background};
-            margin-top: 5px;
+            color: #{active_text_color};
         }}
 
-       QTabBar::tab:hover {{
-           color: #{active_text_color};
-       }}
+        {doc_tab_selector}:hover,
+        {doc_tab_selector_alt}:hover {{
+            color: #{active_text_color};
+        }}
        """
-    flat_tab_big_style = f"""QTabBar::tab {{
-            border-top-right-radius: 4px;
-            border-top-left-radius: 4px;
+    flat_tab_big_style = f"""
+        {doc_tab_selector},
+        {doc_tab_selector_alt} {{
+            height: 34px;
         }}"""
     flat_tab_small_style = f""" 
-        QTabBar::tab {{
-            border-top:0px;
-            border-bottom: 0px;
-            border-top-right-radius: 4px;
-            border-top-left-radius: 4px;
+        {doc_tab_selector},
+        {doc_tab_selector_alt} {{
             height: {small_tab_size}px;
         }}"""
 

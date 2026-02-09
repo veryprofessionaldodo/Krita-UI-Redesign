@@ -44,7 +44,8 @@ class ntWidgetPad(QWidget):
 
          # Visibility toggle
         self.btnHide = ntToggleVisibleButton()
-        self.btnHide.clicked.connect(self.toggleWidgetVisible)
+        # QToolButton.clicked emits a bool; ignore it so button presses always toggle.
+        self.btnHide.clicked.connect(lambda _checked=False: self.toggleWidgetVisible())
         self.layout().addWidget(self.btnHide)
 
     def activeView(self):
@@ -198,7 +199,7 @@ class ntWidgetPad(QWidget):
 
 
     def toggleWidgetVisible(self, value=None):
-        if not value:
+        if value is None:
             value = not self.widget.isVisible()
         
         self.widget.setVisible(value)
