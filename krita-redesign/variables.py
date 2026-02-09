@@ -66,6 +66,45 @@ nu_toolbox_style = f"""
                 background-color: #{alternate};
             }}
         """
+nu_tool_options_style = f"""
+        QWidget#toolOptionsPad {{
+            background-color: #00{background};
+        }}
+
+        QWidget#toolOptionsPadContainer {{
+            background-color: #dd{background};
+            border: none;
+            border-radius: 8px;
+        }}
+
+        QWidget#toolOptionsPadContainer QWidget {{
+            background-color: transparent;
+            border: none;
+        }}
+
+        QWidget#toolOptionsPad QAbstractButton,
+        QWidget#toolOptionsPad QComboBox,
+        QWidget#toolOptionsPad QSpinBox,
+        QWidget#toolOptionsPad QDoubleSpinBox,
+        QWidget#toolOptionsPad KisSliderSpinBox {{
+            background-color: #88{background};
+            border: none;
+            border-radius: 4px;
+        }}
+
+        QWidget#toolOptionsPad QCheckBox::indicator {{
+            width: 14px;
+            height: 14px;
+            border: 1px solid #{inactive_text_color};
+            border-radius: 2px;
+            background-color: #00{background};
+        }}
+
+        QWidget#toolOptionsPad QCheckBox::indicator:checked {{
+            border-color: #cc{highlight};
+            background-color: #cc{highlight};
+        }}
+        """
 nu_toggle_button_style = f"""
         QToolButton {{
             background-color: #aa{background};

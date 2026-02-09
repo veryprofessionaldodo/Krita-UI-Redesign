@@ -30,16 +30,18 @@ class ntWidgetPad(QWidget):
     def __init__(self, parent):
         super(ntWidgetPad, self).__init__(parent)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setWindowFlags(
             Qt.WindowType.WindowStaysOnTopHint | 
             Qt.WindowType.FramelessWindowHint
             )
         self.setLayout(QVBoxLayout())
-        self.layout().setContentsMargins(4,4,4,4)
+        self.layout().setContentsMargins(2, 2, 2, 2)
         self.alignment = 'left'
 
         # Members to hold a borrowed widget and it's original parent docker for returning
         self.widget = None
+        self.widgetContainer = None
         self.widgetDocker = None
 
          # Visibility toggle
@@ -99,7 +101,17 @@ class ntWidgetPad(QWidget):
             else:
                 self.widget = docker.widget()
 
-            self.layout().addWidget(self.widget) 
+            if self.objectName() == "toolOptionsPad":
+                self.widgetContainer = QWidget(self)
+                self.widgetContainer.setObjectName("toolOptionsPadContainer")
+                self.widgetContainer.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+                self.widgetContainer.setLayout(QVBoxLayout())
+                self.widgetContainer.layout().setContentsMargins(3, 3, 3, 3)
+                self.widgetContainer.layout().setSpacing(0)
+                self.widgetContainer.layout().addWidget(self.widget)
+                self.layout().addWidget(self.widgetContainer)
+            else:
+                self.layout().addWidget(self.widget)
             self.adjustToView()        
             self.widgetDocker.hide()
 
@@ -165,21 +177,42 @@ class ntWidgetPad(QWidget):
                 self.widgetDocker.setWidget(self.widget)
 
             self.widgetDocker.show()
+            if self.widgetContainer:
+                self.widgetContainer.deleteLater()
+                self.widgetContainer = None
             self.widget = None
             self.widgetDocker = None
 
 
     def rulerMargin(self):
-        if Krita.instance().readSetting("", 'showrulers', "true") == "true":
+        if self._isSettingEnabled(["showrulers", "showRulers"], False):
             return 20 # Canvas ruler pixel width on Windows
         return 0
 
 
     def scrollBarMargin(self):
-        if Krita.instance().readSetting("", "hideScrollbars", "false") == "true":
+        if self._isSettingEnabled(["hideScrollbars", "hideScrollBars"], False):
             return 0
 
         return 14 # Canvas crollbar pixel width/height on Windows 
+
+
+    def _isSettingEnabled(self, keys, default=False):
+        """
+        Read a Krita setting key with boolean-like parsing.
+        Some settings changed key casing across versions.
+        """
+        truthy = {"true", "1", "yes", "on"}
+        falsy = {"false", "0", "no", "off"}
+
+        for key in keys:
+            value = str(Krita.instance().readSetting("", key, "")).strip().lower()
+            if value in truthy:
+                return True
+            if value in falsy:
+                return False
+
+        return default
 
 
     def setViewAlignment(self, newAlignment):

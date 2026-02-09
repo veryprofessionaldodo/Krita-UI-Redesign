@@ -48,6 +48,7 @@ class ntToolOptions():
         # Disable the related QDockWidget
         self.dockerAction = window.qwindow().findChild(QDockWidget, "sharedtooldocker").toggleViewAction()
         self.dockerAction.setEnabled(False)
+        self.updateStyleSheet()
 
     def ensureFilterIsInstalled(self, subWin):
         """Ensure that the current SubWindow has the filter installed,
@@ -73,9 +74,7 @@ class ntToolOptions():
 
 
     def updateStyleSheet(self):
-        #variables.setColors()
-        #self.pad.setStyleSheet(variables.nu_tool_options_style)
-        return
+        self.pad.setStyleSheet(variables.nu_tool_options_style)
     
     def close(self):
         self.dockerAction.setEnabled(True)
