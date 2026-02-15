@@ -15,6 +15,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from PyQt6.QtCore import QSignalBlocker
 from PyQt6.QtWidgets import QMdiArea, QDockWidget
 from .ntadjusttosubwindowfilter import ntAdjustToSubwindowFilter
 from .ntwidgetpad import ntWidgetPad
@@ -26,6 +27,7 @@ class ntToolOptions():
         qWin = window.qwindow()
         mdiArea = qWin.findChild(QMdiArea)
         toolOptions = qWin.findChild(QDockWidget, 'sharedtooldocker')
+        self.sourceDocker = toolOptions
 
         # Create "pad"
         self.pad = ntWidgetPad(mdiArea)
@@ -47,13 +49,17 @@ class ntToolOptions():
 
         # Disable the related QDockWidget
         self.dockerAction = window.qwindow().findChild(QDockWidget, "sharedtooldocker").toggleViewAction()
+        self.sourceDocker.visibilityChanged.connect(self._onDockerVisibilityChanged)
+        self._ensureDockerHidden()
         self.dockerAction.setEnabled(False)
+        self.updateStyleSheet()
 
     def ensureFilterIsInstalled(self, subWin):
         """Ensure that the current SubWindow has the filter installed,
         and immediately move the Toolbox to current View."""
         if subWin:
             subWin.installEventFilter(self.adjustFilter)
+            self._ensureDockerHidden()
             self.pad.adjustToView()
             self.updateStyleSheet()
     
@@ -73,10 +79,37 @@ class ntToolOptions():
 
 
     def updateStyleSheet(self):
-        #variables.setColors()
-        #self.pad.setStyleSheet(variables.nu_tool_options_style)
-        return
+        self.pad.setStyleSheet(variables.nu_tool_options_style)
     
     def close(self):
+        try:
+            self.sourceDocker.visibilityChanged.disconnect(self._onDockerVisibilityChanged)
+        except (TypeError, RuntimeError):
+            pass
         self.dockerAction.setEnabled(True)
         return self.pad.close()
+
+    def _onDockerVisibilityChanged(self, isVisible):
+        if isVisible and self._isSourceDockerEffectivelyEmpty():
+            self._ensureDockerHidden()
+
+    def _ensureDockerHidden(self):
+        if not self._isSourceDockerEffectivelyEmpty():
+            return
+
+        if self.sourceDocker and self.sourceDocker.isVisible():
+            self.sourceDocker.hide()
+
+        if self.dockerAction and self.dockerAction.isChecked():
+            blocker = QSignalBlocker(self.dockerAction)
+            self.dockerAction.setChecked(False)
+
+    def _isSourceDockerEffectivelyEmpty(self):
+        if not self.sourceDocker:
+            return False
+
+        sourceWidget = self.sourceDocker.widget()
+        if sourceWidget is None:
+            return True
+
+        return sourceWidget.parentWidget() is not self.sourceDocker

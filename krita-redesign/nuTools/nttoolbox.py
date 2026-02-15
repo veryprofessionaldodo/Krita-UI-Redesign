@@ -15,6 +15,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from PyQt6.QtCore import QSignalBlocker
 from PyQt6.QtWidgets import QMdiArea, QDockWidget
 from .ntadjusttosubwindowfilter import ntAdjustToSubwindowFilter
 from .ntwidgetpad import ntWidgetPad
@@ -26,6 +27,7 @@ class ntToolBox():
         qWin = window.qwindow()
         mdiArea = qWin.findChild(QMdiArea)
         toolbox = qWin.findChild(QDockWidget, 'ToolBox')
+        self.sourceDocker = toolbox
 
         # Create "pad"
         self.pad = ntWidgetPad(mdiArea)
@@ -47,6 +49,8 @@ class ntToolBox():
 
         # Disable the related QDockWidget
         self.dockerAction = window.qwindow().findChild(QDockWidget, "ToolBox").toggleViewAction()
+        self.sourceDocker.visibilityChanged.connect(self._onDockerVisibilityChanged)
+        self._ensureDockerHidden()
         self.dockerAction.setEnabled(False)
 
     def ensureFilterIsInstalled(self, subWin):
@@ -54,8 +58,34 @@ class ntToolBox():
         and immediately move the Toolbox to current View."""
         if subWin:
             subWin.installEventFilter(self.adjustFilter)
+            self._ensureDockerHidden()
             self.pad.adjustToView()
             self.updateStyleSheet()
+
+    def _onDockerVisibilityChanged(self, isVisible):
+        if isVisible and self._isSourceDockerEffectivelyEmpty():
+            self._ensureDockerHidden()
+
+    def _ensureDockerHidden(self):
+        if not self._isSourceDockerEffectivelyEmpty():
+            return
+
+        if self.sourceDocker and self.sourceDocker.isVisible():
+            self.sourceDocker.hide()
+
+        if self.dockerAction and self.dockerAction.isChecked():
+            blocker = QSignalBlocker(self.dockerAction)
+            self.dockerAction.setChecked(False)
+
+    def _isSourceDockerEffectivelyEmpty(self):
+        if not self.sourceDocker:
+            return False
+
+        sourceWidget = self.sourceDocker.widget()
+        if sourceWidget is None:
+            return True
+
+        return sourceWidget.parentWidget() is not self.sourceDocker
 
     def findDockerAction(self, window, text):
         dockerMenu = None
@@ -74,5 +104,9 @@ class ntToolBox():
         self.pad.setStyleSheet(variables.nu_toolbox_style)
 
     def close(self):
+        try:
+            self.sourceDocker.visibilityChanged.disconnect(self._onDockerVisibilityChanged)
+        except (TypeError, RuntimeError):
+            pass
         self.dockerAction.setEnabled(True)
         return self.pad.close()

@@ -26,67 +26,21 @@ inactive_text_color = QApplication.instance().palette().color(QPalette.ColorRole
 active_text_color = QApplication.instance().palette().color(QPalette.ColorRole.WindowText).name().split("#")[1]
 
 small_tab_size = 20
+doc_tab_bar_selector = "QMdiArea QTabBar, QMdiArea > QTabBar"
+doc_tab_selector = "QMdiArea QTabBar::tab"
+doc_tab_selector_alt = "QMdiArea > QTabBar::tab"
 
 no_borders_style = " QToolBar { border: none; } "
-nu_toolbox_style = f"""
-            QWidget {{ 
-                background-color: #01{alternate};
-            }}
-            
-            .QScrollArea {{ 
-                background-color: #00{background};
-            }}
-            
-            QScrollArea * {{ 
-                background-color: #00000000;
-            }}
-            
-            QScrollArea QToolTip {{
-                background-color: #{active_text_color};                         
-            }}
-            
-            QAbstractButton {{
-                background-color: #aa{background};
-                border: none;
-                border-radius: 4px;
-            }}
-            
-            QAbstractButton:checked {{
-                background-color: #cc{highlight};
-            }}
-            
-            QAbstractButton:hover {{
-                background-color: #{highlight};
-            }}
-            
-            QAbstractButton:pressed {{
-                background-color: #{alternate};
-            }}
-        """
-nu_toggle_button_style = f"""
-        QToolButton {{
-            background-color: #aa{background};
-            border: none;
-            border-radius: 4px;
-        }}
-        
-        QToolButton:hover {{
-            background-color: #{highlight};
-        }}
-        
-        QToolButton:pressed {{
-            background-color: #{alternate};
-        }}
-        """
+small_tab_style = f"""
+{doc_tab_selector},
+{doc_tab_selector_alt} {{
+    height: {small_tab_size}px;
+}}"""
 
-nu_scroll_area_style = f"""
-        QScrollArea {{ 
-            background-color: red;
-            color: red;
-        }}
-            
-        """
-small_tab_style = f"QTabBar::tab {{ height: {small_tab_size}px; }}"
+nu_toolbox_style = ""
+nu_tool_options_style = ""
+nu_toggle_button_style = ""
+nu_scroll_area_style = ""
 
 """ FLAT THEME """
 
@@ -96,6 +50,7 @@ flat_tab_small_style = ""
 flat_main_window_style = ""
 flat_tool_button_style = ""
 flat_push_button_style = ""
+flat_button_style = ""
 flat_dock_style = ""
 flat_toolbar_style = ""
 flat_menu_bar_style = ""
@@ -104,6 +59,115 @@ flat_toolbox_style = ""
 flat_status_bar_style = ""
 flat_tree_view_style = ""
 flat_overview_docker_style = ""
+
+
+def buildNuToolsTheme():
+    global nu_toolbox_style
+    global nu_tool_options_style
+    global nu_toggle_button_style
+    global nu_scroll_area_style
+
+    nu_toolbox_style = """
+            QWidget {
+                background-color: transparent;
+                color: palette(window-text);
+            }
+
+            QScrollArea {
+                background-color: transparent;
+            }
+
+            QScrollArea * {
+                background-color: transparent;
+            }
+
+            QAbstractButton {
+                background-color: palette(button);
+                color: palette(window-text);
+                border: none;
+                border-radius: 4px;
+            }
+
+            QAbstractButton:checked {
+                background-color: palette(highlight);
+                color: palette(highlighted-text);
+            }
+
+            QAbstractButton:hover {
+                background-color: palette(alternate-base);
+            }
+
+            QAbstractButton:pressed {
+                background-color: palette(dark);
+            }
+
+            QAbstractButton:disabled {
+                color: palette(mid);
+            }
+        """
+    nu_tool_options_style = """
+        QWidget#toolOptionsPad {
+            background-color: transparent;
+            color: palette(window-text);
+        }
+
+        QWidget#toolOptionsPadContainer {
+            background-color: palette(window);
+            border: none;
+            border-radius: 8px;
+        }
+
+        QWidget#toolOptionsPadContainer QWidget {
+            border: none;
+        }
+
+        QWidget#toolOptionsPad QAbstractButton,
+        QWidget#toolOptionsPad QComboBox,
+        QWidget#toolOptionsPad QSpinBox,
+        QWidget#toolOptionsPad QDoubleSpinBox,
+        QWidget#toolOptionsPad KisSliderSpinBox {
+            background-color: palette(base);
+            color: palette(text);
+            border: none;
+            border-radius: 4px;
+        }
+
+        QWidget#toolOptionsPad QCheckBox::indicator {
+            width: 14px;
+            height: 14px;
+            border: 1px solid palette(mid);
+            border-radius: 2px;
+            background-color: palette(base);
+        }
+
+        QWidget#toolOptionsPad QCheckBox::indicator:checked {
+            border-color: palette(highlight);
+            background-color: palette(highlight);
+        }
+        """
+    nu_toggle_button_style = """
+        QToolButton {
+            background-color: palette(button);
+            color: palette(window-text);
+            border: none;
+            border-radius: 4px;
+        }
+
+        QToolButton:hover {
+            background-color: palette(alternate-base);
+        }
+
+        QToolButton:pressed {
+            background-color: palette(dark);
+        }
+        """
+    nu_scroll_area_style = """
+        QScrollArea {
+            background-color: palette(window);
+            color: palette(window-text);
+        }
+    """
+
 
 def buildFlatTheme():
     global flat_tab_base_style
@@ -123,66 +187,54 @@ def buildFlatTheme():
     flat_overview_docker_style = f"""
         * {{
             background: #{background};
-        }} 
+        }}
 
         * > QSpinBox {{
             border: none;
             background-color: #{alternate};
             border-radius: 4px;
-        }}    
+        }}
     """
 
     flat_tab_base_style = f"""
-        QTabBar::tab:!selected {{
-            background: #{alternate};
-            border-bottom: 10px solid #{alternate};
-            border-top: 10px solid #{alternate};
-            margin-top: 5px;
-            color: #{inactive_text_color};
-        }} 
-        
-        QTabBar::tab:selected {{
-            background: #{alternate};
-            border-bottom: 10px solid #{background};
-            border-top: 10px solid #{background};
-            margin-top: 5px;
-        }} 
-
-        QTabBar {{
+        {doc_tab_bar_selector} {{
             background-color: #{alternate};
             border: none;
             qproperty-drawBase: 0;
             qproperty-expanding: 1;
         }}
-    
-        QTabBar::tab:!selected {{
+
+        {doc_tab_selector},
+        {doc_tab_selector_alt} {{
             background: #{alternate};
-            border-bottom: 7px solid #{alternate};
-            border-top: 7px solid #{alternate};
-            margin-top: 5px;
+            color: #{inactive_text_color};
+            border: none;
+            margin: 0px;
+            padding-left: 18px;
+            padding-right: 18px;
+            padding-top: 6px;
+            padding-bottom: 6px;
         }}
 
-        QTabBar::tab:selected {{
+        {doc_tab_selector}:selected,
+        {doc_tab_selector_alt}:selected {{
             background: #{background};
-            border-bottom: 7px solid #{background};
-            border-top: 7px solid #{background};
-            margin-top: 5px;
+            color: #{active_text_color};
         }}
 
-       QTabBar::tab:hover {{
-           color: #{active_text_color};
-       }}
+        {doc_tab_selector}:hover,
+        {doc_tab_selector_alt}:hover {{
+            color: #{active_text_color};
+        }}
        """
-    flat_tab_big_style = f"""QTabBar::tab {{
-            border-top-right-radius: 4px;
-            border-top-left-radius: 4px;
+    flat_tab_big_style = f"""
+        {doc_tab_selector},
+        {doc_tab_selector_alt} {{
+            height: 34px;
         }}"""
-    flat_tab_small_style = f""" 
-        QTabBar::tab {{
-            border-top:0px;
-            border-bottom: 0px;
-            border-top-right-radius: 4px;
-            border-top-left-radius: 4px;
+    flat_tab_small_style = f"""
+        {doc_tab_selector},
+        {doc_tab_selector_alt} {{
             height: {small_tab_size}px;
         }}"""
 
@@ -190,7 +242,7 @@ def buildFlatTheme():
         QHeaderView {{
             background: #{alternate};
         }}
-        
+
         QLineEdit {{
             background: #{alternate};
         }}
@@ -202,10 +254,10 @@ def buildFlatTheme():
         KisDoubleSliderSpinBox {{
             background: #{alternate};
             border: none;
-        }} 
-        
+        }}
+
         QStatusBar > QPushButton:hover {{
-            background: #2e2e2e;
+            background: #{alternate};
         }}
         """
     flat_button_style = f"""QAbstractButton {{
@@ -233,18 +285,15 @@ def buildFlatTheme():
             border-radius: 4px;
             border: 2px solid #{alternate};
         }}
-        
         """
 
-    flat_dock_style = f""" 
+    flat_dock_style = f"""
         QAbstractScrollArea {{
             background: #{background};
             border: none;
         }}
-    
+
         QDockWidget {{
-            titlebar-close-icon: url(:/light_deletelayer.svg);
-            titlebar-normal-icon: url(:/light_duplicatelayer.svg);
             border-bottom-right-radius: 4px;
             border-bottom-left-radius: 4px;
         }}
@@ -264,7 +313,6 @@ def buildFlatTheme():
             border: none;
             border-bottom-right-radius: 4px;
             border-bottom-left-radius: 4px;
-            titlebar-close-icon: url(/:16_dark_tab-close.svg);
         }}
 
         QDockWidget::title {{
@@ -282,7 +330,7 @@ def buildFlatTheme():
         background-color: #{background};
         }}
         """
-    flat_combo_box_style = f"""QComboBox {{ 
+    flat_combo_box_style = f"""QComboBox {{
             background: #{background};
             border-bottom: 2px solid #{inactive_text_color};
             border-radius: 4px;
@@ -295,20 +343,23 @@ def buildFlatTheme():
         QComboBox:hover {{
             background: #{alternate};
         }}
-        
+
         QComboBox::drop-down {{
             border: none;
             border-radius: 4px;
         }}
-        
+
         QComboBox::down-arrow {{
-            image: url(:16_light_draw-arrow-down.svg);
             width: 9px;
         }}"""
     flat_toolbox_style = "* > QToolButton {border: none;}"
     flat_status_bar_style = f"QStatusBar {{ background-color: #{background}; }}"
     flat_tree_view_style = f"""QTreeView {{
-        background-color: #{background}; 
+        background-color: #{background};
         border: none;
         padding: 5px;
     }}"""
+
+
+buildNuToolsTheme()
+buildFlatTheme()
