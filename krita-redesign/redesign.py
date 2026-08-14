@@ -153,7 +153,7 @@ class Redesign(Extension):
             msg.setText("nuTools requires the Tool Options Location to be set to 'In Docker'. \n\n" +
                         "This setting can be found at Settings -> Configure Krita... -> General -> Tools -> Tool Options Location." +
                         "Once the setting has been changed, please restart Krita.")
-            msg.exec_()
+            msg.exec()
 
 
     def rebuildStyleSheet(self, window):
@@ -168,6 +168,13 @@ class Redesign(Extension):
             full_style_sheet += f"\n {variables.flat_combo_box_style} \n"
             full_style_sheet += f"\n {variables.flat_status_bar_style} \n"
             full_style_sheet += f"\n {variables.flat_tree_view_style} \n"
+            full_style_sheet += f"\n {variables.flat_tab_base_style} \n"
+            if self.usesThinDocumentTabs:
+                full_style_sheet += f"\n {variables.flat_tab_small_style} \n"
+            else:
+                full_style_sheet += f"\n {variables.flat_tab_big_style} \n"
+        elif self.usesThinDocumentTabs:
+            full_style_sheet += f"\n {variables.small_tab_style} \n"
 
         # Toolbar
         if self.usesFlatTheme:
@@ -191,23 +198,8 @@ class Redesign(Extension):
         if overview:
             overview.setStyleSheet(overview_style)
 
-        # For document tab
-        canvas_style_sheet = ""
-
-        if self.usesFlatTheme:
-            # Keep tab styling local to the canvas/doc area. Applying it
-            # globally affects dock/tab containers in Krita 5+.
-            canvas_style_sheet += f"\n {variables.flat_tab_base_style} \n"
-            if self.usesThinDocumentTabs:
-                canvas_style_sheet += f"\n {variables.flat_tab_small_style} \n"
-            else: 
-                canvas_style_sheet += f"\n {variables.flat_tab_big_style} \n"
-        else: 
-            if self.usesThinDocumentTabs:
-                canvas_style_sheet += f"\n {variables.small_tab_style} \n"
-
         canvas = window.centralWidget()
-        canvas.setStyleSheet(canvas_style_sheet)
+        canvas.setStyleSheet("")
 
         # This is ugly, but it's the least ugly way I can get the canvas to 
         # update it's size (for now)
