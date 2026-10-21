@@ -16,7 +16,7 @@
 """
 
 
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QScrollArea
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QScrollArea
 
 class ntScrollAreaContainer(QWidget):
 
