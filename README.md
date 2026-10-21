@@ -6,7 +6,8 @@ Currently contains the removal of the white line in toolbars, done by [Kapyia](h
 
 To install, download this repo and unzip it to Krita's *pykrita* folder:
 + Linux user will find this folder at `~/.local/share/krita/pykrita/`.
-+ Windows users till find this folder at `C:\Users\USERNAME\AppData\Roaming\krita\pykrita`.
++ Windows users will find this folder at `C:\Users\USERNAME\AppData\Roaming\krita\pykrita`.
++ Mac users will find it at `~/Library/Application Support/krita/pykrita`.
 
 Make sure the '.desktop' file is in the main folder of the `pykrita` folder!
 
